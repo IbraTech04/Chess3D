@@ -1,6 +1,11 @@
 class Board {
-	Piece[][] board;
+	Piece[][] board; //The main board array
 
+	/**
+	 * Initializes the board arrays
+	 * @author Ibrahim Chehab
+	 */
+	
 	public Board() {
 		board = new Piece[8][8];
 		Pawn[] playerOnePawns = new Pawn[] { new Pawn(1, 0, 1), new Pawn(1, 1, 1), new Pawn(1, 2, 1), new Pawn(1, 3, 1),
@@ -64,11 +69,26 @@ class Board {
 
 	}
 
+	/**
+	 * This method returns the board in a pieces array
+	 * 
+	 * @author Fardeen Kasmani
+	 * @return Pieces[][] This returns the board with the location of all the pieces
+	 */
 	public Piece[][] getBoard() {
 		return board;
 	}
-
-
+	
+	/**
+	 * This method moves pieces in the board array accordingly, and adds eliminated pieces to their respective piles
+	 * @author Fardeen Kasmani
+	 * @param p1 Reference to player1
+	 * @param p2 Reference to player2
+	 * @param x1 The x-coordinate of a piece before it moves 
+	 * @param y1 The y-coordinate of a piece before it moves
+	 * @param x2 The destination x-coordinate
+	 * @param y2 The destination y-coordinate
+	 */
 	public void movePiece(Player p1, Player p2, int x1, int y1, int x2, int y2) {
 		// Checking and Moving the Piece to an Empty Spot
 		if (board[y2][x2] == null) {
@@ -81,10 +101,10 @@ class Board {
 		else {
 			int playerNumber = board[y2][x2].getPlayer();
 			if (playerNumber == 1) {
-				// p2.addToPile(pieceTwo);
+				 p2.addToPile(board[y2][x2]);
 
 			} else {
-				// p1.addToPile(pieceTwo);
+				 p1.addToPile(board[y2][x2]);
 			}
 			board[y2][x2] = board[y1][x1];
 			board[y2][x2].setPosX(x2);

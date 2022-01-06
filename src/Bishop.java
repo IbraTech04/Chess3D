@@ -1,9 +1,21 @@
 class Bishop extends Piece {
+	
+	/**
+	 * @author Ibrahim Chehab
+	 * @param player
+	 * @param x
+	 * @param y
+	 */
 	public Bishop(int player, int x, int y) {
-		super(player, x, y);
-		super.id = 3;
+		super(player, x, y, 3);
 	}
-
+	
+	/**
+	 * Method which returns where the Bishop can go
+	 * @author Ibrahim Chehab
+	 * @param boardStatus Piece array containing the board status 
+	 * @return toReturn int[][] array containing where the object can go
+	 */
 	public int[][] getMove(Piece[][] boardStatus) {
 		int[][] toReturn = new int[boardStatus.length][boardStatus[0].length];
 		int[][] coords = { { 1, 1 }, { 2, 2 }, { 3, 3 }, { 4, 4 }, { 5, 5 }, { 6, 6 }, { 7, 7 } };
@@ -16,6 +28,7 @@ class Bishop extends Piece {
 					toReturn[x][y] = 1;
 				} else if (boardStatus[x][y].getPlayer() != super.getPlayer()) {
 					toReturn[x][y] = 2;
+					break;
 				} else {
 					break;
 				}
@@ -31,6 +44,7 @@ class Bishop extends Piece {
 					toReturn[x][y] = 1;
 				} else if (boardStatus[x][y].getPlayer() != super.getPlayer()) {
 					toReturn[x][y] = 2;
+					break;
 				} else {
 					break;
 				}
@@ -46,6 +60,7 @@ class Bishop extends Piece {
 					toReturn[x][y] = 1;
 				} else if (boardStatus[x][y].getPlayer() != super.getPlayer()) {
 					toReturn[x][y] = 2;
+					break;
 				} else {
 					break;
 				}
@@ -61,6 +76,7 @@ class Bishop extends Piece {
 					toReturn[x][y] = 1;
 				} else if (boardStatus[x][y].getPlayer() != super.getPlayer()) {
 					toReturn[x][y] = 2;
+					break;
 				} else {
 					break;
 				}

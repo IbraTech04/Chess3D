@@ -1,9 +1,24 @@
 class Queen extends Piece {
+
+	/**
+	 * @author Fardeen Kasmani
+	 * @param player
+	 * @param x
+	 * @param y
+	 */
 	public Queen(int player, int x, int y) {
-		super(player, x, y);
-	    super.id = 1;
+		super(player, x, y, 1);
 	}
 
+	/**
+	 * This method returns all the possible movements for the queen class
+	 * 
+	 * @author Fardeen Kasmani
+	 * @param boardStatus 2D piece array which contains all the current status of
+	 *                    the board
+	 * @return toReturn A 2D integer array containing 0s, 1s, and 2s, signifying
+	 *         where the king can go
+	 */
 	public int[][] getMove(Piece[][] boardStatus) {
 		int toReturn[][] = new int[boardStatus.length][boardStatus[0].length];
 		int coords[][] = { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 } };
@@ -20,6 +35,7 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -40,6 +56,8 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
+
 					} else {
 						break;
 					}
@@ -60,6 +78,8 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
+
 					} else {
 						break;
 					}
@@ -80,6 +100,8 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
+
 					} else {
 						break;
 					}
@@ -100,6 +122,7 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -120,6 +143,7 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -140,6 +164,7 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -160,6 +185,8 @@ class Queen extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
+
 					} else {
 						break;
 					}

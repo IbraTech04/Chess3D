@@ -4,31 +4,72 @@
  * @author Ibrahim Chehab
  */
 abstract class Piece {
-	public Piece(int player, int x, int y) {
+	/**
+	 * Constructor for the Piece class
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param player Signifies the player id for this piece
+	 * @param x      Signifies the piece's x-coordinate on the Cartesian plane
+	 * @param y      Signifies the piece's y-coordinate on the Cartesian plane
+	 */
+	public Piece(int player, int x, int y, int id) {
 		posX = x;
 		posY = y;
 		this.player = player;
+		this.id = id;
 	}
 
+	/**
+	 * Abstract function implemented by all subclasses. Returns where the piece can
+	 * move
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param boardStatus Array containing all the
+	 * @return int[][] Returns the places that the piece can move,
+	 */
 	public abstract int[][] getMove(Piece[][] boardStatus);
 
-	private int player;
-	private int posX;
-	private int posY;
-	public int id;
+	private int player; // Player ID
+	private int posX; // X position
+	private int posY; // Y position
+	public int id; // Model ID
 
+	/**
+	 * Returns the player ID
+	 * 
+	 * @author Ibrahim Chehab
+	 * @return int player
+	 */
 	public int getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Set's the piece's player
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param player
+	 */
 	public void setPlayer(int player) {
 		this.player = player;
 	}
 
+	/**
+	 * Returns the piece's x-position
+	 * 
+	 * @author Ibrahim Chehab
+	 * @return int posX
+	 */
 	public int getPosX() {
 		return posX;
 	}
 
+	/**
+	 * Returns the piece's y-position
+	 * 
+	 * @author Ibrahim Chehab
+	 * @return int posY
+	 */
 	public int getPosY() {
 		return posY;
 	}

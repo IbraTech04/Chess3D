@@ -4,11 +4,14 @@
  * @author Ibrahim Chehab
  */
 class Pawn extends Piece {
-
+	/**
+	 * 
+	 * @param player
+	 * @param x
+	 * @param y
+	 */
 	public Pawn(int player, int x, int y) {
-		super(player, x, y);
-		super.id = 5;
-
+		super(player, x, y, 5);
 	}
 
 	// Variable which holds what side the instance of the pawn is on. This is

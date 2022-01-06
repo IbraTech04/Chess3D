@@ -1,11 +1,21 @@
 class King extends Piece {
 
+	/**
+	 * @author Fardeen Kasmani
+	 * @param player
+	 * @param x
+	 * @param y
+	 */
 	public King(int player, int x, int y) {
-		super(player, x, y);
-		super.id = 0;
-
+		super(player, x, y, 0);
 	}
 
+	/**
+	 *  This method returns all the possible movements for the king class
+	 *  @author Fardeen Kasmani
+	 *  @param 	boardStatus	 2D piece array which contains all the current status of the board
+	 *  @return	toReturn	 A 2D integer array containing 0s, 1s, and 2s, signifying where the king can go
+	 */
 	public int[][] getMove(Piece[][] boardStatus) {
 		int toReturn[][] = new int[boardStatus.length][boardStatus[0].length];
 		int coords[][] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } };

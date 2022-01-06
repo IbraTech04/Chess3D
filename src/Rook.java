@@ -1,10 +1,24 @@
 class Rook extends Piece {
+	
+	/**
+	 * @author Ibrahim Chehab
+	 * @param player
+	 * @param x
+	 * @param y
+	 */
+	
 	public Rook(int player, int x, int y) {
-		super(player, x, y);
-		super.id = 4;
+		super(player, x, y, 4);
 
 	}
 
+	/**
+	 * Method which returns where the Rook can go
+	 * @author Ibrahim Chehab
+	 * @param boardStatus Piece array containing the board status 
+	 * @return toReturn int[][] array containing where the object can go
+	 */
+	
 	public int[][] getMove(Piece[][] boardStatus) {
 		int[][] coords = { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 } };
 		int[][] toReturn = new int[boardStatus.length][boardStatus[0].length];
@@ -19,6 +33,7 @@ class Rook extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -38,6 +53,7 @@ class Rook extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -56,6 +72,7 @@ class Rook extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
@@ -74,6 +91,7 @@ class Rook extends Piece {
 					// If Kill is Possible
 					if (boardStatus[x][y] != null && (boardStatus[x][y].getPlayer() != super.getPlayer())) {
 						toReturn[x][y] = 2;
+						break;
 					} else {
 						break;
 					}
