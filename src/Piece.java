@@ -33,6 +33,7 @@ abstract class Piece {
 	private int posX; // X position
 	private int posY; // Y position
 	public int id; // Model ID
+	private boolean isMoved = false;
 
 	/**
 	 * Returns the player ID
@@ -74,11 +75,31 @@ abstract class Piece {
 		return posY;
 	}
 
+	/**
+	 * Sets the piece's x-position
+	 * 
+	 * @author Fardeen Kasmani
+	 * @param x
+	 */
 	public void setPosX(int x) {
 		posX = x;
 	}
 
+	/**
+	 * Sets the piece's y-position
+	 * 
+	 * @author Fardeen Kasmani
+	 * @param y
+	 */
 	public void setPosY(int y) {
 		posY = y;
+	}
+
+	public boolean getMove() {
+		return isMoved;
+	}
+
+	public void setMove(boolean a) {
+		isMoved = a;
 	}
 }

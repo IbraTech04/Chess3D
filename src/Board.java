@@ -1,11 +1,12 @@
 class Board {
-	Piece[][] board; //The main board array
+	Piece[][] board; // The main board array
 
 	/**
-	 * Initializes the board arrays
+	 * Initializes the board array
+	 * 
 	 * @author Ibrahim Chehab
 	 */
-	
+
 	public Board() {
 		board = new Piece[8][8];
 		Pawn[] playerOnePawns = new Pawn[] { new Pawn(1, 0, 1), new Pawn(1, 1, 1), new Pawn(1, 2, 1), new Pawn(1, 3, 1),
@@ -66,7 +67,6 @@ class Board {
 		board[playerOneKing.getPosY()][playerOneKing.getPosX()] = playerOneKing;
 
 		board[playerTwoKing.getPosY()][playerTwoKing.getPosX()] = playerTwoKing;
-
 	}
 
 	/**
@@ -78,13 +78,15 @@ class Board {
 	public Piece[][] getBoard() {
 		return board;
 	}
-	
+
 	/**
-	 * This method moves pieces in the board array accordingly, and adds eliminated pieces to their respective piles
+	 * This method moves pieces in the board array accordingly, and adds eliminated
+	 * pieces to their respective piles
+	 * 
 	 * @author Fardeen Kasmani
 	 * @param p1 Reference to player1
 	 * @param p2 Reference to player2
-	 * @param x1 The x-coordinate of a piece before it moves 
+	 * @param x1 The x-coordinate of a piece before it moves
 	 * @param y1 The y-coordinate of a piece before it moves
 	 * @param x2 The destination x-coordinate
 	 * @param y2 The destination y-coordinate
@@ -101,15 +103,30 @@ class Board {
 		else {
 			int playerNumber = board[y2][x2].getPlayer();
 			if (playerNumber == 1) {
-				 p2.addToPile(board[y2][x2]);
+				p2.addToPile(board[y2][x2]);
 
 			} else {
-				 p1.addToPile(board[y2][x2]);
+				p1.addToPile(board[y2][x2]);
 			}
 			board[y2][x2] = board[y1][x1];
 			board[y2][x2].setPosX(x2);
 			board[y2][x2].setPosY(y2);
 			board[y1][x1] = null;
 		}
+	}
+
+	/**
+	 * @author Fardeen Kasmani
+	 * @param p1
+	 * @param p2
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 */
+	public void castle(Player p1, Player p2, int x1, int y1, int x2, int y2) {
+		//Determining
+		int deltaX = Math.abs(x2- x1);
+		
 	}
 }
