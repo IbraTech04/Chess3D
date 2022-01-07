@@ -11,7 +11,7 @@ class Pawn extends Piece {
 	 * @param y
 	 */
 	public Pawn(int player, int x, int y) {
-		super(player, x, y, 5);
+		super(player, x, y, 5, Type.PAWN);
 	}
 
 	// Variable which holds what side the instance of the pawn is on. This is
@@ -60,6 +60,22 @@ class Pawn extends Piece {
 				}
 			}
 
+			x = super.getPosX();
+			y = super.getPosY();
+
+			if (y == 3) {
+				if (BoardUtils.isCoord(x - 1, y)) {
+					if (boardStatus[y][x - 1] != null && boardStatus[y][x - 1].getPiece() == Type.PAWN) {
+						toReturn[y][x - 1] = 2;
+					}
+				}
+				if (BoardUtils.isCoord(x + 1, y)) {
+					if (boardStatus[y][x + 1] != null && boardStatus[y][x + 1].getPiece() == Type.PAWN) {
+						toReturn[y][x + 1] = 2;
+					}
+				}
+			}
+
 		}
 
 		else {
@@ -87,6 +103,19 @@ class Pawn extends Piece {
 						if (boardStatus[y][x].getPlayer() != super.getPlayer()) {
 							toReturn[y][x] = 2;
 						}
+					}
+				}
+			}
+
+			if (y == 4) {
+				if (BoardUtils.isCoord(x - 1, y)) {
+					if (boardStatus[y][x - 1] != null && boardStatus[y][x - 1].getPiece() == Type.PAWN) {
+						toReturn[y][x - 1] = 2;
+					}
+				}
+				if (BoardUtils.isCoord(x + 1, y)) {
+					if (boardStatus[y][x + 1] != null && boardStatus[y][x + 1].getPiece() == Type.PAWN) {
+						toReturn[y][x + 1] = 2;
 					}
 				}
 			}

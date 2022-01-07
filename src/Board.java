@@ -98,6 +98,7 @@ class Board {
 			board[y2][x2].setPosX(x2);
 			board[y2][x2].setPosY(y2);
 			board[y1][x1] = null;
+			board[y2][x2].setMove(true);
 		}
 		// Killing an Enemy and Moving the Piece to an Empty Spot
 		else {
@@ -112,21 +113,45 @@ class Board {
 			board[y2][x2].setPosX(x2);
 			board[y2][x2].setPosY(y2);
 			board[y1][x1] = null;
+			board[y2][x2].setMove(true);
 		}
 	}
 
 	/**
 	 * @author Fardeen Kasmani
-	 * @param p1
-	 * @param p2
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
+	 * @param x1 King's x-pos
+	 * @param y1 King's y-pos
+	 * @param x2 Rook's x-pos
+	 * @param y2 Rook's y-pos
 	 */
-	public void castle(Player p1, Player p2, int x1, int y1, int x2, int y2) {
-		//Determining
-		int deltaX = Math.abs(x2- x1);
-		
+	public void castle(int x1, int y1, int x2, int y2) {
+		// Determining
+		int deltaX = Math.abs(x2 - x1);
+		// Far Side Castle
+		if (deltaX == 4) {
+			// Moving the King
+			board[y1][x1 - 2] = board[y1][x1];
+			board[y1][x1 - 2].setPosX(x1 - 2);
+			board[y1][x1] = null;
+			board[y1][x1 - 2].setMove(true);
+			// Moving the Rook
+			board[y2][x2 + 3] = board[y2][x2];
+			board[y2][x2 + 3].setPosX(x2 + 3);
+			board[y2][x2] = null;
+			board[y2][x2 + 3].setMove(true);	
+		}
+		// Close Side Castle
+		else {
+			// Moving the King
+			board[y1][x1 + 2] = board[y1][x1];
+			board[y1][x1 + 2].setPosX(x1 + 2);
+			board[y1][x1] = null;
+			board[y1][x1 + 2].setMove(true);
+			// Moving the Rook
+			board[y2][x2 - 2] = board[y2][x2];
+			board[y2][x2 - 2].setPosX(x2 - 2);
+			board[y2][x2] = null;
+			board[y2][x2 - 2].setMove(true);
+		}
 	}
 }

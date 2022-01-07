@@ -7,7 +7,7 @@ class Queen extends Piece {
 	 * @param y
 	 */
 	public Queen(int player, int x, int y) {
-		super(player, x, y, 1);
+		super(player, x, y, 1, Type.QUEEN);
 	}
 
 	/**

@@ -1,47 +1,5 @@
-/*public class Main {
-	public static void main(String[] args) {
-		Board board = new Board();
-
-		printArray(board.getBoard());
-
-		board.movePiece(null, null, 3, 1, 3, 2);
-
-		printArray(board.playerOnePawns[3].getMove(board.getBoard()));
-
-		board.movePiece(null, null, 3, 0, 3, 1);
-		
-		printArray(board.playerOneQueen.getMove(board.getBoard()));
-
-		printArray(board.getBoard());
-
-	}
-
-	static void printArray(int[][] array) {
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++) {
-				System.out.print(array[i][j] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-
-	}
-
-	static void printArray(Piece[][] array) {
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++) {
-				if (array[i][j] != null) {
-					System.out.print(array[i][j].getClass().getSimpleName() + " ");
-				} else {
-					System.out.print("Null ");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
-
-	}
-}*/
+// Chess 3D
+// By Ibrahim Chehab and Fardeen Kasmani
 
 import processing.core.*;
 import processing.data.*;
@@ -63,19 +21,18 @@ public class Chess3D extends PApplet {
 	Piece lastChosenPiece;
 	int squareSize = 50;
 	int currentPlayer = 1;
-	//Chess 3D
-	//By Ibrahim Chehab and Fardeen Kasmani
-	
-	//Loading all the textures and files required
+
+	// Loading all the textures and files required
 
 	Rect[][] rects;
 	PImage[] images;
 	String[] names = { "king.png", "queen.png", "knight.png", "bishop.png", "rook.png", "pawn.png" };
 	Board board;
 	Player player1, player2;
-	
+
 	/**
 	 * Setup function required for PApplet
+	 * 
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
@@ -90,9 +47,10 @@ public class Chess3D extends PApplet {
 			images[i] = loadImage("data/" + names[i]);
 		}
 	}
-	
+
 	/**
 	 * Draw function required for PApplet
+	 * 
 	 * @author Fardeen Kasmani
 	 */
 	public void draw() {
@@ -108,13 +66,14 @@ public class Chess3D extends PApplet {
 			}
 		}
 		drawPieces(board.getBoard());
-		popMatrix();	
+		popMatrix();
 		player1.drawPile(images);
 		player2.drawPile(images);
 	}
-	
+
 	/**
 	 * Method which resizes squares on screen depending on window size
+	 * 
 	 * @author Ibrahim Chehab
 	 */
 	public void updateRectSize() {
@@ -134,6 +93,7 @@ public class Chess3D extends PApplet {
 
 	/**
 	 * Method which initializes the rect objects on screen
+	 * 
 	 * @author Fardeen Kasmani
 	 */
 	public void initBoard2D() {
@@ -146,8 +106,9 @@ public class Chess3D extends PApplet {
 	}
 
 	/**
-	 * Mouse pressed function required for PApplet
-	 * Depending on screen, method will either interact with GUI or move pieces
+	 * Mouse pressed function required for PApplet Depending on screen, method will
+	 * either interact with GUI or move pieces
+	 * 
 	 * @author Ibrahim Chehab
 	 */
 	public void mousePressed() {
@@ -159,7 +120,8 @@ public class Chess3D extends PApplet {
 						if (p[j][i].getPlayer() != currentPlayer && lastChosenPiece != null) {
 							int[][] coords = lastChosenPiece.getMove(p);
 							if (coords[j][i] == 2) {
-								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(), i, j);
+								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(),
+										i, j);
 								resetGridColor();
 								lastChosenPiece = null;
 								if (currentPlayer == 1) {
@@ -169,14 +131,34 @@ public class Chess3D extends PApplet {
 								}
 							}
 						} else if (p[j][i].getPlayer() == currentPlayer) {
-							lastChosenPiece = p[j][i];
-							updateGrid(p[j][i].getMove(board.getBoard()));
+							if (lastChosenPiece != null) {
+								if (lastChosenPiece.getPiece() == Type.KING && p[j][i].getPiece() == Type.ROOK) {
+									if (BoardUtils.isCastlePossible(p, lastChosenPiece.getPosX(),
+											lastChosenPiece.getPosY(), i, j)) {
+										board.castle(lastChosenPiece.getPosX(), lastChosenPiece.getPosY(), i, j);
+										resetGridColor();
+										lastChosenPiece = null;
+										if (currentPlayer == 1) {
+											currentPlayer = 0;
+										} else {
+											currentPlayer = 1;
+										}
+									}
+								} else {
+									lastChosenPiece = p[j][i];
+									updateGrid(p[j][i].getMove(board.getBoard()));
+								}
+							} else {
+								lastChosenPiece = p[j][i];
+								updateGrid(p[j][i].getMove(board.getBoard()));
+							}
 						}
 					} else {
 						if (lastChosenPiece != null) {
 							int[][] pos = lastChosenPiece.getMove(board.getBoard());
 							if (pos[j][i] != 0) {
-								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(), i, j);
+								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(),
+										i, j);
 								resetGridColor();
 								lastChosenPiece = null;
 								if (currentPlayer == 1) {
@@ -194,6 +176,7 @@ public class Chess3D extends PApplet {
 
 	/**
 	 * Resets the grid color to all white
+	 * 
 	 * @author Fardeen Kasmani
 	 */
 	public void resetGridColor() {
@@ -206,7 +189,9 @@ public class Chess3D extends PApplet {
 	}
 
 	/**
-	 * Updates the Board's colours based on it's movement capabilities when a Piece is selected 
+	 * Updates the Board's colours based on it's movement capabilities when a Piece
+	 * is selected
+	 * 
 	 * @author Fardeen Kasmani
 	 * @param pos
 	 */
@@ -229,7 +214,8 @@ public class Chess3D extends PApplet {
 
 	/**
 	 * Draws piece images to screen
-	 * @author Fardeen Kasmani 
+	 * 
+	 * @author Fardeen Kasmani
 	 * @param pieces The board array
 	 */
 	public void drawPieces(Piece[][] pieces) {
@@ -252,6 +238,7 @@ public class Chess3D extends PApplet {
 
 	/**
 	 * Class with utilities to aid with mouse detection and square drawing
+	 * 
 	 * @author Ibrahim Chehab
 	 *
 	 */
@@ -269,9 +256,10 @@ public class Chess3D extends PApplet {
 			rectx = x;
 			recty = y;
 		}
-		
+
 		/**
 		 * Updates rect size
+		 * 
 		 * @author Fardeen Kasmani
 		 * @param x
 		 * @param y
@@ -280,9 +268,10 @@ public class Chess3D extends PApplet {
 			rectx = x;
 			recty = y;
 		}
-		
+
 		/**
 		 * Draws rectangle to screen
+		 * 
 		 * @author Ibrahim Chehab
 		 */
 		public void drawRect() {
@@ -293,6 +282,7 @@ public class Chess3D extends PApplet {
 
 		/**
 		 * Returns whether the rect is pressed
+		 * 
 		 * @author Ibrahim Chehab
 		 * @return isPressed
 		 */
@@ -307,16 +297,17 @@ public class Chess3D extends PApplet {
 	}
 
 	/**
-	 * Sets screen size
-	 * Required for PApplet
+	 * Sets screen size Required for PApplet
+	 * 
 	 * @author Fardeen Kasmani
 	 */
 	public void settings() {
 		size(1280, 720);
 	}
-	
+
 	/**
 	 * Function which starts the PApplet class
+	 * 
 	 * @author Ibrahim Chehab
 	 * @param passedArgs
 	 */

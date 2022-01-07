@@ -7,7 +7,7 @@ class Bishop extends Piece {
 	 * @param y
 	 */
 	public Bishop(int player, int x, int y) {
-		super(player, x, y, 3);
+		super(player, x, y, 3, Type.BISHOP);
 	}
 	
 	/**

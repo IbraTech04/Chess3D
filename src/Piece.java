@@ -12,11 +12,12 @@ abstract class Piece {
 	 * @param x      Signifies the piece's x-coordinate on the Cartesian plane
 	 * @param y      Signifies the piece's y-coordinate on the Cartesian plane
 	 */
-	public Piece(int player, int x, int y, int id) {
+	public Piece(int player, int x, int y, int id, Type piece) {
 		posX = x;
 		posY = y;
 		this.player = player;
 		this.id = id;
+		this.piece = piece;
 	}
 
 	/**
@@ -34,6 +35,7 @@ abstract class Piece {
 	private int posY; // Y position
 	public int id; // Model ID
 	private boolean isMoved = false;
+	private Type piece;
 
 	/**
 	 * Returns the player ID
@@ -101,5 +103,9 @@ abstract class Piece {
 
 	public void setMove(boolean a) {
 		isMoved = a;
+	}
+	
+	public Type getPiece() {
+		return piece;
 	}
 }

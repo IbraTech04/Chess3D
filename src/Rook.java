@@ -8,7 +8,7 @@ class Rook extends Piece {
 	 */
 
 	public Rook(int player, int x, int y) {
-		super(player, x, y, 4);
+		super(player, x, y, 4, Type.ROOK);
 
 	}
 

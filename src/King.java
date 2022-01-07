@@ -7,7 +7,7 @@ class King extends Piece {
 	 * @param y
 	 */
 	public King(int player, int x, int y) {
-		super(player, x, y, 0);
+		super(player, x, y, 0, Type.KING);
 	}
 
 	/**

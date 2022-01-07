@@ -6,7 +6,7 @@ class Knight extends Piece {
 	 * @param y
 	 */
 	public Knight(int player, int x, int y) {
-		super(player, x, y, 2);
+		super(player, x, y, 2, Type.KNIGHT);
 	}
 
 	/**
