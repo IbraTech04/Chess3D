@@ -30,7 +30,7 @@ class BoardUtils {
 		}
 
 		if (x1 > x2) {
-			for (int i = x1 -1; i > x2; i--) {
+			for (int i = x1 - 1; i > x2; i--) {
 				if (board[y1][i] != null) {
 					return false;
 				}
@@ -38,12 +38,35 @@ class BoardUtils {
 		}
 
 		else {
-			for (int i = x1 + 1; i < x2 - 1; i++) {
+			for (int i = x1 + 1; i < x2; i++) {
 				if (board[y1][i] != null) {
 					return false;
 				}
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * @author Fardeen Kasmani
+	 * @param board
+	 * @param kingX
+	 * @param kingY
+	 */
+	public boolean checkforCheck(Piece[][] board, int id, int kingX, int kingY) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board[i][j].getPlayer() != id) {
+					// Check if piece is on enemy team
+					int[][] move = board[i][j].getMove(board);
+
+					// if the array at the kings x and y is 2, then return true
+					if (move[kingY][kingX] == 2) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 }

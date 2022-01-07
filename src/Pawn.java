@@ -63,15 +63,21 @@ class Pawn extends Piece {
 			x = super.getPosX();
 			y = super.getPosY();
 
-			if (y == 3) {
+			if (y == 4) {
 				if (BoardUtils.isCoord(x + 1, y)) {
-					if (boardStatus[y][x + 1] != null && boardStatus[y][x - 1].getPiece() == Type.PAWN) {
-						toReturn[y + 1][x + 1] = 2;
+					if (boardStatus[y][x + 1] != null) {
+						{
+							if (boardStatus[y][x + 1].getPiece() == Type.PAWN) {
+								toReturn[y + 1][x + 1] = 2;
+							}
+						}
 					}
 				}
 				if (BoardUtils.isCoord(x - 1, y)) {
-					if (boardStatus[y][x - 1] != null && boardStatus[y][x + 1].getPiece() == Type.PAWN) {
-						toReturn[y + 1][x - 1] = 2;
+					if (boardStatus[y][x - 1] != null) {
+						if (boardStatus[y][x - 1].getPiece() == Type.PAWN) {
+							toReturn[y + 1][x - 1] = 2;
+						}
 					}
 				}
 			}

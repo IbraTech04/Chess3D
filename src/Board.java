@@ -1,4 +1,11 @@
+import processing.core.PApplet;
+
+import java.awt.Color;
+
+import javax.swing.*;
+
 class Board {
+
 	Piece[][] board; // The main board array
 
 	/**
@@ -6,8 +13,9 @@ class Board {
 	 * 
 	 * @author Ibrahim Chehab
 	 */
+	PApplet pa;
 
-	public Board() {
+	public Board(PApplet pa) {
 		board = new Piece[8][8];
 		Pawn[] playerOnePawns = new Pawn[] { new Pawn(1, 0, 1), new Pawn(1, 1, 1), new Pawn(1, 2, 1), new Pawn(1, 3, 1),
 				new Pawn(1, 4, 1), new Pawn(1, 5, 1), new Pawn(1, 6, 1), new Pawn(1, 7, 1) };
@@ -67,6 +75,8 @@ class Board {
 		board[playerOneKing.getPosY()][playerOneKing.getPosX()] = playerOneKing;
 
 		board[playerTwoKing.getPosY()][playerTwoKing.getPosX()] = playerTwoKing;
+
+		this.pa = pa;
 	}
 
 	/**
@@ -99,6 +109,20 @@ class Board {
 			board[y2][x2].setPosY(y2);
 			board[y1][x1] = null;
 			board[y2][x2].setMove(true);
+
+			if (board[y2][x2].getPiece() == Type.PAWN) {
+				if (board[y2][x2].getPlayer() == 0) {
+					if (board[y2 + 1][x2] != null) {
+						p2.addToPile(board[y2 + 1][x2]);
+						board[y2 + 1][x2] = null;
+					}
+				} else {
+					if (board[y2 - 1][x2] != null) {
+						p2.addToPile(board[y2 - 1][x2]);
+						board[y2 - 1][x2] = null;
+					}
+				}
+			}
 		}
 		// Killing an Enemy and Moving the Piece to an Empty Spot
 		else {
@@ -114,6 +138,12 @@ class Board {
 			board[y2][x2].setPosY(y2);
 			board[y1][x1] = null;
 			board[y2][x2].setMove(true);
+		}
+
+		if (y2 == 0 || y2 == 7) {
+			if (board[y2][x2].getPiece() == Type.PAWN) {
+				pawnPromotion(x2, y2);
+			}
 		}
 	}
 
@@ -138,7 +168,7 @@ class Board {
 			board[y2][x2 + 3] = board[y2][x2];
 			board[y2][x2 + 3].setPosX(x2 + 3);
 			board[y2][x2] = null;
-			board[y2][x2 + 3].setMove(true);	
+			board[y2][x2 + 3].setMove(true);
 		}
 		// Close Side Castle
 		else {
@@ -153,5 +183,47 @@ class Board {
 			board[y2][x2] = null;
 			board[y2][x2 - 2].setMove(true);
 		}
+	}
+
+	/**
+	 * Promotes Pawns when they reach the end of the board
+	 * 
+	 * @param x2 X- coordinate to change
+	 * @param y2 Y- coordinate to change
+	 * @author Fardeen Kasmani
+	 */
+	public void pawnPromotion(int x2, int y2) {
+		String[] options = { "Queen", "Rook", "Bishop", "Knight" };
+
+		String entry;
+
+		do {
+			entry = (String) JOptionPane.showInputDialog(null, "What would you like to promote this pawn to?",
+					"Pawn Promotion", JOptionPane.QUESTION_MESSAGE, new ImageIcon("data\\pawnR.png"), options,
+					options[0]);
+		} while (entry == null);
+		int player = board[y2][x2].getPlayer();
+
+		if (entry.equals("Queen")) {
+			board[y2][x2] = null;
+			board[y2][x2] = new Queen(player, x2, y2);
+		}
+
+		if (entry.equals("Rook")) {
+			board[y2][x2] = null;
+			board[y2][x2] = new Rook(player, x2, y2);
+			board[y2][x2].setMove(true); // Disables Castling with the New Rook
+		}
+
+		if (entry.equals("Bishop")) {
+			board[y2][x2] = null;
+			board[y2][x2] = new Bishop(player, x2, y2);
+		}
+
+		if (entry.equals("Knight")) {
+			board[y2][x2] = null;
+			board[y2][x2] = new Knight(player, x2, y2);
+		}
+		System.gc();
 	}
 }

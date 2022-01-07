@@ -11,5 +11,13 @@
 			<attribute name="javadoc_location" value="https://processing.github.io/processing-javadocs/core/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/annotations-16.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/apiguardian-api-1.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/colorpicker-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/darcula-2018.2.jar"/>
+	<classpathentry kind="lib" path="C:/filters-2.0.235.jar"/>
+	<classpathentry kind="lib" path="C:/swing-worker-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/swingx-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/UiBooster.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

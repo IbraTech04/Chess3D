@@ -38,7 +38,7 @@ public class Chess3D extends PApplet {
 	public void setup() {
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
-		board = new Board();
+		board = new Board(this);
 		surface.setTitle("Chess3D - Alpha Release v0.5");
 		surface.setResizable(true);
 		initBoard2D();
@@ -312,6 +312,7 @@ public class Chess3D extends PApplet {
 	 * @param passedArgs
 	 */
 	public static void main(String[] passedArgs) {
+		GameUtils.checkGameRequriements();
 		String[] appletArgs = new String[] { "Chess3D" };
 		if (passedArgs != null) {
 			PApplet.main(concat(appletArgs, passedArgs));

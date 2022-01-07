@@ -5,6 +5,8 @@ public class Player {
 	private PApplet p;
 	private ArrayList<Piece> takenPieces;
 	private int id;
+	private boolean isCheck = false;
+	private boolean isCheckMate = false;
 
 	/**
 	 * Draws the pile of eliminated pieces for that player
@@ -75,4 +77,28 @@ public class Player {
 	public int getPlayer() {
 		return id;
 	}
+
+	/**
+	 * Returns the check value
+	 * 
+	 * @author Fardeen Kasmani
+	 * @return isCheck
+	 */
+	public boolean getCheck() {
+		return isCheck;
+	}
+
+	/**
+	 * Returns the checkmate value
+	 * 
+	 * @author Fardeen Kasmani
+	 */
+	public boolean getCheckMate(Piece[][] board, int kingX, int kingY) {
+		return isCheckMate;
+	}
+
+	public void checkforCheckmate() {
+
+	}
+
 }
