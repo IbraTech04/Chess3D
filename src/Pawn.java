@@ -64,14 +64,14 @@ class Pawn extends Piece {
 			y = super.getPosY();
 
 			if (y == 3) {
-				if (BoardUtils.isCoord(x - 1, y)) {
-					if (boardStatus[y][x - 1] != null && boardStatus[y][x - 1].getPiece() == Type.PAWN) {
-						toReturn[y][x - 1] = 2;
+				if (BoardUtils.isCoord(x + 1, y)) {
+					if (boardStatus[y][x + 1] != null && boardStatus[y][x - 1].getPiece() == Type.PAWN) {
+						toReturn[y + 1][x + 1] = 2;
 					}
 				}
-				if (BoardUtils.isCoord(x + 1, y)) {
-					if (boardStatus[y][x + 1] != null && boardStatus[y][x + 1].getPiece() == Type.PAWN) {
-						toReturn[y][x + 1] = 2;
+				if (BoardUtils.isCoord(x - 1, y)) {
+					if (boardStatus[y][x - 1] != null && boardStatus[y][x + 1].getPiece() == Type.PAWN) {
+						toReturn[y + 1][x - 1] = 2;
 					}
 				}
 			}
@@ -107,15 +107,18 @@ class Pawn extends Piece {
 				}
 			}
 
-			if (y == 4) {
+			x = super.getPosX();
+			y = super.getPosY();
+
+			if (y == 3) {
 				if (BoardUtils.isCoord(x - 1, y)) {
 					if (boardStatus[y][x - 1] != null && boardStatus[y][x - 1].getPiece() == Type.PAWN) {
-						toReturn[y][x - 1] = 2;
+						toReturn[y - 1][x - 1] = 2;
 					}
 				}
 				if (BoardUtils.isCoord(x + 1, y)) {
 					if (boardStatus[y][x + 1] != null && boardStatus[y][x + 1].getPiece() == Type.PAWN) {
-						toReturn[y][x + 1] = 2;
+						toReturn[y - 1][x + 1] = 2;
 					}
 				}
 			}
