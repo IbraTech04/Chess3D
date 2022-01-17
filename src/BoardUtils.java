@@ -69,4 +69,15 @@ class BoardUtils {
 		}
 		return false;
 	}
+
+	public void checkforCheckmate(Piece[][] board, int id, int kingX, int kingY) {
+		for (Piece[] p : board) {
+			for (Piece d : p) {
+				if (d.getPlayer() != id) {
+					int[][] movements = d.getMove(board);
+				}
+				
+			}
+		}
+	}
 }

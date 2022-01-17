@@ -5,7 +5,7 @@ import processing.core.*;
 import processing.data.*;
 import processing.event.*;
 import processing.opengl.*;
-
+import processing.core.PConstants;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -19,14 +19,15 @@ import java.io.IOException;
 
 public class Chess3D extends PApplet {
 	Piece lastChosenPiece;
-	int squareSize = 50;
-	int currentPlayer = 1;
+	static int squareSize = 50;
+	int currentPlayer = 0;
 
 	// Loading all the textures and files required
 
-	Rect[][] rects;
-	PImage[] images;
-	String[] names = { "king.png", "queen.png", "knight.png", "bishop.png", "rook.png", "pawn.png" };
+	static Rect[][] rects;
+	PShape[] models;
+	PShape chessBoard;
+	String[] names = { "king.obj", "queen.obj", "knight.obj", "bishop.obj", "rook.obj", "pawn.obj" };
 	Board board;
 	Player player1, player2;
 
@@ -36,27 +37,33 @@ public class Chess3D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
+		textAlign(CENTER);
+		text("Rendering... Please Wait", width / 2, height / 2);
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
 		board = new Board(this);
-		surface.setTitle("Chess3D - Alpha Release v0.5");
+		surface.setTitle("Chess3D - Alpha Release v0.5.1");
 		surface.setResizable(true);
 		initBoard2D();
-		images = new PImage[6];
+		models = new PShape[6];
 		for (int i = 0; i < 6; i++) {
-			images[i] = loadImage("data/" + names[i]);
+			models[i] = loadShape("data/" + names[i]);
 		}
 	}
 
 	/**
 	 * Draw function required for PApplet
 	 * 
-	 * @author Fardeen Kasmani
+	 * @author Ibrahim Chehab
 	 */
 	public void draw() {
 		background(255);
+		lights();
 		pushMatrix();
-		translate((width - (squareSize * 8)) / 2, 0);
+		translate((width - (squareSize * 8)) / 2, (height - (squareSize * 8)) / 1.5f);
+		rotateX(PI / 3);
+		// pushMatrix();
+		// translate((width - (squareSize * 8)) / 2, 0);
 		updateRectSize();
 		stroke(255);
 		fill(0);
@@ -67,8 +74,9 @@ public class Chess3D extends PApplet {
 		}
 		drawPieces(board.getBoard());
 		popMatrix();
-		player1.drawPile(images);
-		player2.drawPile(images);
+		player1.drawPile(models);
+		player2.drawPile(models);
+
 	}
 
 	/**
@@ -76,12 +84,22 @@ public class Chess3D extends PApplet {
 	 * 
 	 * @author Ibrahim Chehab
 	 */
+	/*
+	 * public void updateRectSize() {
+	 * 
+	 * if (width > height) { squareSize = height / 8; } else { squareSize = width /
+	 * 8; }
+	 * 
+	 * for (int i = 0; i < 8; i++) { for (int j = 0; j < 8; j++) {
+	 * rects[i][j].update(i * squareSize, j * squareSize); } } }
+	 */
+
 	public void updateRectSize() {
 
 		if (width > height) {
-			squareSize = height / 8;
+			squareSize = height / 14;
 		} else {
-			squareSize = width / 8;
+			squareSize = width / 14;
 		}
 
 		for (int i = 0; i < 8; i++) {
@@ -100,9 +118,33 @@ public class Chess3D extends PApplet {
 		rects = new Rect[8][8];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				rects[i][j] = new Rect(i * squareSize, j * squareSize);
+				rects[i][j] = new Rect(i * squareSize, j * squareSize, i, j);
 			}
 		}
+	}
+
+	/**
+	 * Method which checks whether the users computer is capable of running our
+	 * game. If not, it will alert the user
+	 * 
+	 * @author Fardeen Kasmani
+	 * @return
+	 */
+	public int checkGameRequriements(PApplet pa) {
+		System.getProperties().list(System.out);
+		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+			GameUtils.getDXDiag();
+			XML xml = pa.loadXML("dxdiag.xml");
+
+			String CPU = (xml.getChild("SystemInformation").getChild("Processor").getContent());
+			int memory = Integer.parseInt(xml.getChild("SystemInformation").getChild("Memory").getContent());
+			String graphicsCard = (xml.getChild("DisplayDevices").getChild("DisplayDevice").getChild("CardName")
+					.getContent());
+
+		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+
+		}
+		return 10;
 	}
 
 	/**
@@ -215,25 +257,52 @@ public class Chess3D extends PApplet {
 	/**
 	 * Draws piece images to screen
 	 * 
-	 * @author Fardeen Kasmani
+	 * @author Ibrahim Chehab
 	 * @param pieces The board array
 	 */
 	public void drawPieces(Piece[][] pieces) {
+		shininess((float) 1.0);
+		translate(squareSize / 2, squareSize / 2);
+		// scale(squareSize, squareSize);
+
 		for (int i = 0; i < pieces.length; i++) {
+			pushMatrix();
+			rotateX(PI / 2);
+
 			for (int j = 0; j < pieces.length; j++) {
+
 				if (pieces[i][j] != null) {
-					int x = pieces[i][j].getPosX();
-					int y = pieces[i][j].getPosY();
+					/*
+					 * int x = pieces[i][j].getPosX(); int y = pieces[i][j].getPosY(); pushMatrix();
+					 * rotateX(-PI/2); shapeMode(CENTER); ellipseMode(CENTER); int xDisplay = (x) *
+					 * squareSize + squareSize / 2; int yDisplay = (y) * squareSize + squareSize /
+					 * 2; ellipse(xDisplay, yDisplay, 50, 50); shape(models[pieces[i][j].id],
+					 * xDisplay, yDisplay); popMatrix();
+					 */
+					// ellipse(0, 0, 50, 50);
+					float rotate = PI / 2;
 
-					imageMode(CENTER);
+					if (pieces[i][j].getPlayer() == 1) {
+						rotate *= -1;
+					}
 
-					int xDisplay = (x) * squareSize + squareSize / 2;
-					int yDisplay = (y) * squareSize + squareSize / 2;
-
-					image(images[pieces[i][j].id], xDisplay, yDisplay, squareSize, squareSize);
+					pushMatrix();
+					scale(2, 2, 2);
+					rotateY(rotate);
+					shape(models[pieces[i][j].id], 0, 0);
+					popMatrix();
 				}
+				translate(squareSize, 0, 0);
 			}
+			popMatrix();
+			translate(0, squareSize, 0);
+
 		}
+	}
+
+	private void scale(double d, double e, double f) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -246,15 +315,29 @@ public class Chess3D extends PApplet {
 		float rectx, recty;
 		int fill = 255;
 		int stroke = 0;
+		int idX;
+		int idY;
+		float x1;
+		float y1;
+		float x2;
+		float y2;
 
 		/**
 		 * @author Fardeen Kasmani
 		 * @param x
 		 * @param y
+		 * @param idX
+		 * @param idY
 		 */
-		public Rect(int x, int y) {
+		public Rect(int x, int y, int idX, int idY) {
 			rectx = x;
 			recty = y;
+			this.idX = idX;
+			this.idY = idY;
+			this.x1 = idX * squareSize;
+			this.y1 = idY * squareSize;
+			this.x2 = x1 + squareSize;
+			this.y2 = y1 + squareSize;
 		}
 
 		/**
@@ -275,6 +358,22 @@ public class Chess3D extends PApplet {
 		 * @author Ibrahim Chehab
 		 */
 		public void drawRect() {
+			this.x1 = idX * squareSize;
+			this.y1 = idY * squareSize;
+			this.x2 = x1 + squareSize;
+			this.y2 = y1 + squareSize;
+
+			float x1T = screenX(x1, y1, 0);
+			float y1T = screenY(x1, y1, 0);
+			float x2T = screenX(x2, y2, 0);
+			float y2T = screenY(x2, y2, 0);
+
+			x1 = x1T;
+			x2 = x2T;
+
+			y1 = y1T;
+			y2 = y2T;
+
 			stroke(stroke);
 			fill(fill);
 			rect(rectx, recty, squareSize, squareSize);
@@ -287,9 +386,7 @@ public class Chess3D extends PApplet {
 		 * @return isPressed
 		 */
 		public boolean isPressed() {
-			if (mousePressed && mouseX >= rectx + (width - (squareSize * 8)) / 2
-					&& mouseX <= rectx + squareSize + (width - (squareSize * 8)) / 2 && mouseY >= recty
-					&& mouseY <= recty + squareSize) {
+			if (mouseX >= x1 && mouseX < x2 && mouseY >= y1 && mouseY < y2) {
 				return true;
 			}
 			return false;
@@ -302,7 +399,7 @@ public class Chess3D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void settings() {
-		size(1280, 720);
+		size(1280, 720, P3D);
 	}
 
 	/**
@@ -312,7 +409,6 @@ public class Chess3D extends PApplet {
 	 * @param passedArgs
 	 */
 	public static void main(String[] passedArgs) {
-		GameUtils.checkGameRequriements();
 		String[] appletArgs = new String[] { "Chess3D" };
 		if (passedArgs != null) {
 			PApplet.main(concat(appletArgs, passedArgs));

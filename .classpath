@@ -19,5 +19,9 @@
 	<classpathentry kind="lib" path="C:/swing-worker-1.1.jar"/>
 	<classpathentry kind="lib" path="C:/swingx-1.6.1.jar"/>
 	<classpathentry kind="lib" path="C:/UiBooster.jar"/>
+	<classpathentry kind="lib" path="C:/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="C:/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="C:/jogl-all.jar"/>
+	<classpathentry kind="lib" path="C:/jogl-all-natives-windows-amd64.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

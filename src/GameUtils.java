@@ -1,67 +1,67 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class GameUtils {
+
 	/**
-	 * Method which checks whether the users computer is capable of running our
-	 * game. If not, it will alert the user
+	 * Runs DXDiag in XML mode. This will save an XML file to the users computer
+	 * with all their information This will be used in conjunction with Fardeen's
+	 * function
 	 * 
-	 * @author Fardeen Kasmani
-	 * @return
+	 * @author Ibrahim Chehab
 	 */
-	public static int checkGameRequriements() {
-		System.getProperties().list(System.out);
-		if (System.getProperty("os.name").contains("Windows")) {
-			String[] osInfo = getDxDiag();
-			int memory = Integer.parseInt(osInfo[12].split(":")[1].split("")[0]);
-			if (memory < 4000) {
-				return 1;
-			}
-
-		} else {
-
+	static void getDXDiag() {
+		String filePath = "./dxdiag.xml";
+		String command = "dxdiag.exe /x " + filePath;
+		try {
+			Process p = Runtime.getRuntime().exec(command);
+			p.waitFor();
+			p.destroy();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return 10;
 	}
 
 	/**
-	 * Returns the output of running dxdiag. Used to get information on CPU and GPU
+	 * Takes string input of a CPU name and returns a score based on the CPU
+	 * performance
 	 * 
+	 * @param CPUName The name of the CPU to check
+	 * @return CPU's score
 	 * @author Ibrahim Chehab
-	 * @return String[][] osInfo
 	 */
-	private static String[] getDxDiag() {
-		try {
-
-			String filePath = "./foo.txt";
-			// Use "dxdiag /t" variant to redirect output to a given file
-			ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "dxdiag", "/t", filePath);
-			System.out.println("-- Executing dxdiag command --");
-			Process p = pb.start();
-			p.waitFor();
-
-			BufferedReader br = new BufferedReader(new FileReader(filePath));
-			String line;
-			ArrayList<String> temps = new ArrayList<String>();
-
-			while ((line = br.readLine()) != null) {
-				temps.add(line);
-			}
-			return temps.toArray(new String[0]);
-		} catch (IOException | InterruptedException ex) {
-			ex.printStackTrace();
+	static int getCPUScore(String CPUName) {
+		if (CPUName.toLowerCase().contains("threadripper")) {
+			return 10;
 		}
-		return null;
+		if (CPUName.toLowerCase().contains("xeon")) {
+			return 10;
+		}
+		if (CPUName.toLowerCase().contains("ryzen")) {
+			return 7;
+		}
+		if (CPUName.toLowerCase().contains("core")) {
+			return 7;
+		}
+		if (CPUName.toLowerCase().contains("athlon")) {
+			return 5;
+		}
+		if (CPUName.toLowerCase().contains("celeron")) {
+			return 3;
+		}
+		return 0;
+	}
+
+	static int getGPUScore(String GPUName) {
+		if (GPUName.toLowerCase().contains("super")) {
+			return 8;
+		}
+		if (GPUName.toLowerCase().contains("rtx")) {
+			return 9;
+		}
+
+		if (GPUName.toLowerCase().contains("GTX")) {
+			return 7;
+		}
+
+		return 0;
 	}
 }
