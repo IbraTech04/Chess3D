@@ -79,6 +79,45 @@ class Board {
 		this.pa = pa;
 	}
 
+	public Board(String[][] board) {
+		this.board = new Piece[8][8];
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board[i][j] != null) {
+					String[] workWith = board[i][j].split(":");
+					if (workWith[0].toUpperCase().equals("PAWN")) {
+						this.board[i][j] = new Pawn(Integer.parseInt(workWith[1]), j, i);
+						this.board[i][j].setMove(getStringBoolean(workWith[2]));
+					}
+					if (workWith[0].toUpperCase().equals("ROOK")) {
+						this.board[i][j] = new Rook(Integer.parseInt(workWith[1]), j, i);
+						this.board[i][j].setMove(getStringBoolean(workWith[2]));
+					}
+					if (workWith[0].toUpperCase().equals("BISHOP")) {
+						this.board[i][j] = new Bishop(Integer.parseInt(workWith[1]), j, i);
+						this.board[i][j].setMove(getStringBoolean(workWith[2]));
+					}
+					if (workWith[0].toUpperCase().equals("KING")) {
+						this.board[i][j] = new King(Integer.parseInt(workWith[1]), j, i);
+						this.board[i][j].setMove(getStringBoolean(workWith[2]));
+					}
+					if (workWith[0].toUpperCase().equals("QUEEN")) {
+						this.board[i][j] = new Queen(Integer.parseInt(workWith[1]), j, i);
+						this.board[i][j].setMove(getStringBoolean(workWith[2]));
+					}
+					if (workWith[0].toUpperCase().equals("KNIGHT")) {
+						this.board[i][j] = new Knight(Integer.parseInt(workWith[1]), j, i);
+						this.board[i][j].setMove(getStringBoolean(workWith[2]));
+					}
+				}
+			}
+		}
+	}
+
+	public boolean getStringBoolean(String a) {
+		return a.toUpperCase().equals("TRUE");
+	}
+
 	/**
 	 * This method returns the board in a pieces array
 	 * 
@@ -144,6 +183,37 @@ class Board {
 			if (board[y2][x2].getPiece() == Type.PAWN) {
 				pawnPromotion(x2, y2);
 			}
+		}
+	}
+
+	public void movePiece(int x1, int y1, int x2, int y2) {
+		// Checking and Moving the Piece to an Empty Spot
+		if (board[y2][x2] == null) {
+			board[y2][x2] = board[y1][x1];
+			board[y2][x2].setPosX(x2);
+			board[y2][x2].setPosY(y2);
+			board[y1][x1] = null;
+			board[y2][x2].setMove(true);
+
+			if (board[y2][x2].getPiece() == Type.PAWN) {
+				if (board[y2][x2].getPlayer() == 0) {
+					if (board[y2 + 1][x2] != null) {
+						board[y2 + 1][x2] = null;
+					}
+				} else {
+					if (board[y2 - 1][x2] != null) {
+						board[y2 - 1][x2] = null;
+					}
+				}
+			}
+		}
+		// Killing an Enemy and Moving the Piece to an Empty Spot
+		else {
+			board[y2][x2] = board[y1][x1];
+			board[y2][x2].setPosX(x2);
+			board[y2][x2].setPosY(y2);
+			board[y1][x1] = null;
+			board[y2][x2].setMove(true);
 		}
 	}
 
@@ -225,5 +295,18 @@ class Board {
 			board[y2][x2] = new Knight(player, x2, y2);
 		}
 		System.gc();
+	}
+
+	public String[][] makeBoardString() {
+		String[][] toReturn = new String[8][8];
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board[i][j] != null) {
+					toReturn[i][j] = String.valueOf(board[i][j].getPiece()) + ":"
+							+ String.valueOf(board[i][j].getPlayer()) + ":" + String.valueOf(board[i][j].getMove());
+				}
+			}
+		}
+		return toReturn;
 	}
 }

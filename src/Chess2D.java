@@ -39,7 +39,7 @@ public class Chess2D extends PApplet {
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
 		board = new Board(this);
-		surface.setTitle("Chess3D - Alpha Release v0.5");
+		surface.setTitle("Chess2D - Alpha Release v0.5.1");
 		surface.setResizable(true);
 		initBoard2D();
 		images = new PImage[6];
@@ -198,6 +198,16 @@ public class Chess2D extends PApplet {
 				}
 			}
 		}
+
+		System.out.println(currentPlayer);
+
+		System.out.println("Check: " + BoardUtils.checkforCheck(board.getBoard(), currentPlayer,
+				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
+				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1]));
+
+		System.out.println("CheckMate: " + BoardUtils.checkforCheckMate(board, currentPlayer,
+				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
+				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1]));
 	}
 
 	/**
