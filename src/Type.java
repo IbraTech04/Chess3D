@@ -1,4 +1,5 @@
 /**
+ * Enumerator class which denotes what type of piece each piece is
  * @author Ibrahim Chehab
  *
  */

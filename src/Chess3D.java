@@ -2,22 +2,9 @@
 // By Ibrahim Chehab and Fardeen Kasmani
 
 import processing.core.*;
-import processing.data.*;
-import processing.event.*;
-import processing.opengl.*;
-import processing.core.PConstants;
-import java.util.ArrayList;
-
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
 
 public class Chess3D extends PApplet {
+	int screenNumber = 0;
 	Piece lastChosenPiece;
 	static int squareSize = 50;
 	int currentPlayer = 0;
@@ -37,6 +24,7 @@ public class Chess3D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
+		textSize(200);
 		textAlign(CENTER);
 		text("Rendering... Please Wait", width / 2, height / 2);
 		player1 = new Player(0, this);
@@ -57,25 +45,66 @@ public class Chess3D extends PApplet {
 	 * @author Ibrahim Chehab
 	 */
 	public void draw() {
-		background(255);
-		lights();
-		pushMatrix();
-		translate((width - (squareSize * 8)) / 2, (height - (squareSize * 8)) / 1.5f);
-		rotateX(PI / 3);
-		// pushMatrix();
-		// translate((width - (squareSize * 8)) / 2, 0);
-		updateRectSize();
-		stroke(255);
-		fill(0);
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				rects[i][j].drawRect();
+		if (screenNumber == 0) { // Screen drawing if statements
+			background(255);
+			mainScreen();
+		} else if (screenNumber == 1) {
+			background(255);
+			lights();
+			pushMatrix();
+			translate((width - (squareSize * 8)) / 2, (height - (squareSize * 8)) / 1.5f);
+			rotateX(PI / 3);
+			updateRectSize();
+			stroke(255);
+			fill(0);
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					rects[i][j].drawRect();
+				}
 			}
+			drawPieces(board.getBoard());
+			popMatrix();
+			player1.drawPile(models);
+			player2.drawPile(models);
 		}
-		drawPieces(board.getBoard());
-		popMatrix();
-		player1.drawPile(models);
-		player2.drawPile(models);
+	}
+
+	/**
+	 * Draws the main screen for Chess 3D
+	 * 
+	 * @author Ibrahim Chehab
+	 * 
+	 */
+	public void mainScreen() {
+		pushStyle();
+		textAlign(LEFT, TOP);
+		textSize(25);
+		fill(0);
+		text("V1.0.0", 0, 0);
+		textAlign(CENTER);
+		textSize(100);
+		text("jChess", width / 2, height / 5.1f);
+		textSize(75);
+		text("3D Edition", width / 2, height / 5.1f + 125);
+
+		textSize(125);
+
+		Button playButton = new Button(width / 2, height / 2, 300, 150, "Play", this, new int[] { 0, 0, 0 },
+				new int[] { 255, 255, 255 });
+		playButton.drawButton();
+		textSize(75);
+		Button settingsButton = new Button(width / 2, height / 2 + 150, 310, 100, "Settings", this,
+				new int[] { 0, 0, 0 }, new int[] { 255, 255, 255 });
+		settingsButton.drawButton();
+		fill(0);
+		textAlign(RIGHT, BOTTOM);
+		textSize(25);
+		text("CopyLeft iFlySoft 2022. No Rights Reserved", width, height);
+
+		if (playButton.isPressed()) {
+			screenNumber = 1;
+		}
+		popStyle();
 
 	}
 
@@ -84,16 +113,6 @@ public class Chess3D extends PApplet {
 	 * 
 	 * @author Ibrahim Chehab
 	 */
-	/*
-	 * public void updateRectSize() {
-	 * 
-	 * if (width > height) { squareSize = height / 8; } else { squareSize = width /
-	 * 8; }
-	 * 
-	 * for (int i = 0; i < 8; i++) { for (int j = 0; j < 8; j++) {
-	 * rects[i][j].update(i * squareSize, j * squareSize); } } }
-	 */
-
 	public void updateRectSize() {
 
 		if (width > height) {
@@ -121,30 +140,6 @@ public class Chess3D extends PApplet {
 				rects[i][j] = new Rect(i * squareSize, j * squareSize, i, j);
 			}
 		}
-	}
-
-	/**
-	 * Method which checks whether the users computer is capable of running our
-	 * game. If not, it will alert the user
-	 * 
-	 * @author Fardeen Kasmani
-	 * @return
-	 */
-	public int checkGameRequriements(PApplet pa) {
-		System.getProperties().list(System.out);
-		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-			GameUtils.getDXDiag();
-			XML xml = pa.loadXML("dxdiag.xml");
-
-			String CPU = (xml.getChild("SystemInformation").getChild("Processor").getContent());
-			int memory = Integer.parseInt(xml.getChild("SystemInformation").getChild("Memory").getContent());
-			String graphicsCard = (xml.getChild("DisplayDevices").getChild("DisplayDevice").getChild("CardName")
-					.getContent());
-
-		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-
-		}
-		return 10;
 	}
 
 	/**
@@ -298,11 +293,6 @@ public class Chess3D extends PApplet {
 			translate(0, squareSize, 0);
 
 		}
-	}
-
-	private void scale(double d, double e, double f) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**

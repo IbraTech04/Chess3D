@@ -9,7 +9,7 @@ class Board {
 	Piece[][] board; // The main board array
 
 	/**
-	 * Initializes the board array
+	 * Initializes the board array from scratch
 	 * 
 	 * @author Ibrahim Chehab
 	 */
@@ -17,6 +17,7 @@ class Board {
 
 	public Board(PApplet pa) {
 		board = new Piece[8][8];
+		//Creating all the piece objects to be added to board
 		Pawn[] playerOnePawns = new Pawn[] { new Pawn(1, 0, 1), new Pawn(1, 1, 1), new Pawn(1, 2, 1), new Pawn(1, 3, 1),
 				new Pawn(1, 4, 1), new Pawn(1, 5, 1), new Pawn(1, 6, 1), new Pawn(1, 7, 1) };
 
@@ -36,6 +37,7 @@ class Board {
 
 		King playerTwoKing = new King(0, 4, 7);
 
+		//Using foreach loops to add them to the baord at their respective positions
 		for (Pawn p : playerOnePawns) {
 			board[p.getPosY()][p.getPosX()] = p;
 		}
@@ -79,6 +81,12 @@ class Board {
 		this.pa = pa;
 	}
 
+	/**
+	 * Creates a board class given a string array representation of a board Used
+	 * when checking for checkmates
+	 * 
+	 * @param board
+	 */
 	public Board(String[][] board) {
 		this.board = new Piece[8][8];
 		for (int i = 0; i < board.length; i++) {
@@ -114,6 +122,14 @@ class Board {
 		}
 	}
 
+	/**
+	 * Returns whether a string is "true"
+	 * Used when recreating boards from String arrays
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param a
+	 * @return True
+	 */
 	public boolean getStringBoolean(String a) {
 		return a.toUpperCase().equals("TRUE");
 	}
@@ -186,6 +202,15 @@ class Board {
 		}
 	}
 
+	/**
+	 * Moves piece without adding to player pile. Used in CheckMate
+	 * 
+	 * @author Fardeen Kasmani
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 */
 	public void movePiece(int x1, int y1, int x2, int y2) {
 		// Checking and Moving the Piece to an Empty Spot
 		if (board[y2][x2] == null) {
@@ -218,6 +243,7 @@ class Board {
 	}
 
 	/**
+	 * Castles player pieces
 	 * @author Fardeen Kasmani
 	 * @param x1 King's x-pos
 	 * @param y1 King's y-pos
@@ -263,6 +289,12 @@ class Board {
 	 * @author Fardeen Kasmani
 	 */
 	public void pawnPromotion(int x2, int y2) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Sets Windows UI
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		String[] options = { "Queen", "Rook", "Bishop", "Knight" };
 
 		String entry;
@@ -297,6 +329,13 @@ class Board {
 		System.gc();
 	}
 
+	/**
+	 * Returns a string array representation of the current board state Used in
+	 * checkmate detection
+	 * 
+	 * @author Ibrahim Chehab
+	 * @return
+	 */
 	public String[][] makeBoardString() {
 		String[][] toReturn = new String[8][8];
 		for (int i = 0; i < board.length; i++) {

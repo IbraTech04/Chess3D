@@ -13,7 +13,7 @@ class Rook extends Piece {
 	}
 
 	/**
-	 * Method which returns where the Rook can go
+	 * Method which returns where the Rook can go based on it's coordinates
 	 * 
 	 * @author Ibrahim Chehab
 	 * @param boardStatus Piece array containing the board status

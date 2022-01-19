@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 public class Chess2D extends PApplet {
+	int screenNumber = 0;
 	Piece lastChosenPiece;
 	static int squareSize = 50;
 	int currentPlayer = 1;
@@ -54,21 +55,66 @@ public class Chess2D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void draw() {
-		background(255);
-		updateRectSize();
-		stroke(255);
-		fill(0);
-		pushMatrix();
-		translate((width - (squareSize * 8)) / 2, 0);
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				rects[i][j].drawRect();
-			}
+		if (screenNumber == 0) {
+			background(255);
+			mainScreen();
 		}
-		drawPieces(board.getBoard());
-		popMatrix();
-		player1.drawPile(images);
-		player2.drawPile(images);
+
+		else if (screenNumber == 1) {
+			background(255);
+			updateRectSize();
+			stroke(255);
+			fill(0);
+			pushMatrix();
+			translate((width - (squareSize * 8)) / 2, 0);
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					rects[i][j].drawRect();
+				}
+			}
+			drawPieces(board.getBoard());
+			popMatrix();
+			player1.drawPile(images);
+			player2.drawPile(images);
+
+		}
+
+	}
+
+	/** Draws the main screen for Chess 2D
+	 * @author Ibrahim Chehab
+	 * 
+	 */
+	public void mainScreen() {
+		pushStyle();
+		textAlign(LEFT, TOP);
+		textSize(25);
+		fill(0);
+		text("V1.0.0", 0, 0);
+		textAlign(CENTER);
+		textSize(100);
+		text("jChess", width / 2, height / 5.1f);
+		textSize(75);
+		text("2D Edition", width / 2, height / 5.1f + 125);
+
+		textSize(125);
+
+		Button playButton = new Button(width / 2, height / 2, 300, 150, "Play", this, new int[] { 0, 0, 0 },
+				new int[] { 255, 255, 255 });
+		playButton.drawButton();
+		textSize(75);
+		Button settingsButton = new Button(width / 2, height / 2 + 150, 310, 100, "Settings", this,
+				new int[] { 0, 0, 0 }, new int[] { 255, 255, 255 });
+		settingsButton.drawButton();
+		fill(0);
+		textAlign(RIGHT, BOTTOM);
+		textSize(25);
+		text("CopyLeft iFlySoft 2022. No Rights Reserved", width, height);
+
+		if (playButton.isPressed()) {
+			screenNumber = 1;
+		}
+		popStyle();
 
 	}
 
@@ -108,106 +154,84 @@ public class Chess2D extends PApplet {
 	}
 
 	/**
-	 * Method which checks whether the users computer is capable of running our
-	 * game. If not, it will alert the user
-	 * 
-	 * @author Fardeen Kasmani
-	 * @return
-	 */
-	public int checkGameRequriements(PApplet pa) {
-		System.getProperties().list(System.out);
-		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-			GameUtils.getDXDiag();
-			XML xml = pa.loadXML("dxdiag.xml");
-
-			String CPU = (xml.getChild("SystemInformation").getChild("Processor").getContent());
-			int memory = Integer.parseInt(xml.getChild("SystemInformation").getChild("Memory").getContent());
-			String graphicsCard = (xml.getChild("DisplayDevices").getChild("DisplayDevice").getChild("CardName")
-					.getContent());
-
-		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-
-		}
-		return 10;
-	}
-
-	/**
 	 * Mouse pressed function required for PApplet Depending on screen, method will
 	 * either interact with GUI or move pieces
 	 * 
 	 * @author Ibrahim Chehab
 	 */
 	public void mousePressed() {
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (rects[i][j].isPressed()) {
-					Piece[][] p = board.getBoard();
-					if (p[j][i] != null) {
-						if (p[j][i].getPlayer() != currentPlayer && lastChosenPiece != null) {
-							int[][] coords = lastChosenPiece.getMove(p);
-							if (coords[j][i] == 2) {
-								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(),
-										i, j);
-								resetGridColor();
-								lastChosenPiece = null;
-								if (currentPlayer == 1) {
-									currentPlayer = 0;
-								} else {
-									currentPlayer = 1;
+		if (screenNumber == 1) {
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (rects[i][j].isPressed()) {
+						Piece[][] p = board.getBoard();
+						if (p[j][i] != null) {
+							if (p[j][i].getPlayer() != currentPlayer && lastChosenPiece != null) {
+								int[][] coords = lastChosenPiece.getMove(p);
+								if (coords[j][i] == 2) {
+									board.movePiece(player1, player2, lastChosenPiece.getPosX(),
+											lastChosenPiece.getPosY(), i, j);
+									resetGridColor();
+									lastChosenPiece = null;
+									if (currentPlayer == 1) {
+										currentPlayer = 0;
+									} else {
+										currentPlayer = 1;
+									}
 								}
-							}
-						} else if (p[j][i].getPlayer() == currentPlayer) {
-							if (lastChosenPiece != null) {
-								if (lastChosenPiece.getPiece() == Type.KING && p[j][i].getPiece() == Type.ROOK) {
-									if (BoardUtils.isCastlePossible(p, lastChosenPiece.getPosX(),
-											lastChosenPiece.getPosY(), i, j)) {
-										board.castle(lastChosenPiece.getPosX(), lastChosenPiece.getPosY(), i, j);
-										resetGridColor();
-										lastChosenPiece = null;
-										if (currentPlayer == 1) {
-											currentPlayer = 0;
-										} else {
-											currentPlayer = 1;
+							} else if (p[j][i].getPlayer() == currentPlayer) {
+								if (lastChosenPiece != null) {
+									if (lastChosenPiece.getPiece() == Type.KING && p[j][i].getPiece() == Type.ROOK) {
+										if (BoardUtils.isCastlePossible(p, lastChosenPiece.getPosX(),
+												lastChosenPiece.getPosY(), i, j)) {
+											board.castle(lastChosenPiece.getPosX(), lastChosenPiece.getPosY(), i, j);
+											resetGridColor();
+											lastChosenPiece = null;
+											if (currentPlayer == 1) {
+												currentPlayer = 0;
+											} else {
+												currentPlayer = 1;
+											}
 										}
+									} else {
+										lastChosenPiece = p[j][i];
+										updateGrid(p[j][i].getMove(board.getBoard()));
 									}
 								} else {
 									lastChosenPiece = p[j][i];
 									updateGrid(p[j][i].getMove(board.getBoard()));
 								}
-							} else {
-								lastChosenPiece = p[j][i];
-								updateGrid(p[j][i].getMove(board.getBoard()));
 							}
-						}
-					} else {
-						if (lastChosenPiece != null) {
-							int[][] pos = lastChosenPiece.getMove(board.getBoard());
-							if (pos[j][i] != 0) {
-								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(),
-										i, j);
-								resetGridColor();
-								lastChosenPiece = null;
-								if (currentPlayer == 1) {
-									currentPlayer = 0;
-								} else {
-									currentPlayer = 1;
+						} else {
+							if (lastChosenPiece != null) {
+								int[][] pos = lastChosenPiece.getMove(board.getBoard());
+								if (pos[j][i] != 0) {
+									board.movePiece(player1, player2, lastChosenPiece.getPosX(),
+											lastChosenPiece.getPosY(), i, j);
+									resetGridColor();
+									lastChosenPiece = null;
+									if (currentPlayer == 1) {
+										currentPlayer = 0;
+									} else {
+										currentPlayer = 1;
+									}
 								}
 							}
 						}
 					}
 				}
 			}
+
+			System.out.println(currentPlayer);
+
+			System.out.println("Check: " + BoardUtils.checkforCheck(board.getBoard(), currentPlayer,
+					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
+					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1]));
+
+			System.out.println("CheckMate: " + BoardUtils.checkforCheckMate(board, currentPlayer,
+					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
+					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1]));
 		}
-
-		System.out.println(currentPlayer);
-
-		System.out.println("Check: " + BoardUtils.checkforCheck(board.getBoard(), currentPlayer,
-				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
-				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1]));
-
-		System.out.println("CheckMate: " + BoardUtils.checkforCheckMate(board, currentPlayer,
-				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
-				BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1]));
 	}
 
 	/**

@@ -7,7 +7,7 @@ abstract class Piece {
 	/**
 	 * Constructor for the Piece class
 	 * 
-	 * @author Ibrahim Chehab
+	 * @author Fardeen Kasmani
 	 * @param player Signifies the player id for this piece
 	 * @param x      Signifies the piece's x-coordinate on the Cartesian plane
 	 * @param y      Signifies the piece's y-coordinate on the Cartesian plane
@@ -96,15 +96,26 @@ abstract class Piece {
 	public void setPosY(int y) {
 		posY = y;
 	}
-
+	
+	/** Checks if a Piece is Moved
+	 * @author Fardeen Kasmani
+	 * @return isMoved
+	 */
 	public boolean getMove() {
 		return isMoved;
 	}
-
+	
+	/** Sets a Piece as Moved
+	 * @author Fardeen Kasmani
+	 * @param a
+	 */
 	public void setMove(boolean a) {
 		isMoved = a;
 	}
-	
+	/** Gets the Type of Piece
+	 * @author Ibrahim Chehab
+	 * @return piece
+	 */
 	public Type getPiece() {
 		return piece;
 	}

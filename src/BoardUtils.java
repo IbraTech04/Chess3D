@@ -17,6 +17,7 @@ class BoardUtils {
 	}
 
 	/**
+	 * Method which checks if a player can castle
 	 * 
 	 * @param board
 	 * @param x1    King X-Coord
@@ -50,6 +51,8 @@ class BoardUtils {
 	}
 
 	/**
+	 * Method which checks to see if a player is checked
+	 * 
 	 * @author Fardeen Kasmani
 	 * @param board
 	 * @param id
@@ -77,6 +80,8 @@ class BoardUtils {
 	}
 
 	/**
+	 * Given the player, this function returns the king's coordinates
+	 * 
 	 * @author Ibrahim Chehab
 	 * @param board
 	 * @param player
@@ -95,6 +100,16 @@ class BoardUtils {
 		return null;
 	}
 
+	/**
+	 * Method that checks for a checkmate, given a player
+	 * 
+	 * @param b     A reference to the board object
+	 * @param id    The player to check
+	 * @param kingX The players KingX
+	 * @param kingY The players KingY
+	 * @author Ibrahim Chehab
+	 * @return Whether the player is checkmated
+	 */
 	public static boolean checkforCheckMate(Board b, int id, int kingX, int kingY) {
 		Piece[][] pieces = b.getBoard();
 		for (Piece[] p : pieces) {
@@ -124,6 +139,41 @@ class BoardUtils {
 		return true;
 	}
 
+	/**
+	 * Method that checks for a checkmate, given a player
+	 * 
+	 * @param b     A reference to the board object
+	 * @param id    The player to check
+	 * @param kingX The players KingX
+	 * @param kingY The players KingY
+	 * @author Fardeen Kasmani
+	 * @return Whether the player is checkmated
+	 */
+	public static int[][] getCheckPlaces(int x, int y, int[][] movements, Board b, int id, int kingX, int kingY) {
+		int[][] toReturn = new int[8][8];
+		for (int i = 0; i < movements.length; i++) {
+			for (int j = 0; j < movements[i].length; j++) {
+				if (movements[j][i] != 0) {
+					String[][] bs = b.makeBoardString();
+					Board newBoard = new Board(bs);
+					newBoard.movePiece(x, y, i, j);
+
+					if (!checkforCheck(newBoard.getBoard(), id, getKingCoords(newBoard.getBoard(), id)[0],
+							getKingCoords(newBoard.getBoard(), id)[1])) {
+						toReturn[i][j] = 1;
+					}
+				}
+			}
+		}
+		return toReturn;
+	}
+
+	/**
+	 * Function used for debugging. Prints out an array
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param arr
+	 */
 	static void printArray(int[][] arr) {
 		for (int[] i : arr) {
 			for (int a : i) {
@@ -133,39 +183,13 @@ class BoardUtils {
 		}
 	}
 
-	public static Piece[][] moveObject(Piece[][] board, int x1, int y1, int x2, int y2) {
-		// Checking and Moving the Piece to an Empty Spot
-		if (board[y2][x2] == null) {
-			board[y2][x2] = board[y1][x1];
-			board[y2][x2].setPosX(x2);
-			board[y2][x2].setPosY(y2);
-			board[y1][x1] = null;
-			board[y2][x2].setMove(true);
-
-			if (board[y2][x2].getPiece() == Type.PAWN) {
-				if (board[y2][x2].getPlayer() == 0) {
-					if (board[y2 + 1][x2] != null) {
-						board[y2 + 1][x2] = null;
-					}
-				} else {
-					if (board[y2 - 1][x2] != null) {
-						board[y2 - 1][x2] = null;
-					}
-				}
-			}
-		}
-		// Killing an Enemy and Moving the Piece to an Empty Spot
-		else {
-			board[y2][x2] = board[y1][x1];
-			board[y2][x2].setPosX(x2);
-			board[y2][x2].setPosY(y2);
-			board[y1][x1] = null;
-			board[y2][x2].setMove(true);
-		}
-		return board;
-	}
-
+	/**
+	 * Function which returns where a player can go to get out of a check
+	 * 
+	 * @author Ibrahim Chehab
+	 */
 	int[][] getCheckMoves() {
+		// TODO Implement this function
 		return null;
 	}
 }

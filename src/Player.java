@@ -2,13 +2,12 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PShape;
+import processing.core.PConstants;
 
 public class Player {
 	private PApplet p;
 	private ArrayList<Piece> takenPieces;
 	private int id;
-	private boolean isCheck = false;
-	private boolean isCheckMate = false;
 
 	/**
 	 * Draws the pile of eliminated pieces for that player
@@ -64,6 +63,8 @@ public class Player {
 		}
 
 		for (Piece p : takenPieces) {
+			// this.p.scale(0.5f, 0.5f);
+			this.p.rotateZ(PConstants.PI);
 			this.p.shape(models[p.id], coord, startingCoord, size / 2, size / 2);
 			this.p.translate(0, squareSize / 2);
 		}
@@ -100,7 +101,7 @@ public class Player {
 		}
 		p.popMatrix();
 	}
-	
+
 	/**
 	 * Function which returns player ID
 	 * 
@@ -109,29 +110,6 @@ public class Player {
 	 */
 	public int getPlayer() {
 		return id;
-	}
-
-	/**
-	 * Returns the check value
-	 * 
-	 * @author Fardeen Kasmani
-	 * @return isCheck
-	 */
-	public boolean getCheck() {
-		return isCheck;
-	}
-
-	/**
-	 * Returns the checkmate value
-	 * 
-	 * @author Fardeen Kasmani
-	 */
-	public boolean getCheckMate(Piece[][] board, int kingX, int kingY) {
-		return isCheckMate;
-	}
-
-	public void checkforCheckmate() {
-
 	}
 
 }

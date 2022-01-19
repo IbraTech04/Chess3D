@@ -23,5 +23,12 @@
 	<classpathentry kind="lib" path="C:/gluegen-rt-natives-windows-amd64.jar"/>
 	<classpathentry kind="lib" path="C:/jogl-all.jar"/>
 	<classpathentry kind="lib" path="C:/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1-contrib.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1-contrib-sources.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1-junit.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1-junit-sources.jar"/>
+	<classpathentry kind="lib" path="C:/jdom-2.0.6.1-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

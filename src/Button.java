@@ -8,15 +8,27 @@ import processing.core.PConstants;
  *
  */
 public class Button {
-	private int x;
-	private int y;
-	private int sizeX;
-	private int sizeY;
-	private PApplet p;
-	private String text;
-	private int[] textFill;
-	private int[] buttonFill;
+	private int x; // ButtonX
+	private int y; // ButtonY
+	private int sizeX; // Button length
+	private int sizeY; // Button Width
+	private PApplet p; // Reference to PApplet to draw to screen
+	private String text; // Text to be displayed
+	private int[] textFill; // Text Color
+	private int[] buttonFill; // Button Color
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param sizeX
+	 * @param sizeY
+	 * @param text
+	 * @param p
+	 * @param buttonFill
+	 * @param textFill
+	 * @author Ibrahim Chehab
+	 */
 	public Button(int x, int y, int sizeX, int sizeY, String text, PApplet p, int[] buttonFill, int[] textFill) {
 		this.x = x;
 		this.y = y;
