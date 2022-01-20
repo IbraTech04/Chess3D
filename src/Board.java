@@ -336,7 +336,7 @@ class Board {
 	 * @author Ibrahim Chehab
 	 * @return
 	 */
-	public String[][] makeBoardString() {
+	public static String[][] makeBoardString(Piece[][] board) {
 		String[][] toReturn = new String[8][8];
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {

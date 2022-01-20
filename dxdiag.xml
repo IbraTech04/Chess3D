@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<DxDiag><SystemInformation><Time>1/19/2022, 13:26:00</Time><MachineName>IBRATECH-P</MachineName><MachineId>{EEF227C4-086A-4C7A-83D9-C777D644DF53}</MachineId><OperatingSystem>Windows 10 Pro 64-bit (10.0, Build 19044) (19041.vb_release.191206-1406)</OperatingSystem><Language>English (Regional Setting: English)</Language><SystemManufacturer>Gigabyte Technology Co., Ltd.</SystemManufacturer><SystemModel>B550M AORUS PRO</SystemModel><BIOS>F10a</BIOS><FirmwareType>UEFI</FirmwareType><Processor>AMD Ryzen 5 3600 6-Core Processor               (12 CPUs), ~3.6GHz</Processor><Memory>16384MB RAM</Memory><AvaliableOSMem>16328MB RAM</AvaliableOSMem><PageFile>21589MB used, 11123MB available</PageFile><WindowsDir>C:\WINDOWS</WindowsDir><DirectXVersion>DirectX 12</DirectXVersion><DXSetupParameters>Not found</DXSetupParameters><UserDPISettings>96 DPI (100 percent)</UserDPISettings><SystemDPISettings>96 DPI (100 percent)</SystemDPISettings><DWMDPIScaling>Disabled</DWMDPIScaling><DxDiagVersion>10.00.19041.0928</DxDiagVersion><DxDiagUnicode>1</DxDiagUnicode><DxDiag64Bit>1</DxDiag64Bit><Miracast>Available, no HDCP</Miracast><MSHybrid>Not Supported</MSHybrid><DirectXDatabaseVersion>1.0.8</DirectXDatabaseVersion></SystemInformation><DxDiagNotes><DisplayTab>No problems found.
+<DxDiag><SystemInformation><Time>1/20/2022, 14:40:20</Time><MachineName>IBRATECH-P</MachineName><MachineId>{EEF227C4-086A-4C7A-83D9-C777D644DF53}</MachineId><OperatingSystem>Windows 10 Pro 64-bit (10.0, Build 19044) (19041.vb_release.191206-1406)</OperatingSystem><Language>English (Regional Setting: English)</Language><SystemManufacturer>Gigabyte Technology Co., Ltd.</SystemManufacturer><SystemModel>B550M AORUS PRO</SystemModel><BIOS>F10a</BIOS><FirmwareType>UEFI</FirmwareType><Processor>AMD Ryzen 5 3600 6-Core Processor               (12 CPUs), ~3.6GHz</Processor><Memory>16384MB RAM</Memory><AvaliableOSMem>16328MB RAM</AvaliableOSMem><PageFile>24250MB used, 8461MB available</PageFile><WindowsDir>C:\WINDOWS</WindowsDir><DirectXVersion>DirectX 12</DirectXVersion><DXSetupParameters>Not found</DXSetupParameters><UserDPISettings>96 DPI (100 percent)</UserDPISettings><SystemDPISettings>96 DPI (100 percent)</SystemDPISettings><DWMDPIScaling>Disabled</DWMDPIScaling><DxDiagVersion>10.00.19041.0928</DxDiagVersion><DxDiagUnicode>1</DxDiagUnicode><DxDiag64Bit>1</DxDiag64Bit><Miracast>Available, no HDCP</Miracast><MSHybrid>Not Supported</MSHybrid><DirectXDatabaseVersion>1.0.8</DirectXDatabaseVersion></SystemInformation><DxDiagNotes><DisplayTab>No problems found.
 </DisplayTab><DisplayTab>No problems found.
 </DisplayTab><SoundTab>No problems found.
 </SoundTab><SoundTab>No problems found.
@@ -321,7 +321,58 @@ MFAudioFormat_MSP1, WMSpeech Decoder DMO, CLSID_CWMSPDecMediaObject
     Allow batching
     Force half deinterlace
     Force scaling
-</Enabled><DecodePowerUsage>0</DecodePowerUsage></PowerFlags></EvrPowerInformation><Diagnostics><WindowsErrorReporting><WER0>Fault bucket 1866040246174963844, type 5
+</Enabled><DecodePowerUsage>0</DecodePowerUsage></PowerFlags></EvrPowerInformation><Diagnostics><WindowsErrorReporting><WER0>Fault bucket 1431291858228330272, type 5
+Event Name: RADAR_PRE_LEAK_64
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: taskhostw.exe
+P2: 10.0.19041.906
+P3: 10.0.19044.2.0.0
+P4: 
+P5: 
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER0><WER1>Fault bucket 1860841375251268008, type 5
+Event Name: AppHangB1
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: javaw.exe
+P2: 16.0.2.0
+P3: 06885552
+P4: 8b97
+P5: 67246080
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER1><WER2>Fault bucket , type 0
+Event Name: AppHangB1
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: javaw.exe
+P2: 16.0.2.0
+P3: 06885552
+P4: 8b97
+P5: 67246080
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER2><WER3>Fault bucket 1866040246174963844, type 5
 Event Name: RADAR_PRE_LEAK_64
 Response: Not available
 Cab Id: 0
@@ -338,7 +389,7 @@ P8:
 P9: 
 P10: 
 
-</WER0><WER1>Fault bucket 2049382798805095851, type 5
+</WER3><WER4>Fault bucket 2049382798805095851, type 5
 Event Name: RADAR_PRE_LEAK_64
 Response: Not available
 Cab Id: 0
@@ -355,58 +406,41 @@ P8:
 P9: 
 P10: 
 
-</WER1><WER2>Fault bucket , type 0
-Event Name: crashpad_log
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: msedgewebview2setup.exe
-P2: 97.0.1072.62
-P3: ExcessiveVersionDirCount
-P4: 0x16
-P5: 
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER2><WER3>Fault bucket 1343712349498927345, type 5
-Event Name: crashpad_log
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: msedgewebview2setup.exe
-P2: 97.0.1072.62
-P3: ExcessiveVersionDirCount
-P4: 0x16
-P5: 
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER3><WER4>Fault bucket 1922197656272608715, type 5
-Event Name: AppHangB1
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: javaw.exe
-P2: 8.0.202.8
-P3: 5c15d0df
-P4: 683b
-P5: 67246080
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
 </WER4><WER5>Fault bucket , type 0
+Event Name: crashpad_log
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: msedgewebview2setup.exe
+P2: 97.0.1072.62
+P3: ExcessiveVersionDirCount
+P4: 0x16
+P5: 
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER5><WER6>Fault bucket 1343712349498927345, type 5
+Event Name: crashpad_log
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: msedgewebview2setup.exe
+P2: 97.0.1072.62
+P3: ExcessiveVersionDirCount
+P4: 0x16
+P5: 
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER6><WER7>Fault bucket 1922197656272608715, type 5
 Event Name: AppHangB1
 Response: Not available
 Cab Id: 0
@@ -423,7 +457,24 @@ P8:
 P9: 
 P10: 
 
-</WER5><WER6>Fault bucket 2021961256872415471, type 5
+</WER7><WER8>Fault bucket , type 0
+Event Name: AppHangB1
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: javaw.exe
+P2: 8.0.202.8
+P3: 5c15d0df
+P4: 683b
+P5: 67246080
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER8><WER9>Fault bucket 2021961256872415471, type 5
 Event Name: StoreAgentScanForUpdatesFailure0
 Response: Not available
 Cab Id: 0
@@ -435,57 +486,6 @@ P3: 19044
 P4: 1415
 P5: Windows.Desktop
 P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER6><WER7>Fault bucket , type 0
-Event Name: StoreAgentScanForUpdatesFailure0
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: Update;
-P2: 800704c6
-P3: 19044
-P4: 1415
-P5: Windows.Desktop
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER7><WER8>Fault bucket 1423428035888256214, type 5
-Event Name: RADAR_PRE_LEAK_64
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: idea64.exe
-P2: 2021.3.1.0
-P3: 10.0.19044.2.0.0
-P4: 
-P5: 
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER8><WER9>Fault bucket 1713879425175554666, type 5
-Event Name: WindowsWcpOtherFailure3
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: 10.0.19041.1371:1
-P2: wcp\componentstore\storelayout.cpp
-P3: ComponentStore::CRawStoreLayout::HydrateFileUsingForwardAndReverseDeltas
-P4: 1682
-P5: 800f0984
-P6: 0xd994330e
 P7: 
 P8: 
 P9: 

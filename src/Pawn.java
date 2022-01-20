@@ -130,9 +130,6 @@ class Pawn extends Piece {
 			}
 		}
 
-		//BoardUtils.printArray(
-				//BoardUtils.getCheckPlaces(super.getPosX(), super.getPosY(), toReturn, boardStatus, y, x, y));
-
 		return toReturn;
 	}
 }

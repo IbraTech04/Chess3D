@@ -28,7 +28,7 @@ abstract class Piece {
 	 * @param boardStatus Array containing all the
 	 * @return int[][] Returns the places that the piece can move,
 	 */
-	public abstract int[][] getMove(Piece[][] boardStatus);
+	public abstract int[][] getMove(Piece[][] board);
 
 	private int player; // Player ID
 	private int posX; // X position

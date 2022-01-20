@@ -18,6 +18,10 @@ public class Chess3D extends PApplet {
 	Board board;
 	Player player1, player2;
 
+	public Board getBoard() {
+		return board;
+	}
+
 	/**
 	 * Setup function required for PApplet
 	 * 
@@ -32,7 +36,7 @@ public class Chess3D extends PApplet {
 		board = new Board(this);
 		surface.setTitle("Chess3D - Alpha Release v0.5.1");
 		surface.setResizable(true);
-		initBoard2D();
+		initBoard3D();
 		models = new PShape[6];
 		for (int i = 0; i < 6; i++) {
 			models[i] = loadShape("data/" + names[i]);
@@ -53,7 +57,7 @@ public class Chess3D extends PApplet {
 			lights();
 			pushMatrix();
 			translate((width - (squareSize * 8)) / 2, (height - (squareSize * 8)) / 1.5f);
-			rotateX(PI / 3);
+			rotateX(PI / 3.5f);
 			updateRectSize();
 			stroke(255);
 			fill(0);
@@ -129,15 +133,49 @@ public class Chess3D extends PApplet {
 	}
 
 	/**
+	 * Method which draws the game over screen
+	 * 
+	 * @author Fardeen Kasmani
+	 */
+	public void gameOverScreen() {
+		pushStyle();
+		textSize(100);
+		textAlign(CENTER);
+		text("Game Over", width / 2, height / 2 - 100);
+		textSize(50);
+		Button playAgainButton = new Button(width / 2, height / 2, 300, 120, "Play Again", this,
+				new int[] { 255, 255, 255 }, new int[] { 0, 0, 0 });
+
+		playAgainButton.drawButton();
+
+		if (playAgainButton.isPressed()) {
+			screenNumber = 0;
+			setup();
+			delay(100);
+		}
+		popStyle();
+	}
+
+	/**
 	 * Method which initializes the rect objects on screen
 	 * 
 	 * @author Fardeen Kasmani
 	 */
-	public void initBoard2D() {
+	public void initBoard3D() {
 		rects = new Rect[8][8];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				rects[i][j] = new Rect(i * squareSize, j * squareSize, i, j);
+
+				if (i % 2 == 0 && j % 2 != 0) {
+					rects[i][j].setFillR(54);
+					rects[i][j].setFillG(207);
+					rects[i][j].setFillB(224);
+				} else if (i % 2 != 0 && j % 2 == 0) {
+					rects[i][j].setFillR(54);
+					rects[i][j].setFillG(207);
+					rects[i][j].setFillB(224);
+				}
 			}
 		}
 	}
@@ -156,6 +194,9 @@ public class Chess3D extends PApplet {
 					if (p[j][i] != null) {
 						if (p[j][i].getPlayer() != currentPlayer && lastChosenPiece != null) {
 							int[][] coords = lastChosenPiece.getMove(p);
+							coords = updateArray(coords,
+									BoardUtils.getCheckPlaces(board.getBoard(), lastChosenPiece, currentPlayer));
+
 							if (coords[j][i] == 2) {
 								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(),
 										i, j);
@@ -183,16 +224,22 @@ public class Chess3D extends PApplet {
 									}
 								} else {
 									lastChosenPiece = p[j][i];
-									updateGrid(p[j][i].getMove(board.getBoard()));
+									updateGrid(updateArray(p[j][i].getMove(board.getBoard()),
+											BoardUtils.getCheckPlaces(board.getBoard(), p[j][i], currentPlayer)));
 								}
 							} else {
 								lastChosenPiece = p[j][i];
-								updateGrid(p[j][i].getMove(board.getBoard()));
+								updateGrid(updateArray(p[j][i].getMove(board.getBoard()),
+										BoardUtils.getCheckPlaces(board.getBoard(), p[j][i], currentPlayer)));
 							}
 						}
 					} else {
 						if (lastChosenPiece != null) {
 							int[][] pos = lastChosenPiece.getMove(board.getBoard());
+
+							pos = updateArray(pos,
+									BoardUtils.getCheckPlaces(board.getBoard(), lastChosenPiece, currentPlayer));
+
 							if (pos[j][i] != 0) {
 								board.movePiece(player1, player2, lastChosenPiece.getPosX(), lastChosenPiece.getPosY(),
 										i, j);
@@ -206,9 +253,49 @@ public class Chess3D extends PApplet {
 							}
 						}
 					}
+
+				}
+			}
+			if (BoardUtils.checkforCheck(board.getBoard(), currentPlayer,
+					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
+					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1])) {
+
+				int kingX = BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0];
+				int kingY = BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1];
+
+				rects[kingX][kingY].setFillR(255);
+				rects[kingX][kingY].setFillG(120);
+				rects[kingX][kingY].setFillB(120);
+
+				if (BoardUtils.checkforCheckMate(board, currentPlayer,
+						BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
+						BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[1])) {
+					System.out.println("Here1");
+					screenNumber = 2;
+				}
+
+			}
+		}
+
+	}
+
+	/**
+	 * Updates array based on a given map
+	 * 
+	 * @param source
+	 * @param matte
+	 * @return
+	 */
+	int[][] updateArray(int[][] source, int[][] matte) {
+		for (int i = 0; i < matte.length; i++) {
+			for (int j = 0; j < matte[i].length; j++) {
+				if (matte[i][j] == 0) {
+					source[i][j] = 0;
 				}
 			}
 		}
+
+		return source;
 	}
 
 	/**
@@ -219,8 +306,22 @@ public class Chess3D extends PApplet {
 	public void resetGridColor() {
 		for (int i = 0; i < rects.length; i++) {
 			for (int j = 0; j < rects[0].length; j++) {
-				rects[j][i].stroke = 125;
-				rects[j][i].fill = 255;
+				rects[i][j].setStrokeR(125);
+				rects[i][j].setStrokeG(125);
+				rects[i][j].setStrokeB(125);
+				rects[i][j].setFillR(255);
+				rects[i][j].setFillG(255);
+				rects[i][j].setFillB(255);
+
+				if (i % 2 == 0 && j % 2 != 0) {
+					rects[i][j].setFillR(79);
+					rects[i][j].setFillG(197);
+					rects[i][j].setFillB(247);
+				} else if (i % 2 != 0 && j % 2 == 0) {
+					rects[i][j].setFillR(79);
+					rects[i][j].setFillG(197);
+					rects[i][j].setFillB(247);
+				}
 			}
 		}
 	}
@@ -233,17 +334,44 @@ public class Chess3D extends PApplet {
 	 * @param pos
 	 */
 	public void updateGrid(int[][] pos) {
+
 		for (int i = 0; i < pos.length; i++) {
 			for (int j = 0; j < pos[0].length; j++) {
 				if (pos[i][j] == 1) {
-					rects[j][i].fill = 125;
-					rects[j][i].stroke = 0;
+					rects[j][i].setFillR(125);
+					rects[j][i].setFillG(125);
+					rects[j][i].setFillB(125);
+					rects[j][i].setStrokeR(0);
+					rects[j][i].setStrokeG(0);
+					rects[j][i].setStrokeB(0);
 				} else if (pos[i][j] == 2) {
-					rects[j][i].fill = 200;
-					rects[j][i].stroke = 0;
+					rects[j][i].setFillR(255);
+					rects[j][i].setFillG(120);
+					rects[j][i].setFillB(120);
+
+					rects[j][i].setStrokeR(0);
+					rects[j][i].setStrokeG(0);
+					rects[j][i].setStrokeB(0);
+
 				} else {
-					rects[j][i].stroke = 125;
-					rects[j][i].fill = 255;
+					rects[j][i].setStrokeR(125);
+					rects[j][i].setStrokeG(125);
+					rects[j][i].setStrokeB(125);
+
+					rects[j][i].setFillR(255);
+					rects[j][i].setFillG(255);
+					rects[j][i].setFillB(255);
+
+					if (j % 2 == 0 && i % 2 != 0) {
+						rects[j][i].setFillR(79);
+						rects[j][i].setFillG(197);
+						rects[j][i].setFillB(247);
+					} else if (j % 2 != 0 && i % 2 == 0) {
+						rects[j][i].setFillR(79);
+						rects[j][i].setFillG(197);
+						rects[j][i].setFillB(247);
+					}
+
 				}
 			}
 		}
@@ -263,7 +391,6 @@ public class Chess3D extends PApplet {
 		for (int i = 0; i < pieces.length; i++) {
 			pushMatrix();
 			rotateX(PI / 2);
-
 			for (int j = 0; j < pieces.length; j++) {
 
 				if (pieces[i][j] != null) {
@@ -303,8 +430,8 @@ public class Chess3D extends PApplet {
 	 */
 	class Rect {
 		float rectx, recty;
-		int fill = 255;
-		int stroke = 0;
+		private int[] fill = { 255, 255, 255 };
+		private int[] stroke = { 0, 0, 0 };
 		int idX;
 		int idY;
 		float x1;
@@ -364,8 +491,8 @@ public class Chess3D extends PApplet {
 			y1 = y1T;
 			y2 = y2T;
 
-			stroke(stroke);
-			fill(fill);
+			stroke(stroke[0], stroke[1], stroke[2]);
+			fill(fill[0], fill[1], fill[2]);
 			rect(rectx, recty, squareSize, squareSize);
 		}
 
@@ -380,6 +507,30 @@ public class Chess3D extends PApplet {
 				return true;
 			}
 			return false;
+		}
+
+		public void setFillR(int R) {
+			fill[0] = R;
+		}
+
+		public void setFillG(int G) {
+			fill[1] = G;
+		}
+
+		public void setFillB(int B) {
+			fill[2] = B;
+		}
+
+		public void setStrokeR(int R) {
+			stroke[0] = R;
+		}
+
+		public void setStrokeG(int G) {
+			stroke[1] = G;
+		}
+
+		public void setStrokeB(int B) {
+			stroke[2] = B;
 		}
 	}
 

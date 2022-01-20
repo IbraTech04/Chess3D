@@ -120,7 +120,7 @@ class BoardUtils {
 						for (int i = 0; i < movements.length; i++) {
 							for (int j = 0; j < movements[i].length; j++) {
 								if (movements[j][i] != 0) {
-									String[][] bs = b.makeBoardString();
+									String[][] bs = Board.makeBoardString(b.getBoard());
 									Board newBoard = new Board(bs);
 									newBoard.movePiece(d.getPosX(), d.getPosY(), i, j);
 
@@ -140,30 +140,32 @@ class BoardUtils {
 	}
 
 	/**
-	 * Method that checks for a checkmate, given a player
+	 * Method that returns where a particular piece can go when checked
+	 * @param pieces 
+	 * @param p 
+	 * @param id 
+	 * @author Ibrahim Chehab
 	 * 
-	 * @param b     A reference to the board object
-	 * @param id    The player to check
-	 * @param kingX The players KingX
-	 * @param kingY The players KingY
-	 * @author Fardeen Kasmani
-	 * @return Whether the player is checkmated
+	 * @return Array with all the places a piece can go
+	 * 
 	 */
-	public static int[][] getCheckPlaces(int x, int y, int[][] movements, Board b, int id, int kingX, int kingY) {
-		int[][] toReturn = new int[8][8];
+	public static int[][] getCheckPlaces(Piece[][] pieces, Piece p, int id) {
+		int toReturn[][] = new int[8][8];
+		int[][] movements = p.getMove(pieces);
 		for (int i = 0; i < movements.length; i++) {
 			for (int j = 0; j < movements[i].length; j++) {
 				if (movements[j][i] != 0) {
-					String[][] bs = b.makeBoardString();
+					String[][] bs = Board.makeBoardString(pieces);
 					Board newBoard = new Board(bs);
-					newBoard.movePiece(x, y, i, j);
+					newBoard.movePiece(p.getPosX(), p.getPosY(), i, j);
 
 					if (!checkforCheck(newBoard.getBoard(), id, getKingCoords(newBoard.getBoard(), id)[0],
 							getKingCoords(newBoard.getBoard(), id)[1])) {
-						toReturn[i][j] = 1;
+						toReturn[j][i] = 1;
 					}
 				}
 			}
+
 		}
 		return toReturn;
 	}
