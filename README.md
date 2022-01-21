@@ -10,7 +10,7 @@ I decided to challenge myself to use the P3D renderer. I had never created anyth
 
 This chess game imcludes my new UltraProteccV7 licence protection scheme. It's fairly basic as I don't have a math degree, but regardless it'll get the job done :) It expands the availible character set to include letters! It also no longer has set set-sizes, only set key sizes. You can find the UltraProteccV7 KeyGen and documentation on my GitHub... well when I finish it anyway. 
 
-##Features:
+## Features:
 
 - System requirements check:
   Let's be real - I'm not a software engineer.... yet 😄 I don't write the most optimized code in the world, and the Processing P3D renderer doesn't really help with that either. So to be safe (and hopefully not fry anyones system), I added a minimum system requirements check that runs when you first start the game. If your computer doesnt meet our "reasonable" requirements, you have the option of either continuing in 3D mode like a rebel, swap over to 2D mode, or just exit the game entirely. 
