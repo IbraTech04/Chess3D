@@ -19,4 +19,4 @@ This chess game imcludes my new UltraProteccV7 licence protection scheme. It's f
   * So for whatever reason I decided to add a licence key system to an open source game... Yeah....
   
 * Customizable Colours
- * All those *other* chess games out there don't let you change your colours. *Pfft* With jChess you can select custom grid, piece, and UI colours! Now why any normal user would go through and change all that is beyond me, but hey it was easy so why not :)
+  * All those *other* chess games out there don't let you change your colours. *Pfft* With jChess you can select custom grid, piece, and UI colours! Now why any normal user would go through and change all that is beyond me, but hey it was easy so why not :)
