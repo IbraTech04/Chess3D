@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 public class Chess2D extends PApplet {
-	int screenNumber = 3;
+	int screenNumber = 0;
 	Piece lastChosenPiece;
 	static int squareSize = 50;
 	int currentPlayer = 1;
@@ -159,7 +159,18 @@ public class Chess2D extends PApplet {
 		textSize(25);
 		textAlign(CENTER);
 		fill(255);
-		text("Board Colour: ", width / 2 - 100, height / 2 - 100);
+		String colourName;
+		colourName = "Blue";
+		int[] chosenColour = new int[] { 255, 255, 255 };
+		int[] buttonColour = new int[] { 150, 150, 150 };
+		int[] textColour = new int[] { 255, 255, 255 };
+		/*
+		 * ClickableText Colour = new ClickableText(this, "Board Colour: " + colourName,
+		 * 25, width / 2 - 500, height / 2 - 100, true, chosenColour);
+		 */
+		Button Colour = new Button(width / 2 - 500, height / 2 - 100, 100, 40, colourName, this, buttonColour,
+				textColour);
+		Colour.drawButton();
 		popStyle();
 	}
 
@@ -408,8 +419,12 @@ public class Chess2D extends PApplet {
 
 					int xDisplay = (x) * squareSize + squareSize / 2;
 					int yDisplay = (y) * squareSize + squareSize / 2;
-
+					pushStyle();
+					if (pieces[i][j].getPlayer() == 1) {
+						tint(0, 0, 255);
+					}
 					image(images[pieces[i][j].id], xDisplay, yDisplay, squareSize, squareSize);
+					popStyle();
 				}
 			}
 		}
@@ -474,9 +489,13 @@ public class Chess2D extends PApplet {
 		 */
 		public void drawRect() {
 			pushStyle();
-			stroke(stroke[0], stroke[1], stroke[2]);
+			if (this.isHovered()) {
+				stroke(stroke[0], stroke[1], stroke[2]);
+			} else {
+				noStroke();
+			}
 			fill(fill[0], fill[1], fill[2]);
-			rect(rectx, recty, squareSize, squareSize);
+			rect(rectx - 1, recty - 1, squareSize - 1, squareSize - 1);
 			popStyle();
 		}
 
@@ -488,6 +507,21 @@ public class Chess2D extends PApplet {
 		 */
 		public boolean isPressed() {
 			if (mousePressed && mouseX >= rectx + (width - (squareSize * 8)) / 2
+					&& mouseX <= rectx + squareSize + (width - (squareSize * 8)) / 2 && mouseY >= recty
+					&& mouseY <= recty + squareSize) {
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Returns whether the rect is hovered over
+		 * 
+		 * @author Ibrahim Chehab
+		 * @return isPressed
+		 */
+		public boolean isHovered() {
+			if (mouseX >= rectx + (width - (squareSize * 8)) / 2
 					&& mouseX <= rectx + squareSize + (width - (squareSize * 8)) / 2 && mouseY >= recty
 					&& mouseY <= recty + squareSize) {
 				return true;

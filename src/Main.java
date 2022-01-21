@@ -1,33 +1,49 @@
 //Main class which loads the game
 
-import java.awt.Color;
-import java.io.File;
+import java.io.*;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;
-import com.bric.colorpicker.ColorPicker;
 
 public class Main {
-	public static void main(String[] args) {
-        ColorPicker picker = new ColorPicker(false, false);
-        picker.setColor(new Color(219, 185, 47));
-        picker.setRGBControlsVisible(false);
-        picker.setHexControlsVisible(false);
-        picker.setPreviewSwatchVisible(false);
-        picker.setHSBControlsVisible(false);
-        picker.setVisible(true);
-        
-		File saveDir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess");
+	public static void main(String[] args) throws FileNotFoundException {
+		File saveDir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt");
 
-		if (!saveDir.exists()) { // If the save directory exists, the user has already played the game. Skip
-									// requirements check
-			Chess3D c = new Chess3D();
-			c.main(new String[] {});
+		if (saveDir.exists()) { // If the save directory exists, the user has already played the game. Skip
+								// requirements check
+
+			BufferedReader br = new BufferedReader(new FileReader(saveDir)); // Loading from text file
+
+			try {
+				String a;
+				String[] file = new String[3];
+				int i = 0;
+				while ((a = br.readLine()) != null) {
+					file[i] = a;
+					i++;
+				}
+
+				if (isValidKey(file[2])) {
+					if (file[0].contains("2d")) {
+						Chess2D c = new Chess2D();
+						c.main(new String[] {}); // Loads the game
+					} else {
+						Chess3D c = new Chess3D();
+						c.main(new String[] {}); // Loads the game
+					}
+				}
+
+			} catch (Exception e) {
+				System.exit(0);
+			}
 		}
 
-		else { // Otherwise run requirements check
+		else
+
+		{ // Otherwise run requirements check
 			saveDir.mkdir(); // Make the save directory
 			File avatarDir = new File(saveDir + System.getProperty("file.separator") + "Avatars");
 			avatarDir.mkdir(); // Make avatar save dir
@@ -58,11 +74,20 @@ public class Main {
 
 		JOptionPane.showMessageDialog(null,
 				"In order to proceed, we must check your system to ensure it meets our system requirements. This process may take some time; Please wait",
-				"System Requirements Check", JOptionPane.INFORMATION_MESSAGE); // Inform the user that their system
-																				// will be assessed
+				"System Requirements Check", JOptionPane.INFORMATION_MESSAGE); // Inform
+																				// the
+																				// user
+																				// that
+																				// their
+																				// system
+																				// will
+																				// be
+																				// assessed
+
 		checkSystemRequirements(); // Check system requirements
 
 		System.out.println("Requirements check completed");
+
 	}
 
 	/**

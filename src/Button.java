@@ -64,4 +64,8 @@ public class Button {
 		return (p.mousePressed && p.mouseX >= x - sizeX / 2 && p.mouseX <= x + sizeX / 2 && p.mouseY >= y - sizeY / 2
 				&& p.mouseY <= y + sizeY / 2);
 	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 }

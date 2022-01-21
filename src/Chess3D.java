@@ -1,16 +1,33 @@
+
 // Chess 3D
 // By Ibrahim Chehab and Fardeen Kasmani
-
 import processing.core.*;
+import processing.data.*;
+import processing.event.*;
+import processing.opengl.*;
+
+import uibooster.*;
+import uibooster.model.options.DarkUiBoosterOptions;
+
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.io.File;
+import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
 
 public class Chess3D extends PApplet {
+	UiBooster booster;
 	int screenNumber = 0;
 	Piece lastChosenPiece;
 	static int squareSize = 50;
-	int currentPlayer = 0;
+	Integer currentPlayer = 0;
 
 	// Loading all the textures and files required
-
+	int favoriteColor;
 	static Rect[][] rects;
 	PShape[] models;
 	PShape chessBoard;
@@ -71,6 +88,10 @@ public class Chess3D extends PApplet {
 			player1.drawPile(models);
 			player2.drawPile(models);
 		}
+	}
+
+	public Color showColorPicker(String message, String title) {
+		return ColorPickerDialog.showColorPicker(message, title, new DarkUiBoosterOptions().getIconPath());
 	}
 
 	/**
@@ -411,7 +432,15 @@ public class Chess3D extends PApplet {
 					pushMatrix();
 					scale(2, 2, 2);
 					rotateY(rotate);
+
+					pushStyle();
+					if (pieces[i][j].getPlayer() == 1) {
+						tint(125, 125, 125);
+					} else {
+						tint(0, 0, 0);
+					}
 					shape(models[pieces[i][j].id], 0, 0);
+					popStyle();
 					popMatrix();
 				}
 				translate(squareSize, 0, 0);
@@ -503,7 +532,7 @@ public class Chess3D extends PApplet {
 		 * @return isPressed
 		 */
 		public boolean isPressed() {
-			if (mouseX >= x1 && mouseX < x2 && mouseY >= y1 && mouseY < y2) {
+			if (mousePressed && mouseX >= x1 && mouseX < x2 && mouseY >= y1 && mouseY < y2) {
 				return true;
 			}
 			return false;
