@@ -3,8 +3,8 @@ class Rook extends Piece {
 	/**
 	 * @author Ibrahim Chehab
 	 * @param player
-	 * @param x
-	 * @param y
+	 * @param x X-pos
+	 * @param y Y-pos
 	 */
 
 	public Rook(int player, int x, int y) {

@@ -7,8 +7,8 @@ class Pawn extends Piece {
 	/**
 	 * 
 	 * @param player
-	 * @param x
-	 * @param y
+	 * @param x      x pos
+	 * @param y      y pos
 	 */
 	public Pawn(int player, int x, int y) {
 		super(player, x, y, 5, Type.PAWN);
@@ -32,7 +32,8 @@ class Pawn extends Piece {
 		int x = super.getPosX();
 		int y = super.getPosY();
 
-		if (super.getPlayer() == 1) {
+		if (super.getPlayer() == 1) { // Since pawn movement is reletive to player, we must have different methods for
+										// each player
 			y += 1;
 			if (BoardUtils.isCoord(x, y)) {
 				if (boardStatus[y][x] == null) {
@@ -113,7 +114,7 @@ class Pawn extends Piece {
 				}
 			}
 
-			x = super.getPosX();
+			x = super.getPosX(); // En passante Check
 			y = super.getPosY();
 
 			if (y == 3) {

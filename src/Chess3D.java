@@ -1,6 +1,6 @@
-
-// Chess 3D
+// jChess - 3D Mode
 // By Ibrahim Chehab and Fardeen Kasmani
+
 import processing.core.*;
 import processing.data.*;
 import processing.event.*;
@@ -10,6 +10,9 @@ import uibooster.*;
 import uibooster.model.options.DarkUiBoosterOptions;
 
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.awt.Color;
@@ -25,7 +28,7 @@ public class Chess3D extends PApplet {
 	Piece lastChosenPiece;
 	static int squareSize = 50;
 	int currentPlayer = 0;
-
+	String[] prefFileData;
 	// Loading all the textures and files required
 	int favoriteColor;
 	static Rect[][] rects;
@@ -95,6 +98,14 @@ public class Chess3D extends PApplet {
 		}
 	}
 
+	/**
+	 * Shows the Colour Picker
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param message
+	 * @param title
+	 * @return
+	 */
 	public Color showColorPicker(String message, String title) {
 		return ColorPickerDialog.showColorPicker(message, title, new DarkUiBoosterOptions().getIconPath());
 	}
@@ -102,7 +113,7 @@ public class Chess3D extends PApplet {
 	/**
 	 * Draws the main screen for Chess 3D
 	 * 
-	 * @author Ibrahim Chehab
+	 * @author Fardeen Kasmani
 	 * 
 	 */
 	public void mainScreen() {
@@ -141,6 +152,11 @@ public class Chess3D extends PApplet {
 		popStyle();
 	}
 
+	/**
+	 * Method which draws the Settings Screen
+	 * 
+	 * @author Fardeen Kasmani
+	 */
 	public void settingsScreen1() {
 		pushStyle();
 		pushMatrix();
@@ -154,28 +170,82 @@ public class Chess3D extends PApplet {
 		int[] chosenColour = new int[] { 255, 255, 255 };
 		int[] buttonColour = new int[] { 150, 150, 150 };
 		int[] textColour = new int[] { 255, 255, 255 };
-		// textAlign(CENTER);
 
+		// Back Button in the Name
 		ClickableText Home = new ClickableText(this, "jChess Settings", 40, width / 2, 55, true,
 				new int[] { 255, 255, 255 });
 		Home.drawText();
 
+		// Back Button
 		ClickableText Back = new ClickableText(this, "Back", 20, 45, 45, true, new int[] { 255, 255, 255 });
 		Back.drawText();
 
-		if (Home.isPressed() || Back.isPressed()) {
+		// Sets the Screen to the Main Screen
+		if ((Home.isPressed() || Back.isPressed()) && mousePressed) {
+			mousePressed = false;
 			screenNumber = 0;
 		}
 
-		ClickableText Colour = new ClickableText(this, "Board Colour: " + colourName, 40, width / 2, height / 2, true,
-				textColour);
-		Colour.drawText();
+		// Allows User to Select Board Colour
+		ClickableText mainColor = new ClickableText(this, "Main Board Colour: " + colourName, 40, width / 2, height / 2,
+				true, textColour);
+		mainColor.drawText();
 
-		String selectedGameMode;
-		selectedGameMode = "3D";
-		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode, 40, width / 2,
-				height / 2 - 100, true, textColour);
+		if (mainColor.isPressed() && mousePressed) {
+			mousePressed = false;
+			Color newColor;
+			do {
+				newColor = showColorPicker("Please select your preferred main board colour", "Board Colour Selection");
+			} while (newColor == null);
+
+			mainBoardColor[0] = newColor.getRed();
+			mainBoardColor[1] = newColor.getGreen();
+			mainBoardColor[2] = newColor.getBlue();
+
+			savePreferences(mainBoardColor, null);
+			initBoard3D();
+		}
+
+		// Allows User to Select Board Colour
+		ClickableText secColor = new ClickableText(this, "Secondary Board Colour: " + colourName, 40, width / 2,
+				height / 2 + 50, true, textColour);
+		secColor.drawText();
+
+		if (secColor.isPressed() && mousePressed) {
+			mousePressed = false;
+			Color newColor;
+			do {
+				newColor = showColorPicker("Please select your preferred secondary board colour",
+						"Board Colour Selection");
+			} while (newColor == null);
+
+			secondaryBoardColor[0] = newColor.getRed();
+			secondaryBoardColor[1] = newColor.getGreen();
+			secondaryBoardColor[2] = newColor.getBlue();
+
+			savePreferences(null, secondaryBoardColor);
+			initBoard3D();
+		}
+
+		// Allows User to Select Preferred Game Mode
+		int mode = Integer.parseInt(prefFileData[0]);
+		String[] selectedGameMode = { "3D", "2D" };
+		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode[mode], 40, width / 2,
+				height / 2 - 50, true, textColour);
 		Mode.drawText();
+
+		if (Mode.isPressed() && mousePressed) {
+			mousePressed = false;
+			if (mode == 1) {
+				mode = 0;
+			} else {
+				mode = 1;
+			}
+
+			savePreferences(mode);
+			JOptionPane.showMessageDialog(null, "In order for these changes to take effect, please restart jChess :)");
+			delay(50);
+		}
 		popMatrix();
 		popStyle();
 	}
@@ -354,9 +424,10 @@ public class Chess3D extends PApplet {
 	/**
 	 * Updates array based on a given map
 	 * 
-	 * @param source
-	 * @param matte
-	 * @return
+	 * @author Fardeen Kasmani
+	 * @param source source array to update
+	 * @param matte  Matte to apply to array
+	 * @return The merged array
 	 */
 	int[][] updateArray(int[][] source, int[][] matte) {
 		for (int i = 0; i < matte.length; i++) {
@@ -458,7 +529,6 @@ public class Chess3D extends PApplet {
 	public void drawPieces(Piece[][] pieces) {
 		shininess((float) 1.0);
 		translate(squareSize / 2, squareSize / 2);
-		// scale(squareSize, squareSize);
 
 		for (int i = 0; i < pieces.length; i++) {
 			pushMatrix();
@@ -466,14 +536,6 @@ public class Chess3D extends PApplet {
 			for (int j = 0; j < pieces.length; j++) {
 
 				if (pieces[i][j] != null) {
-					/*
-					 * int x = pieces[i][j].getPosX(); int y = pieces[i][j].getPosY(); pushMatrix();
-					 * rotateX(-PI/2); shapeMode(CENTER); ellipseMode(CENTER); int xDisplay = (x) *
-					 * squareSize + squareSize / 2; int yDisplay = (y) * squareSize + squareSize /
-					 * 2; ellipse(xDisplay, yDisplay, 50, 50); shape(models[pieces[i][j].id],
-					 * xDisplay, yDisplay); popMatrix();
-					 */
-					// ellipse(0, 0, 50, 50);
 					float rotate = PI / 2;
 
 					if (pieces[i][j].getPlayer() == 1) {
@@ -521,10 +583,10 @@ public class Chess3D extends PApplet {
 
 		/**
 		 * @author Fardeen Kasmani
-		 * @param x
-		 * @param y
-		 * @param idX
-		 * @param idY
+		 * @param x   x position
+		 * @param y   y position
+		 * @param idX variables used when determining position
+		 * @param idY variables used when determining position
 		 */
 		public Rect(int x, int y, int idX, int idY) {
 			rectx = x;
@@ -599,7 +661,7 @@ public class Chess3D extends PApplet {
 		 * Returns whether the rect is hovered over
 		 * 
 		 * @author Ibrahim Chehab
-		 * @return isPressed
+		 * @return whether the button is hovered over
 		 */
 		public boolean isHovered() {
 			if (mouseX >= rectx + (width - (squareSize * 8)) / 2
@@ -610,26 +672,62 @@ public class Chess3D extends PApplet {
 			return false;
 		}
 
+		/**
+		 * Sets the Red Value
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param R red value
+		 */
 		public void setFillR(int R) {
 			fill[0] = R;
 		}
 
+		/**
+		 * Sets the Green Value
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param G green value
+		 */
 		public void setFillG(int G) {
 			fill[1] = G;
 		}
 
+		/**
+		 * Sets the Blue Value
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param B blue value
+		 */
 		public void setFillB(int B) {
 			fill[2] = B;
 		}
 
+		/**
+		 * Sets the Red Stroke Value
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param R red value
+		 */
 		public void setStrokeR(int R) {
 			stroke[0] = R;
 		}
 
+		/**
+		 * Sets the Green Stroke Value
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param G green value
+		 */
 		public void setStrokeG(int G) {
 			stroke[1] = G;
 		}
 
+		/**
+		 * Sets the Blue Stroke Value
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param B blue value
+		 */
 		public void setStrokeB(int B) {
 			stroke[2] = B;
 		}
@@ -656,6 +754,13 @@ public class Chess3D extends PApplet {
 		PApplet.main(appletArgs);
 	}
 
+	/**
+	 * Converts a string to int array
+	 * 
+	 * @author Fardeen Kasmani
+	 * @param firstArray Source array
+	 * @return Converted int array
+	 */
 	public int[] stringToIntArray(String[] firstArray) {
 		int[] toReturn = new int[firstArray.length];
 		for (int i = 0; i < firstArray.length; i++) {
@@ -665,13 +770,70 @@ public class Chess3D extends PApplet {
 		return toReturn;
 	}
 
+	/**
+	 * Loads preferences from file
+	 * 
+	 * @author Fardeen Kasmani
+	 */
 	void loadPreferences() {
 		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
 				+ System.getProperty("file.separator") + "save.txt");
-		String[] data = loadStrings(saveFile);
+		prefFileData = loadStrings(saveFile);
 
-		this.mainBoardColor = stringToIntArray(data[2].split(","));
-		this.secondaryBoardColor = stringToIntArray(data[3].split(","));
+		this.mainBoardColor = stringToIntArray(prefFileData[2].split(","));
+		this.secondaryBoardColor = stringToIntArray(prefFileData[3].split(","));
+	}
 
+	/**
+	 * Saves preferences to file
+	 * 
+	 * @param mainBoardColor Main board color
+	 * @param secBoardColor  Secondary Board color
+	 * @author Ibrahim Chehab
+	 */
+	void savePreferences(int[] mainBoardColor, int[] secBoardColor) {
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt"); // Getting save file
+		String[] toSave = new String[4]; // Array to save
+		toSave[0] = prefFileData[0]; // Fetching product key
+		toSave[1] = prefFileData[1]; // Fetching current mode
+		if (mainBoardColor != null) { // Setting main board color
+			String save = String.valueOf(mainBoardColor[0]) + "," + String.valueOf(mainBoardColor[1]) + ","
+					+ String.valueOf(mainBoardColor[1]);
+			toSave[2] = save;
+			this.mainBoardColor = mainBoardColor;
+		} else {
+			toSave[2] = prefFileData[2];
+		}
+		if (secBoardColor != null) { // SEtting secondary board color
+			String save = String.valueOf(secBoardColor[0]) + "," + String.valueOf(secBoardColor[1]) + ","
+					+ String.valueOf(secBoardColor[1]);
+			toSave[3] = save;
+			this.secondaryBoardColor = secBoardColor;
+		} else {
+			toSave[3] = prefFileData[3];
+		}
+
+		saveStrings(saveFile.toString(), toSave); // Saving to file using PApplet built in method
+
+		prefFileData = toSave; // Updating current file data
+	}
+
+	/**
+	 * Saves preferences when default mode changes
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param mode 3D/2D mode
+	 */
+	void savePreferences(int mode) {
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt"); // Getting file
+		String[] toSave = new String[4]; // Making array to save
+		toSave[0] = String.valueOf(mode); // Setting mode
+		toSave[1] = prefFileData[1]; // Fetching product key
+		toSave[2] = prefFileData[2]; // Setting colors
+		toSave[3] = prefFileData[3];
+		saveStrings(saveFile.toString(), toSave); // Saving
+		prefFileData = toSave; // Updating reference
 	}
 }

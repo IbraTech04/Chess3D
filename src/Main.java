@@ -28,16 +28,16 @@ public class Main {
 
 			String[] data = loadFile(saveFile);
 
-			if (!isValidKey(data[1])) {
+			if (!isValidKey(data[1])) { // Check if licence file has been tampered with
 				JOptionPane.showMessageDialog(null,
 						"Your licence file appears to have been tampered with. Please reneter your product key",
 						"Activation Unsuccessful", JOptionPane.ERROR_MESSAGE);
 				throw new Exception();
 			}
 
-			int mode = Integer.parseInt(data[0]);
+			int mode = Integer.parseInt(data[0]); // Get default mode
 
-			if (mode == 0) {
+			if (mode == 0) { // Load the game
 				Chess3D c = new Chess3D();
 				c.main(new String[] {});
 			} else {
@@ -53,13 +53,13 @@ public class Main {
 			saveDir.mkdir(); // Make the save directory
 
 			try {
-				saveFile.createNewFile();
+				saveFile.createNewFile(); // Create new file
 			} catch (IOException ee) {
 				ee.printStackTrace();
 			}
 			String pKey;
 
-			while (true) {
+			while (true) { // Continue asking user for key until a valid key is entered
 				pKey = JOptionPane
 						.showInputDialog("Thank you for purchasing jChess! Please enter your product key now");
 
@@ -70,11 +70,11 @@ public class Main {
 					JOptionPane.showMessageDialog(null, "Invalid key enetered. Please try again", "Invalid Key",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					break;
+					break; // Break out of loop
 				}
 			}
 
-			saveFile(saveFile, new String[] { "0", pKey, "79,197,247", "255,255,255" });
+			saveFile(saveFile, new String[] { "0", pKey, "79,197,247", "255,255,255" }); // Save file
 
 			JOptionPane.showMessageDialog(null,
 					"In order to proceed, we must check your system to ensure it meets our system requirements. This process may take some time; Please wait",
@@ -87,16 +87,26 @@ public class Main {
 																					// will
 																					// be
 																					// assessed
-			checkSystemRequirements(); // Check system requirements
+			int state = checkSystemRequirements(); // Check system requirements
+
+			if (state == 0) { // If the users PC cannot run 3D, load 2D
+				saveFile(saveFile, new String[] { "1", pKey, "79,197,247", "255,255,255" }); // Save file
+				Chess2D twoD = new Chess2D();
+				twoD.main(new String[] {});
+			} else if (state == 1) { // Otherwise load 3D
+				saveFile(saveFile, new String[] { "0", pKey, "79,197,247", "255,255,255" }); // Save file
+				Chess3D threeD = new Chess3D();
+				threeD.main(new String[] {});
+			}
 		}
 	}
 
 	/**
-	 * Method which checks system requirements
+	 * Method which checks system requirements. Uses DXDiag on windows
 	 * 
 	 * @author Ibrahim Chehab
 	 */
-	public static void checkSystemRequirements() {
+	public static int checkSystemRequirements() {
 		if (System.getProperty("os.name").toLowerCase().contains("windows")) { // If the OS is windows
 			int cpuCores = Runtime.getRuntime().availableProcessors();
 			String filePath = "./dxdiag.xml";
@@ -122,8 +132,7 @@ public class Main {
 					throw new Exception(); // Since our code is encapsulated in try/catch, we can break out of it by
 											// throwing an exception
 				} else {
-					Chess3D c = new Chess3D();
-					c.main(new String[] {});
+					return 1;
 				}
 
 			} catch (Exception e) { // If we hit an error, the users computer is likely too slow to run our game.
@@ -135,23 +144,17 @@ public class Main {
 						"Thank you for downloading jChess!", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.WARNING_MESSAGE, null, options, options[2]);
 
-				if (n == 0) {
-					Chess2D c = new Chess2D();
-					c.main(new String[] {});
-				} else if (n == 1) {
-					Chess3D c = new Chess3D();
-					c.main(new String[] {});
-				}
-				System.exit(0);
+				return n;
 			}
 		}
+		return 1;
 	}
 
 	/**
 	 * Returns a score based on which GPU the User has
 	 * 
 	 * @author Fardeen Kasmani
-	 * @param name
+	 * @param name GPU name
 	 * @return GPU Score
 	 */
 	static double getGPUScore(String name) {
@@ -178,8 +181,8 @@ public class Main {
 	 * Method which determines whether a key is valid
 	 * 
 	 * @author Ibrahim Chehab
-	 * @param key
-	 * @return
+	 * @param key Key to check
+	 * @return Whether key is valid
 	 */
 	static boolean isValidKey(String key) {
 		if (key == null || key.isEmpty() || key.isBlank()) {
@@ -206,7 +209,7 @@ public class Main {
 	}
 
 	/**
-	 * Method which adds up all the ASCII values in a string and returns that
+	 * Method which adds up all the ASCII values in a string and returns that value
 	 * 
 	 * @author Ibrhaim Chehab
 	 * @param key
@@ -227,8 +230,8 @@ public class Main {
 	/**
 	 * Method which loads a text files data, given a file object reference
 	 * 
-	 * @param file
-	 * @return
+	 * @param file File object reference
+	 * @return File data
 	 * @author Fardeen Kasmani
 	 */
 	public static String[] loadFile(File file) {
@@ -248,6 +251,11 @@ public class Main {
 		}
 	}
 
+	/**
+	 * @author Ibrahim Chehab
+	 * @param file File object reference to save to
+	 * @param data Data to save to
+	 */
 	public static void saveFile(File file, String[] data) {
 		try {
 			FileWriter writer = new FileWriter(file);
@@ -265,8 +273,8 @@ public class Main {
 	/**
 	 * Method which converts an arraylist to a string array
 	 * 
-	 * @param s
-	 * @return
+	 * @param s Arraylist to convert
+	 * @return toReturn Converted Array
 	 * @author Fardeen Kasmani
 	 */
 	public static String[] makeStringArray(ArrayList<String> s) {

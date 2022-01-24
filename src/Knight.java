@@ -1,9 +1,9 @@
 class Knight extends Piece {
 	/**
 	 * @author Fardeen Kasmani
-	 * @param player
-	 * @param x
-	 * @param y
+	 * @param player Player ID
+	 * @param x X position 
+	 * @param y Y position
 	 */
 	public Knight(int player, int x, int y) {
 		super(player, x, y, 2, Type.KNIGHT);

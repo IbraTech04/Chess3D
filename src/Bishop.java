@@ -19,23 +19,26 @@ class Bishop extends Piece {
 	 */
 	public int[][] getMove(Piece[][] boardStatus) {
 		int[][] toReturn = new int[boardStatus.length][boardStatus[0].length];
-		int[][] coords = { { 1, 1 }, { 2, 2 }, { 3, 3 }, { 4, 4 }, { 5, 5 }, { 6, 6 }, { 7, 7 } };
+		int[][] coords = { { 1, 1 }, { 2, 2 }, { 3, 3 }, { 4, 4 }, { 5, 5 }, { 6, 6 }, { 7, 7 } }; // Array with all the
+																									// positions
+																									// reletive to the
+																									// current position
 
-		for (int[] i : coords) {
-			int y = super.getPosX() + i[0];
+		for (int[] i : coords) { // Looping through all the coordinates
+			int y = super.getPosX() + i[0]; // Setting coordinates
 			int x = super.getPosY() + i[1];
-			if (BoardUtils.isCoord(x, y)) {
-				if (boardStatus[x][y] == null) {
+			if (BoardUtils.isCoord(x, y)) { // Checking if it's a coordinate
+				if (boardStatus[x][y] == null) { // Adding to array
 					toReturn[x][y] = 1;
 				} else if (boardStatus[x][y].getPlayer() != super.getPlayer()) {
 					toReturn[x][y] = 2;
-					break;
+					break; // Break if theres a pawn you can eliminate
 				} else {
-					break;
+					break; // Break if theres something in your way
 				}
 			}
 		}
-
+		// Repeat same process for new set of coordinates
 		coords = new int[][] { { -1, -1 }, { -2, -2 }, { -3, -3 }, { -4, -4 }, { -5, -5 }, { -6, -6 }, { -7, -7 } };
 		for (int[] i : coords) {
 			int y = super.getPosX() + i[0];
@@ -51,7 +54,7 @@ class Bishop extends Piece {
 				}
 			}
 		}
-
+		// Repeat same process for new set of coordinates
 		coords = new int[][] { { 1, -1 }, { 2, -2 }, { 3, -3 }, { 4, -4 }, { 5, -5 }, { 6, -6 }, { 7, -7 } };
 		for (int[] i : coords) {
 			int y = super.getPosX() + i[0];
@@ -67,6 +70,7 @@ class Bishop extends Piece {
 				}
 			}
 		}
+		// Repeat same process for new set of coordinates
 
 		coords = new int[][] { { -1, 1 }, { -2, 2 }, { -3, 3 }, { -4, 4 }, { -5, 5 }, { -6, 6 }, { -7, 7 } };
 		for (int[] i : coords) {
@@ -84,6 +88,6 @@ class Bishop extends Piece {
 			}
 		}
 
-		return toReturn;
+		return toReturn; // Returning array
 	}
 }

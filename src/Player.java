@@ -26,14 +26,14 @@ public class Player {
 	 * Adds Eliminated Pieces to the Eliminated Pile
 	 * 
 	 * @author Fardeen Kasmani
-	 * @param p
+	 * @param p Piece to add
 	 */
 	public void addToPile(Piece p) {
 		takenPieces.add(p);
 	}
 
 	/**
-	 * Draws the pile of eliminated pieces for that player
+	 * Draws the pile of eliminated pieces for that player in 2D space
 	 * 
 	 * @author Ibrahim Chehab
 	 * @param models
@@ -65,29 +65,15 @@ public class Player {
 			}
 			p.popMatrix();
 		}
-		/*
-		 * int squareSize; if (p.width > p.height) { squareSize = p.height / 8; } else {
-		 * squareSize = p.width / 8; }
-		 * 
-		 * int boardSize = squareSize * 8;
-		 * 
-		 * int sideSize = (p.width - boardSize) / 2;
-		 * 
-		 * p.pushMatrix(); p.pushStyle(); // p.resetMatrix();
-		 * p.shapeMode(PConstants.CORNER);
-		 * 
-		 * int coord = 0; int startingCoord = 0; int size = squareSize; if (id == 1) {
-		 * coord = boardSize + sideSize; squareSize *= -1; startingCoord = this.p.height
-		 * - size / 1; } this.p.translate(0, -squareSize / 2);
-		 * 
-		 * for (Piece p : takenPieces) { // this.p.scale(0.5f, 0.5f);
-		 * this.p.rotateZ(PConstants.PI); this.p.shape(models[p.id], 50, 50, size / 2,
-		 * size / 2); this.p.translate(0, -squareSize / 2); // p.popMatrix(); }
-		 * p.popStyle(); p.popMatrix();
-		 */
 
 	}
 
+	/**
+	 * Draws pile of taken pieces in 2D space
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param models
+	 */
 	public void drawPile(PImage[] models) {
 		int squareSize;
 		if (p.width > p.height) {

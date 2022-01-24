@@ -1,5 +1,10 @@
 import java.util.Arrays;
 
+/**
+ * 
+ * @author Ibrahim Chehab
+ *
+ */
 class BoardUtils {
 	static int boardSize = 8;
 
@@ -141,10 +146,10 @@ class BoardUtils {
 
 	/**
 	 * Method that returns where a particular piece can go when checked
-	 * @param pieces 
-	 * @param p 
-	 * @param id 
-	 * @author Ibrahim Chehab
+	 * @param pieces Pieces array with refernces to all piece objects
+	 * @param p The piece in question that we're checking
+	 * @param id Player ID
+	 * @author Fardeen Kasmani
 	 * 
 	 * @return Array with all the places a piece can go
 	 * 
@@ -152,46 +157,21 @@ class BoardUtils {
 	public static int[][] getCheckPlaces(Piece[][] pieces, Piece p, int id) {
 		int toReturn[][] = new int[8][8];
 		int[][] movements = p.getMove(pieces);
-		for (int i = 0; i < movements.length; i++) {
+		for (int i = 0; i < movements.length; i++) { //Looping through all possible moves
 			for (int j = 0; j < movements[i].length; j++) {
 				if (movements[j][i] != 0) {
 					String[][] bs = Board.makeBoardString(pieces);
 					Board newBoard = new Board(bs);
 					newBoard.movePiece(p.getPosX(), p.getPosY(), i, j);
-
+					//If this move no longer puts us in check
 					if (!checkforCheck(newBoard.getBoard(), id, getKingCoords(newBoard.getBoard(), id)[0],
 							getKingCoords(newBoard.getBoard(), id)[1])) {
-						toReturn[j][i] = 1;
+						toReturn[j][i] = 1; //Add it to the array
 					}
 				}
 			}
 
 		}
-		return toReturn;
-	}
-
-	/**
-	 * Function used for debugging. Prints out an array
-	 * 
-	 * @author Ibrahim Chehab
-	 * @param arr
-	 */
-	static void printArray(int[][] arr) {
-		for (int[] i : arr) {
-			for (int a : i) {
-				System.out.print(a + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	/**
-	 * Function which returns where a player can go to get out of a check
-	 * 
-	 * @author Fardeen Kasmani
-	 */
-	int[][] getCheckMoves() {
-		// TODO Implement this function
-		return null;
+		return toReturn; //Return the array
 	}
 }

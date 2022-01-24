@@ -1,4 +1,4 @@
-// Chess 3D
+// jChess - 2D mode
 // By Ibrahim Chehab and Fardeen Kasmani
 
 import processing.core.*;
@@ -23,22 +23,23 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 public class Chess2D extends PApplet {
-	int screenNumber = 0;
-	Piece lastChosenPiece;
-	static int squareSize = 50;
-	int currentPlayer = 0;
+	int screenNumber = 0; // Current screen number
+	Piece lastChosenPiece; // Last chosen piece
+	static int squareSize = 50; // Size for chess squares
+	int currentPlayer = 0; // Current player whos turn it is
 
 	// Loading all the textures and files required
 
-	Rect[][] rects;
-	PImage[] images;
-	String[] names = { "king.png", "queen.png", "knight.png", "bishop.png", "rook.png", "pawn.png" };
+	Rect[][] rects; // All the board squares
+	PImage[] images; // Images for pieces
+	String[] names = { "king.png", "queen.png", "knight.png", "bishop.png", "rook.png", "pawn.png" }; // Names for
+																										// images to
+																										// load
 	Board board;
 	Player player1, player2;
 	int[] mainBoardColor;
 	int[] secondaryBoardColor;
-	String[] prefFileData;
-
+	String[] prefFileData; // Data inside preferences file
 
 	/**
 	 * Setup function required for PApplet
@@ -46,7 +47,7 @@ public class Chess2D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
-		surface.setTitle("jChess2D - Beta Release v0.9");
+		surface.setTitle("jChess2D - Beta Release v0.9"); // Setting Title Text
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
 		board = new Board(this);
@@ -65,12 +66,12 @@ public class Chess2D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void draw() {
-		if (screenNumber == 0) {
+		if (screenNumber == 0) { // Drawing main screen
 			background(255);
 			mainScreen();
 		}
 
-		else if (screenNumber == 1) {
+		else if (screenNumber == 1) { // Drawing game screen
 			background(255);
 			updateRectSize();
 			stroke(255);
@@ -88,12 +89,12 @@ public class Chess2D extends PApplet {
 			player2.drawPile(images);
 		}
 
-		else if (screenNumber == 2) {
+		else if (screenNumber == 2) { // Game over screen
 			background(0);
 			gameOverScreen();
 		}
 
-		else if (screenNumber == 3) {
+		else if (screenNumber == 3) { // Settings screen
 			background(0);
 			settingsScreen1();
 		}
@@ -138,8 +139,6 @@ public class Chess2D extends PApplet {
 			screenNumber = 3;
 		}
 		popStyle();
-
-
 
 	}
 
@@ -199,7 +198,8 @@ public class Chess2D extends PApplet {
 		Back.drawText();
 
 		// Sets the Screen to the Main Screen
-		if (Home.isPressed() || Back.isPressed()) {
+		if ((Home.isPressed() || Back.isPressed()) && mousePressed) {
+			mousePressed = false;
 			screenNumber = 0;
 		}
 
@@ -208,7 +208,8 @@ public class Chess2D extends PApplet {
 				true, textColour);
 		mainColor.drawText();
 
-		if (mainColor.isPressed()) {
+		if (mainColor.isPressed() && mousePressed) {
+			mousePressed = false;
 			Color newColor;
 			do {
 				newColor = showColorPicker("Please select your preferred main board colour", "Board Colour Selection");
@@ -219,6 +220,7 @@ public class Chess2D extends PApplet {
 			mainBoardColor[2] = newColor.getBlue();
 
 			savePreferences(mainBoardColor, null);
+			initBoard2D();
 		}
 
 		// Allows User to Select Board Colour
@@ -226,7 +228,8 @@ public class Chess2D extends PApplet {
 				height / 2 + 50, true, textColour);
 		secColor.drawText();
 
-		if (secColor.isPressed()) {
+		if (secColor.isPressed() && mousePressed) {
+			mousePressed = false;
 			Color newColor;
 			do {
 				newColor = showColorPicker("Please select your preferred secondary board colour",
@@ -238,18 +241,40 @@ public class Chess2D extends PApplet {
 			secondaryBoardColor[2] = newColor.getBlue();
 
 			savePreferences(null, secondaryBoardColor);
+			initBoard2D();
 		}
 
 		// Allows User to Select Preferred Game Mode
-		String selectedGameMode;
-		selectedGameMode = "3D";
-		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode, 40, width / 2,
+		int mode = Integer.parseInt(prefFileData[0]);
+		String[] selectedGameMode = { "3D", "2D" };
+		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode[mode], 40, width / 2,
 				height / 2 - 50, true, textColour);
 		Mode.drawText();
+
+		if (Mode.isPressed() && mousePressed) {
+			mousePressed = false;
+			if (mode == 1) {
+				mode = 0;
+			} else {
+				mode = 1;
+			}
+
+			savePreferences(mode);
+			JOptionPane.showMessageDialog(null, "In order for these changes to take effect, please restart jChess :)");
+			delay(50);
+		}
 		popMatrix();
 		popStyle();
 	}
 
+	/**
+	 * Creates color picker dialogue
+	 * 
+	 * @param message Message to show user
+	 * @param title   Window title
+	 * @author Ibrahim Chehab
+	 * @return color
+	 */
 	public Color showColorPicker(String message, String title) {
 		return ColorPickerDialog.showColorPicker(message, title, new DarkUiBoosterOptions().getIconPath());
 	}
@@ -282,10 +307,10 @@ public class Chess2D extends PApplet {
 	public void initBoard2D() {
 		rects = new Rect[8][8];
 		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
+			for (int j = 0; j < 8; j++) { // Looping through all the rects
 				rects[i][j] = new Rect(i * squareSize, j * squareSize);
 
-				if (i % 2 == 0 && j % 2 != 0) {
+				if (i % 2 == 0 && j % 2 != 0) { // Setting colors accordingly
 					rects[i][j].setFillR(mainBoardColor[0]);
 					rects[i][j].setFillG(mainBoardColor[1]);
 					rects[i][j].setFillB(mainBoardColor[2]);
@@ -309,29 +334,31 @@ public class Chess2D extends PApplet {
 	 * @author Ibrahim Chehab
 	 */
 	public void mousePressed() {
-		if (screenNumber == 1) {
+		if (screenNumber == 1) { // Looping through all the rects
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
-					if (rects[i][j].isPressed()) {
+					if (rects[i][j].isPressed()) { // If a rect is pressed
 						Piece[][] p = board.getBoard();
-						if (p[j][i] != null) {
+						if (p[j][i] != null) { // If the piece at that location is not null
 							if (p[j][i].getPlayer() != currentPlayer && lastChosenPiece != null) {
+								// Update board with the places that piece can go
 								int[][] coords = lastChosenPiece.getMove(p);
 								coords = updateArray(coords,
 										BoardUtils.getCheckPlaces(board.getBoard(), lastChosenPiece, currentPlayer));
 
-								if (coords[j][i] == 2) {
+								if (coords[j][i] == 2) { // If the rect pressed is somewhere the piece can capture a
+															// pawn
 									board.movePiece(player1, player2, lastChosenPiece.getPosX(),
-											lastChosenPiece.getPosY(), i, j);
-									resetGridColor();
-									lastChosenPiece = null;
-									if (currentPlayer == 1) {
+											lastChosenPiece.getPosY(), i, j); // Capture it
+									resetGridColor(); // Reset grid color
+									lastChosenPiece = null; // Reset last chosen piece
+									if (currentPlayer == 1) { // Change player cycle
 										currentPlayer = 0;
 									} else {
 										currentPlayer = 1;
 									}
 								}
-							} else if (p[j][i].getPlayer() == currentPlayer) {
+							} else if (p[j][i].getPlayer() == currentPlayer) { // Castling
 								if (lastChosenPiece != null) {
 									if (lastChosenPiece.getPiece() == Type.KING && p[j][i].getPiece() == Type.ROOK) {
 										if (BoardUtils.isCastlePossible(p, lastChosenPiece.getPosX(),
@@ -345,13 +372,13 @@ public class Chess2D extends PApplet {
 												currentPlayer = 1;
 											}
 										}
-									} else {
+									} else { // Updating board
 										lastChosenPiece = p[j][i];
 
 										updateGrid(updateArray(p[j][i].getMove(board.getBoard()),
 												BoardUtils.getCheckPlaces(board.getBoard(), p[j][i], currentPlayer)));
 									}
-								} else {
+								} else {// Updating board
 									lastChosenPiece = p[j][i];
 									updateGrid(updateArray(p[j][i].getMove(board.getBoard()),
 											BoardUtils.getCheckPlaces(board.getBoard(), p[j][i], currentPlayer)));
@@ -364,12 +391,12 @@ public class Chess2D extends PApplet {
 								pos = updateArray(pos,
 										BoardUtils.getCheckPlaces(board.getBoard(), lastChosenPiece, currentPlayer));
 
-								if (pos[j][i] != 0) {
+								if (pos[j][i] != 0) { // Moving pieces
 									board.movePiece(player1, player2, lastChosenPiece.getPosX(),
 											lastChosenPiece.getPosY(), i, j);
 									resetGridColor();
 									lastChosenPiece = null;
-									if (currentPlayer == 1) {
+									if (currentPlayer == 1) { // Player change cycle
 										currentPlayer = 0;
 									} else {
 										currentPlayer = 1;
@@ -380,6 +407,7 @@ public class Chess2D extends PApplet {
 					}
 				}
 			}
+			// Check and checkmate detection
 
 			if (BoardUtils.checkforCheck(board.getBoard(), currentPlayer,
 					BoardUtils.getKingCoords(board.getBoard(), currentPlayer)[0],
@@ -412,12 +440,12 @@ public class Chess2D extends PApplet {
 	 */
 	public void resetGridColor() {
 		for (int i = 0; i < rects.length; i++) {
-			for (int j = 0; j < rects[0].length; j++) {
+			for (int j = 0; j < rects[0].length; j++) { // Looping through all rects
 				rects[i][j].setStrokeR(125);
 				rects[i][j].setStrokeG(125);
 				rects[i][j].setStrokeB(125);
 				rects[i][j].setFillR(secondaryBoardColor[0]);
-				rects[i][j].setFillG(secondaryBoardColor[1]);
+				rects[i][j].setFillG(secondaryBoardColor[1]); // Setting their colors accordingly
 				rects[i][j].setFillB(secondaryBoardColor[2]);
 
 				if (i % 2 == 0 && j % 2 != 0) {
@@ -438,12 +466,12 @@ public class Chess2D extends PApplet {
 	 * is selected
 	 * 
 	 * @author Fardeen Kasmani
-	 * @param pos
+	 * @param pos Positions to update grid with
 	 */
 	public void updateGrid(int[][] pos) {
 
 		for (int i = 0; i < pos.length; i++) {
-			for (int j = 0; j < pos[0].length; j++) {
+			for (int j = 0; j < pos[0].length; j++) { // Looping through all pieces
 				if (pos[i][j] == 1) {
 					rects[j][i].setFillR(125);
 					rects[j][i].setFillG(125);
@@ -451,7 +479,7 @@ public class Chess2D extends PApplet {
 					rects[j][i].setStrokeR(0);
 					rects[j][i].setStrokeG(0);
 					rects[j][i].setStrokeB(0);
-				} else if (pos[i][j] == 2) {
+				} else if (pos[i][j] == 2) { // Setting their colors accordingly
 					rects[j][i].setFillR(255);
 					rects[j][i].setFillG(120);
 					rects[j][i].setFillB(120);
@@ -492,22 +520,22 @@ public class Chess2D extends PApplet {
 	 */
 	public void drawPieces(Piece[][] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
-			for (int j = 0; j < pieces.length; j++) {
+			for (int j = 0; j < pieces.length; j++) { // Looping through every piece
 				if (pieces[i][j] != null) {
 					int x = pieces[i][j].getPosX();
 					int y = pieces[i][j].getPosY();
 
 					imageMode(CENTER);
 
-					int xDisplay = (x) * squareSize + squareSize / 2;
+					int xDisplay = (x) * squareSize + squareSize / 2; // Getting x and y coords
 					int yDisplay = (y) * squareSize + squareSize / 2;
 					pushStyle();
-					if (pieces[i][j].getPlayer() == 1) {
+					if (pieces[i][j].getPlayer() == 1) { // Setting piece color
 						tint(0, 0, 0);
 					} else {
 						tint(125, 125, 125);
 					}
-					image(images[pieces[i][j].id], xDisplay, yDisplay, squareSize, squareSize);
+					image(images[pieces[i][j].id], xDisplay, yDisplay, squareSize, squareSize); // Drawing to screen
 					popStyle();
 				}
 			}
@@ -517,16 +545,16 @@ public class Chess2D extends PApplet {
 	/**
 	 * Updates array based on a given map
 	 * 
-	 * @author Ibrahim Chehab
-	 * @param source
-	 * @param matte
-	 * @return
+	 * @author Fardeen Kasmani
+	 * @param source Source array to update
+	 * @param matte  Matte to apply to array
+	 * @return The merged array
 	 */
 	int[][] updateArray(int[][] source, int[][] matte) {
 		for (int i = 0; i < matte.length; i++) {
-			for (int j = 0; j < matte[i].length; j++) {
-				if (matte[i][j] == 0) {
-					source[i][j] = 0;
+			for (int j = 0; j < matte[i].length; j++) { // Looping through all pieces
+				if (matte[i][j] == 0) { // If hte matte is 0
+					source[i][j] = 0; // Make the source 0 (because it's not included in hte matte)
 				}
 			}
 		}
@@ -540,14 +568,14 @@ public class Chess2D extends PApplet {
 	 *
 	 */
 	class Rect {
-		public float rectx, recty;
-		private int[] fill = { 255, 255, 255 };
-		private int[] stroke = { 0, 0, 0 };
+		public float rectx, recty; // X and Y coords
+		private int[] fill = { 255, 255, 255 }; // Fill
+		private int[] stroke = { 0, 0, 0 }; // Stroke
 
 		/**
 		 * @author Fardeen Kasmani
-		 * @param x
-		 * @param y
+		 * @param x x coord
+		 * @param y y coord
 		 */
 		public Rect(int x, int y) {
 			rectx = x;
@@ -558,8 +586,8 @@ public class Chess2D extends PApplet {
 		 * Updates rect size
 		 * 
 		 * @author Fardeen Kasmani
-		 * @param x
-		 * @param y
+		 * @param x x coord
+		 * @param y y coord
 		 */
 		public void update(int x, int y) {
 			rectx = x;
@@ -590,12 +618,9 @@ public class Chess2D extends PApplet {
 		 * @return isPressed
 		 */
 		public boolean isPressed() {
-			if (mousePressed && mouseX >= rectx + (width - (squareSize * 8)) / 2
+			return (mousePressed && mouseX >= rectx + (width - (squareSize * 8)) / 2
 					&& mouseX <= rectx + squareSize + (width - (squareSize * 8)) / 2 && mouseY >= recty
-					&& mouseY <= recty + squareSize) {
-				return true;
-			}
-			return false;
+					&& mouseY <= recty + squareSize);
 		}
 
 		/**
@@ -605,21 +630,18 @@ public class Chess2D extends PApplet {
 		 * @return isPressed
 		 */
 		public boolean isHovered() {
-			if (mouseX >= rectx + (width - (squareSize * 8)) / 2
+			return (mouseX >= rectx + (width - (squareSize * 8)) / 2
 					&& mouseX <= rectx + squareSize + (width - (squareSize * 8)) / 2 && mouseY >= recty
-					&& mouseY <= recty + squareSize) {
-				return true;
-			}
-			return false;
+					&& mouseY <= recty + squareSize);
 		}
 
 		/**
-		 * Sets the Stroke or Fill Colour of an Object or Text
+		 * Sets the Stroke or Fill Colour of a rect
 		 * 
 		 * @author Fardeen Kasmani
-		 * @param R
-		 * @param G
-		 * @param B
+		 * @param R red value
+		 * @param G green value
+		 * @param B blue value
 		 */
 		public void setFillR(int R) {
 			fill[0] = R;
@@ -671,6 +693,13 @@ public class Chess2D extends PApplet {
 		}
 	}
 
+	/**
+	 * Converts a string to int array
+	 * 
+	 * @author Fardeen Kasmani
+	 * @param firstArray Source array
+	 * @return Converted int array
+	 */
 	public int[] stringToIntArray(String[] firstArray) {
 		int[] toReturn = new int[firstArray.length];
 		for (int i = 0; i < firstArray.length; i++) {
@@ -680,6 +709,11 @@ public class Chess2D extends PApplet {
 		return toReturn;
 	}
 
+	/**
+	 * Loads preferences from file
+	 * 
+	 * @author Fardeen Kasmani
+	 */
 	void loadPreferences() {
 		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
 				+ System.getProperty("file.separator") + "save.txt");
@@ -689,13 +723,20 @@ public class Chess2D extends PApplet {
 		this.secondaryBoardColor = stringToIntArray(prefFileData[3].split(","));
 	}
 
+	/**
+	 * Saves preferences to file
+	 * 
+	 * @param mainBoardColor Main board color
+	 * @param secBoardColor  Secondary Board color
+	 * @author Ibrahim Chehab
+	 */
 	void savePreferences(int[] mainBoardColor, int[] secBoardColor) {
 		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
-				+ System.getProperty("file.separator") + "save.txt");
-		String[] toSave = new String[4];
-		toSave[0] = prefFileData[0];
-		toSave[1] = prefFileData[1];
-		if (mainBoardColor != null) {
+				+ System.getProperty("file.separator") + "save.txt"); // Getting save file
+		String[] toSave = new String[4]; // Array to save
+		toSave[0] = prefFileData[0]; // Fetching product key
+		toSave[1] = prefFileData[1]; // Fetching current mode
+		if (mainBoardColor != null) { // Setting main board color
 			String save = String.valueOf(mainBoardColor[0]) + "," + String.valueOf(mainBoardColor[1]) + ","
 					+ String.valueOf(mainBoardColor[1]);
 			toSave[2] = save;
@@ -703,7 +744,7 @@ public class Chess2D extends PApplet {
 		} else {
 			toSave[2] = prefFileData[2];
 		}
-		if (secBoardColor != null) {
+		if (secBoardColor != null) { // SEtting secondary board color
 			String save = String.valueOf(secBoardColor[0]) + "," + String.valueOf(secBoardColor[1]) + ","
 					+ String.valueOf(secBoardColor[1]);
 			toSave[3] = save;
@@ -712,20 +753,26 @@ public class Chess2D extends PApplet {
 			toSave[3] = prefFileData[3];
 		}
 
-		saveStrings(saveFile.toString(), toSave);
+		saveStrings(saveFile.toString(), toSave); // Saving to file using PApplet built in method
 
-		prefFileData = toSave;
+		prefFileData = toSave; // Updating current file data
 	}
 
+	/**
+	 * Saves preferences when default mode changes
+	 * 
+	 * @author Ibrahim Chehab
+	 * @param mode 3D/2D mode
+	 */
 	void savePreferences(int mode) {
 		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
-				+ System.getProperty("file.separator") + "save.txt");
-		String[] toSave = new String[4];
-		toSave[0] = prefFileData[0];
-		toSave[1] = String.valueOf(mode);
-		toSave[2] = prefFileData[2];
+				+ System.getProperty("file.separator") + "save.txt"); // Getting file
+		String[] toSave = new String[4]; // Making array to save
+		toSave[0] = String.valueOf(mode); // Setting mode
+		toSave[1] = prefFileData[1]; // Fetching product key
+		toSave[2] = prefFileData[2]; // Setting colors
 		toSave[3] = prefFileData[3];
-		saveStrings(saveFile.toString(), toSave);
-		prefFileData = toSave;
+		saveStrings(saveFile.toString(), toSave); // Saving
+		prefFileData = toSave; // Updating reference
 	}
 }

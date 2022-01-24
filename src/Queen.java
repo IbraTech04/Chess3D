@@ -3,8 +3,8 @@ class Queen extends Piece {
 	/**
 	 * @author Fardeen Kasmani
 	 * @param player
-	 * @param x
-	 * @param y
+	 * @param x x pos
+	 * @param y y pos
 	 */
 	public Queen(int player, int x, int y) {
 		super(player, x, y, 1, Type.QUEEN);

@@ -19,14 +19,14 @@ public class Button {
 
 	/**
 	 * 
-	 * @param x
-	 * @param y
-	 * @param sizeX
-	 * @param sizeY
-	 * @param text
-	 * @param p
-	 * @param buttonFill
-	 * @param textFill
+	 * @param x X-coord for center of button
+	 * @param y Y-coord of center of button
+	 * @param sizeX Width of button
+	 * @param sizeY Height of button
+	 * @param text Text to be displayed inside button
+	 * @param p PApplet reference to draw to screen
+	 * @param buttonFill Int array with RGB button fill
+	 * @param textFill Int array with RGB button fill
 	 * @author Ibrahim Chehab
 	 */
 	public Button(int x, int y, int sizeX, int sizeY, String text, PApplet p, int[] buttonFill, int[] textFill) {
@@ -59,7 +59,7 @@ public class Button {
 	 * Function which returns whether the button is pressed
 	 * 
 	 * @author Ibrahim Chehab
-	 * @return Button.isPressed
+	 * @return Whether the button is pressed or not
 	 */
 	public boolean isPressed() {
 		return (p.mousePressed && p.mouseX >= x - sizeX / 2 && p.mouseX <= x + sizeX / 2 && p.mouseY >= y - sizeY / 2

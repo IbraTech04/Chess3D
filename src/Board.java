@@ -78,23 +78,23 @@ class Board {
 
 		board[playerTwoKing.getPosY()][playerTwoKing.getPosX()] = playerTwoKing;
 
-		this.pa = pa;
+		this.pa = pa; //Setting PApplet reference
 	}
 
 	/**
 	 * Creates a board class given a string array representation of a board Used
-	 * when checking for checkmates
-	 * 
-	 * @param board
+	 * when checking for checkmates. Used to create a deepcopy of the board
+	 * @author Ibrahim Chehab
+	 * @param board The board string array to recreate from
 	 */
 	public Board(String[][] board) {
 		this.board = new Piece[8][8];
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] != null) {
-					String[] workWith = board[i][j].split(":");
-					if (workWith[0].toUpperCase().equals("PAWN")) {
-						this.board[i][j] = new Pawn(Integer.parseInt(workWith[1]), j, i);
+					String[] workWith = board[i][j].split(":"); //Splitting the current string
+					if (workWith[0].toUpperCase().equals("PAWN")) { //Looping through to check what piece we have
+						this.board[i][j] = new Pawn(Integer.parseInt(workWith[1]), j, i); //Adding the piece
 						this.board[i][j].setMove(getStringBoolean(workWith[2]));
 					}
 					if (workWith[0].toUpperCase().equals("ROOK")) {
@@ -126,9 +126,9 @@ class Board {
 	 * Returns whether a string is "true"
 	 * Used when recreating boards from String arrays
 	 * 
-	 * @author Ibrahim Chehab
-	 * @param a
-	 * @return True
+	 * @author Fardeen Kasmani
+	 * @param a The string to check
+	 * @return Whether a is "true"
 	 */
 	public boolean getStringBoolean(String a) {
 		return a.toUpperCase().equals("TRUE");
@@ -165,7 +165,7 @@ class Board {
 			board[y1][x1] = null;
 			board[y2][x2].setMove(true);
 
-			if (board[y2][x2].getPiece() == Type.PAWN) {
+			if (board[y2][x2].getPiece() == Type.PAWN) { //En passante check
 				if (board[y2][x2].getPlayer() == 0) {
 					if (board[y2 + 1][x2] != null) {
 						p2.addToPile(board[y2 + 1][x2]);
@@ -195,7 +195,7 @@ class Board {
 			board[y2][x2].setMove(true);
 		}
 
-		if (y2 == 0 || y2 == 7) {
+		if (y2 == 0 || y2 == 7) { //Pawn promotion check
 			if (board[y2][x2].getPiece() == Type.PAWN) {
 				pawnPromotion(x2, y2);
 			}
@@ -206,10 +206,10 @@ class Board {
 	 * Moves piece without adding to player pile. Used in CheckMate
 	 * 
 	 * @author Fardeen Kasmani
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
+	 * @param x1 The x-coordinate of a piece before it moves
+	 * @param y1 The y-coordinate of a piece before it moves
+	 * @param x2 The destination x-coordinate
+	 * @param y2 The destination y-coordinate
 	 */
 	public void movePiece(int x1, int y1, int x2, int y2) {
 		// Checking and Moving the Piece to an Empty Spot
@@ -331,21 +331,22 @@ class Board {
 
 	/**
 	 * Returns a string array representation of the current board state Used in
-	 * checkmate detection
+	 * checkmate detection. Helps create a deepcopy of the board
 	 * 
 	 * @author Ibrahim Chehab
-	 * @return
+	 * @return The string array representation of the board
 	 */
 	public static String[][] makeBoardString(Piece[][] board) {
-		String[][] toReturn = new String[8][8];
-		for (int i = 0; i < board.length; i++) {
+		String[][] toReturn = new String[8][8]; //Initializing string to return
+		for (int i = 0; i < board.length; i++) { //Looping through all the 
 			for (int j = 0; j < board[i].length; j++) {
-				if (board[i][j] != null) {
+				if (board[i][j] != null) { //Null check
+					//Creating string representation of that pawn
 					toReturn[i][j] = String.valueOf(board[i][j].getPiece()) + ":"
 							+ String.valueOf(board[i][j].getPlayer()) + ":" + String.valueOf(board[i][j].getMove());
 				}
 			}
 		}
-		return toReturn;
+		return toReturn; //Returning array
 	}
 }
