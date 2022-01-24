@@ -30,7 +30,7 @@ public class Chess2D extends PApplet {
 
 	// Loading all the textures and files required
 
-	static Rect[][] rects;
+	Rect[][] rects;
 	PImage[] images;
 	String[] names = { "king.png", "queen.png", "knight.png", "bishop.png", "rook.png", "pawn.png" };
 	Board board;
@@ -38,6 +38,7 @@ public class Chess2D extends PApplet {
 	int[] mainBoardColor;
 	int[] secondaryBoardColor;
 	String[] prefFileData;
+
 
 	/**
 	 * Setup function required for PApplet
@@ -136,8 +137,10 @@ public class Chess2D extends PApplet {
 		if (settingsButton.isPressed()) {
 			screenNumber = 3;
 		}
-
 		popStyle();
+
+
+
 	}
 
 	/**
@@ -201,11 +204,11 @@ public class Chess2D extends PApplet {
 		}
 
 		// Allows User to Select Board Colour
-		ClickableText Colour = new ClickableText(this, "Main Board Colour: " + colourName, 40, width / 2, height / 2,
+		ClickableText mainColor = new ClickableText(this, "Main Board Colour: " + colourName, 40, width / 2, height / 2,
 				true, textColour);
-		Colour.drawText();
+		mainColor.drawText();
 
-		if (Colour.isPressed()) {
+		if (mainColor.isPressed()) {
 			Color newColor;
 			do {
 				newColor = showColorPicker("Please select your preferred main board colour", "Board Colour Selection");
@@ -218,11 +221,30 @@ public class Chess2D extends PApplet {
 			savePreferences(mainBoardColor, null);
 		}
 
+		// Allows User to Select Board Colour
+		ClickableText secColor = new ClickableText(this, "Secondary Board Colour: " + colourName, 40, width / 2,
+				height / 2 + 50, true, textColour);
+		secColor.drawText();
+
+		if (secColor.isPressed()) {
+			Color newColor;
+			do {
+				newColor = showColorPicker("Please select your preferred secondary board colour",
+						"Board Colour Selection");
+			} while (newColor == null);
+
+			secondaryBoardColor[0] = newColor.getRed();
+			secondaryBoardColor[1] = newColor.getGreen();
+			secondaryBoardColor[2] = newColor.getBlue();
+
+			savePreferences(null, secondaryBoardColor);
+		}
+
 		// Allows User to Select Preferred Game Mode
 		String selectedGameMode;
 		selectedGameMode = "3D";
 		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode, 40, width / 2,
-				height / 2 - 100, true, textColour);
+				height / 2 - 50, true, textColour);
 		Mode.drawText();
 		popMatrix();
 		popStyle();
@@ -272,7 +294,7 @@ public class Chess2D extends PApplet {
 					rects[i][j].setFillG(mainBoardColor[1]);
 					rects[i][j].setFillB(mainBoardColor[2]);
 				} else {
-					rects[i][j].setFillR(secondaryBoardColor[1]);
+					rects[i][j].setFillR(secondaryBoardColor[0]);
 					rects[i][j].setFillG(secondaryBoardColor[1]);
 					rects[i][j].setFillB(secondaryBoardColor[2]);
 				}

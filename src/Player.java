@@ -39,40 +39,53 @@ public class Player {
 	 * @param models
 	 */
 	public void drawPile(PShape[] models) {
-
-		int squareSize;
-		if (p.width > p.height) {
-			squareSize = p.height / 8;
+		if (id == 0) {
+			p.pushMatrix();
+			p.translate(55, 55);
+			for (Piece p : takenPieces) {
+				this.p.scale(2);
+				this.p.pushMatrix();
+				this.p.rotateZ(PConstants.PI);
+				this.p.shape(models[p.id], 0, 0);
+				this.p.popMatrix();
+				this.p.translate(55, 0);
+			}
+			p.popMatrix();
 		} else {
-			squareSize = p.width / 8;
+			p.pushMatrix();
+			p.translate(p.width, p.height);
+			p.translate(-55, -55);
+			for (Piece p : takenPieces) {
+				this.p.scale(2);
+				this.p.pushMatrix();
+				this.p.rotateZ(PConstants.PI);
+				this.p.shape(models[p.id], 0, 0);
+				this.p.popMatrix();
+				this.p.translate(55, 0);
+			}
+			p.popMatrix();
 		}
-		int boardSize = squareSize * 8;
+		/*
+		 * int squareSize; if (p.width > p.height) { squareSize = p.height / 8; } else {
+		 * squareSize = p.width / 8; }
+		 * 
+		 * int boardSize = squareSize * 8;
+		 * 
+		 * int sideSize = (p.width - boardSize) / 2;
+		 * 
+		 * p.pushMatrix(); p.pushStyle(); // p.resetMatrix();
+		 * p.shapeMode(PConstants.CORNER);
+		 * 
+		 * int coord = 0; int startingCoord = 0; int size = squareSize; if (id == 1) {
+		 * coord = boardSize + sideSize; squareSize *= -1; startingCoord = this.p.height
+		 * - size / 1; } this.p.translate(0, -squareSize / 2);
+		 * 
+		 * for (Piece p : takenPieces) { // this.p.scale(0.5f, 0.5f);
+		 * this.p.rotateZ(PConstants.PI); this.p.shape(models[p.id], 50, 50, size / 2,
+		 * size / 2); this.p.translate(0, -squareSize / 2); // p.popMatrix(); }
+		 * p.popStyle(); p.popMatrix();
+		 */
 
-		int sideSize = (p.width - boardSize) / 2;
-
-		p.pushMatrix();
-		p.pushStyle();
-		// p.resetMatrix();
-		// p.shapeMode(PConstants.CENTER);
-		// p.translate(0,-50);
-
-		int coord = 0;
-		int startingCoord = 0;
-		int size = squareSize;
-		if (id == 1) {
-			coord = boardSize + sideSize;
-			squareSize *= -1;
-			startingCoord = this.p.height - size / 1;
-		}
-
-		for (Piece p : takenPieces) {
-			// this.p.scale(0.5f, 0.5f);
-			// this.p.rotateZ(PConstants.PI);
-			this.p.shape(models[p.id], 50, 50, size / 2, size / 2);
-			// this.p.translate(0, -squareSize / 2);
-		}
-		p.popMatrix();
-		p.popStyle();
 	}
 
 	public void drawPile(PImage[] models) {

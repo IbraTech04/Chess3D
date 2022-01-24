@@ -24,7 +24,7 @@ public class Chess3D extends PApplet {
 	int screenNumber = 0;
 	Piece lastChosenPiece;
 	static int squareSize = 50;
-	Integer currentPlayer = 0;
+	int currentPlayer = 0;
 
 	// Loading all the textures and files required
 	int favoriteColor;
@@ -244,7 +244,7 @@ public class Chess3D extends PApplet {
 					rects[i][j].setFillG(mainBoardColor[1]);
 					rects[i][j].setFillB(mainBoardColor[2]);
 				} else {
-					rects[i][j].setFillR(secondaryBoardColor[1]);
+					rects[i][j].setFillR(secondaryBoardColor[0]);
 					rects[i][j].setFillG(secondaryBoardColor[1]);
 					rects[i][j].setFillB(secondaryBoardColor[2]);
 				}

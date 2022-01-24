@@ -1,5 +1,5 @@
 class Bishop extends Piece {
-	
+
 	/**
 	 * @author Ibrahim Chehab
 	 * @param player
@@ -9,11 +9,12 @@ class Bishop extends Piece {
 	public Bishop(int player, int x, int y) {
 		super(player, x, y, 3, Type.BISHOP);
 	}
-	
+
 	/**
 	 * Method which returns where the Bishop can go
+	 * 
 	 * @author Ibrahim Chehab
-	 * @param boardStatus Piece array containing the board status 
+	 * @param boardStatus Piece array containing the board status
 	 * @return toReturn int[][] array containing where the object can go
 	 */
 	public int[][] getMove(Piece[][] boardStatus) {
