@@ -47,7 +47,7 @@ public class Chess2D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
-		surface.setTitle("jChess2D - Beta Release v0.9"); // Setting Title Text
+		surface.setTitle("jChess2D - Release V1.0"); // Setting Title Text
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
 		board = new Board(this);

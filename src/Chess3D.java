@@ -2,25 +2,14 @@
 // By Ibrahim Chehab and Fardeen Kasmani
 
 import processing.core.*;
-import processing.data.*;
-import processing.event.*;
-import processing.opengl.*;
 
 import uibooster.*;
 import uibooster.model.options.DarkUiBoosterOptions;
 
-import java.util.HashMap;
-
 import javax.swing.JOptionPane;
 
-import java.util.ArrayList;
 import java.io.File;
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
 
 public class Chess3D extends PApplet {
 	UiBooster booster;
@@ -50,7 +39,7 @@ public class Chess3D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
-		surface.setTitle("jChess3D - Beta Release v0.9");
+		surface.setTitle("jChess3D - Release V1.0");
 		surface.setResizable(true);
 		textSize(200);
 		player1 = new Player(0, this);
@@ -92,7 +81,13 @@ public class Chess3D extends PApplet {
 			popMatrix();
 			player1.drawPile(models);
 			player2.drawPile(models);
-		} else if (screenNumber == 3) {
+		} else if (screenNumber == 2) {
+			background(0);
+			gameOverScreen();
+
+		}
+
+		else if (screenNumber == 3) {
 			background(0);
 			settingsScreen1();
 		}
@@ -167,8 +162,6 @@ public class Chess3D extends PApplet {
 		rect(0, 0, width, (float) (height * 0.102986612), 15, 15, 15, 15);
 		String colourName;
 		colourName = "Click Here";
-		int[] chosenColour = new int[] { 255, 255, 255 };
-		int[] buttonColour = new int[] { 150, 150, 150 };
 		int[] textColour = new int[] { 255, 255, 255 };
 
 		// Back Button in the Name
@@ -279,6 +272,7 @@ public class Chess3D extends PApplet {
 		pushStyle();
 		textSize(100);
 		textAlign(CENTER);
+		fill(255);
 		text("Game Over", width / 2, height / 2 - 100);
 		textSize(50);
 		Button playAgainButton = new Button(width / 2, height / 2, 300, 120, "Play Again", this,
@@ -548,9 +542,9 @@ public class Chess3D extends PApplet {
 
 					pushStyle();
 					if (pieces[i][j].getPlayer() == 1) {
-						tint(125, 125, 125);
-					} else {
 						tint(0, 0, 0);
+					} else {
+
 					}
 					shape(models[pieces[i][j].id], 0, 0);
 					popStyle();

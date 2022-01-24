@@ -41,7 +41,7 @@ public class Player {
 	public void drawPile(PShape[] models) {
 		if (id == 0) {
 			p.pushMatrix();
-			p.translate(55, 55);
+			p.translate(55, 110);
 			for (Piece p : takenPieces) {
 				this.p.scale(2);
 				this.p.pushMatrix();
@@ -54,7 +54,7 @@ public class Player {
 		} else {
 			p.pushMatrix();
 			p.translate(p.width, p.height);
-			p.translate(-55, -55);
+			p.translate(-55, -110);
 			for (Piece p : takenPieces) {
 				this.p.scale(2);
 				this.p.pushMatrix();
