@@ -5,9 +5,9 @@ import processing.core.PShape;
 import processing.core.PConstants;
 
 public class Player {
-	private PApplet p;
-	private ArrayList<Piece> takenPieces;
-	private int id;
+	private PApplet p; // Reference to PApplet. Used for drawing to screens
+	private ArrayList<Piece> takenPieces; // ArrayList of all the pieces the player took
+	private int id; // Player ID. DEnotes whether they are at the top or bottom
 
 	/**
 	 * Draws the pile of eliminated pieces for that player
@@ -39,6 +39,7 @@ public class Player {
 	 * @param models
 	 */
 	public void drawPile(PShape[] models) {
+
 		int squareSize;
 		if (p.width > p.height) {
 			squareSize = p.height / 8;
@@ -50,8 +51,10 @@ public class Player {
 		int sideSize = (p.width - boardSize) / 2;
 
 		p.pushMatrix();
-
-		p.imageMode(0);
+		p.pushStyle();
+		// p.resetMatrix();
+		// p.shapeMode(PConstants.CENTER);
+		// p.translate(0,-50);
 
 		int coord = 0;
 		int startingCoord = 0;
@@ -64,11 +67,12 @@ public class Player {
 
 		for (Piece p : takenPieces) {
 			// this.p.scale(0.5f, 0.5f);
-			this.p.rotateZ(PConstants.PI);
-			this.p.shape(models[p.id], coord, startingCoord, size / 2, size / 2);
-			this.p.translate(0, squareSize / 2);
+			// this.p.rotateZ(PConstants.PI);
+			this.p.shape(models[p.id], 50, 50, size / 2, size / 2);
+			// this.p.translate(0, -squareSize / 2);
 		}
 		p.popMatrix();
+		p.popStyle();
 	}
 
 	public void drawPile(PImage[] models) {
@@ -96,6 +100,11 @@ public class Player {
 		}
 
 		for (Piece p : takenPieces) {
+			if (this.id == 1) {
+				this.p.tint(0, 0, 0);
+			} else {
+				this.p.tint(125, 125, 125);
+			}
 			this.p.image(models[p.id], coord, startingCoord, size / 2, size / 2);
 			this.p.translate(0, squareSize / 2);
 		}

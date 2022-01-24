@@ -5,12 +5,17 @@ import processing.core.*;
 import processing.data.*;
 import processing.event.*;
 import processing.opengl.*;
+import uibooster.model.options.DarkUiBoosterOptions;
 import processing.core.PConstants;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
+
 import java.util.ArrayList;
 import java.io.File;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStream;
@@ -21,7 +26,7 @@ public class Chess2D extends PApplet {
 	int screenNumber = 0;
 	Piece lastChosenPiece;
 	static int squareSize = 50;
-	int currentPlayer = 1;
+	int currentPlayer = 0;
 
 	// Loading all the textures and files required
 
@@ -30,6 +35,9 @@ public class Chess2D extends PApplet {
 	String[] names = { "king.png", "queen.png", "knight.png", "bishop.png", "rook.png", "pawn.png" };
 	Board board;
 	Player player1, player2;
+	int[] mainBoardColor;
+	int[] secondaryBoardColor;
+	String[] prefFileData;
 
 	/**
 	 * Setup function required for PApplet
@@ -37,11 +45,12 @@ public class Chess2D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
+		surface.setTitle("jChess2D - Beta Release v0.9");
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
 		board = new Board(this);
-		surface.setTitle("Chess2D - Alpha Release v0.5.1");
 		surface.setResizable(true);
+		loadPreferences();
 		initBoard2D();
 		images = new PImage[6];
 		for (int i = 0; i < 6; i++) {
@@ -85,7 +94,7 @@ public class Chess2D extends PApplet {
 
 		else if (screenNumber == 3) {
 			background(0);
-			settingsScreen();
+			settingsScreen1();
 		}
 	}
 
@@ -106,10 +115,9 @@ public class Chess2D extends PApplet {
 		text("jChess", width / 2, height / 5.1f);
 		textSize(75);
 		text("2D Edition", width / 2, height / 5.1f + 125);
-
 		textSize(125);
 
-		Button playButton = new Button(width / 2, height / 2, 300, 150, "Play", this, new int[] { 0, 0, 0 },
+		Button playButton = new Button(width / 2, height / 2, 300, 150, "Play", this, new int[] { 79, 197, 247 },
 				new int[] { 255, 255, 255 });
 		playButton.drawButton();
 		textSize(75);
@@ -124,8 +132,12 @@ public class Chess2D extends PApplet {
 		if (playButton.isPressed()) {
 			screenNumber = 1;
 		}
-		popStyle();
 
+		if (settingsButton.isPressed()) {
+			screenNumber = 3;
+		}
+
+		popStyle();
 	}
 
 	/**
@@ -139,12 +151,13 @@ public class Chess2D extends PApplet {
 		textAlign(CENTER);
 		fill(255);
 		text("Game Over", width / 2, height / 2 - 100);
+
 		textSize(50);
 		Button playAgainButton = new Button(width / 2, height / 2, 300, 120, "Play Again", this,
 				new int[] { 255, 255, 255 }, new int[] { 0, 0, 0 });
-
 		playAgainButton.drawButton();
 
+		// Sets the Screen to the Home Screen
 		if (playAgainButton.isPressed()) {
 			screenNumber = 0;
 			setup();
@@ -154,24 +167,69 @@ public class Chess2D extends PApplet {
 		popStyle();
 	}
 
-	public void settingsScreen() {
+	/**
+	 * Method which draws the Settings Screen
+	 * 
+	 * @author Fardeen Kasmani
+	 */
+	public void settingsScreen1() {
 		pushStyle();
+		pushMatrix();
 		textSize(25);
 		textAlign(CENTER);
-		fill(255);
+		fill(79, 197, 247);
+		noStroke();
+		rect(0, 0, width, (float) (height * 0.102986612), 15, 15, 15, 15);
 		String colourName;
-		colourName = "Blue";
+		colourName = "Click Here";
 		int[] chosenColour = new int[] { 255, 255, 255 };
 		int[] buttonColour = new int[] { 150, 150, 150 };
 		int[] textColour = new int[] { 255, 255, 255 };
-		/*
-		 * ClickableText Colour = new ClickableText(this, "Board Colour: " + colourName,
-		 * 25, width / 2 - 500, height / 2 - 100, true, chosenColour);
-		 */
-		Button Colour = new Button(width / 2 - 500, height / 2 - 100, 100, 40, colourName, this, buttonColour,
-				textColour);
-		Colour.drawButton();
+
+		// Back Button in the Name
+		ClickableText Home = new ClickableText(this, "jChess Settings", 40, width / 2, 55, true,
+				new int[] { 255, 255, 255 });
+		Home.drawText();
+
+		// Back Button
+		ClickableText Back = new ClickableText(this, "Back", 20, 45, 45, true, new int[] { 255, 255, 255 });
+		Back.drawText();
+
+		// Sets the Screen to the Main Screen
+		if (Home.isPressed() || Back.isPressed()) {
+			screenNumber = 0;
+		}
+
+		// Allows User to Select Board Colour
+		ClickableText Colour = new ClickableText(this, "Main Board Colour: " + colourName, 40, width / 2, height / 2,
+				true, textColour);
+		Colour.drawText();
+
+		if (Colour.isPressed()) {
+			Color newColor;
+			do {
+				newColor = showColorPicker("Please select your preferred main board colour", "Board Colour Selection");
+			} while (newColor == null);
+
+			mainBoardColor[0] = newColor.getRed();
+			mainBoardColor[1] = newColor.getGreen();
+			mainBoardColor[2] = newColor.getBlue();
+
+			savePreferences(mainBoardColor, null);
+		}
+
+		// Allows User to Select Preferred Game Mode
+		String selectedGameMode;
+		selectedGameMode = "3D";
+		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode, 40, width / 2,
+				height / 2 - 100, true, textColour);
+		Mode.drawText();
+		popMatrix();
 		popStyle();
+	}
+
+	public Color showColorPicker(String message, String title) {
+		return ColorPickerDialog.showColorPicker(message, title, new DarkUiBoosterOptions().getIconPath());
 	}
 
 	/**
@@ -179,7 +237,6 @@ public class Chess2D extends PApplet {
 	 * 
 	 * @author Ibrahim Chehab
 	 */
-
 	public void updateRectSize() {
 
 		if (width > height) {
@@ -207,15 +264,18 @@ public class Chess2D extends PApplet {
 				rects[i][j] = new Rect(i * squareSize, j * squareSize);
 
 				if (i % 2 == 0 && j % 2 != 0) {
-					rects[i][j].setFillR(54);
-					rects[i][j].setFillG(207);
-					rects[i][j].setFillB(224);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
 				} else if (i % 2 != 0 && j % 2 == 0) {
-					rects[i][j].setFillR(54);
-					rects[i][j].setFillG(207);
-					rects[i][j].setFillB(224);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
+				} else {
+					rects[i][j].setFillR(secondaryBoardColor[1]);
+					rects[i][j].setFillG(secondaryBoardColor[1]);
+					rects[i][j].setFillB(secondaryBoardColor[2]);
 				}
-
 			}
 		}
 	}
@@ -324,7 +384,7 @@ public class Chess2D extends PApplet {
 	}
 
 	/**
-	 * Resets the grid color to all white
+	 * Resets the grid color to all white and blue (or the selected colour)
 	 * 
 	 * @author Fardeen Kasmani
 	 */
@@ -334,18 +394,18 @@ public class Chess2D extends PApplet {
 				rects[i][j].setStrokeR(125);
 				rects[i][j].setStrokeG(125);
 				rects[i][j].setStrokeB(125);
-				rects[i][j].setFillR(255);
-				rects[i][j].setFillG(255);
-				rects[i][j].setFillB(255);
+				rects[i][j].setFillR(secondaryBoardColor[0]);
+				rects[i][j].setFillG(secondaryBoardColor[1]);
+				rects[i][j].setFillB(secondaryBoardColor[2]);
 
 				if (i % 2 == 0 && j % 2 != 0) {
-					rects[i][j].setFillR(79);
-					rects[i][j].setFillG(197);
-					rects[i][j].setFillB(247);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
 				} else if (i % 2 != 0 && j % 2 == 0) {
-					rects[i][j].setFillR(79);
-					rects[i][j].setFillG(197);
-					rects[i][j].setFillB(247);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
 				}
 			}
 		}
@@ -383,18 +443,18 @@ public class Chess2D extends PApplet {
 					rects[j][i].setStrokeG(125);
 					rects[j][i].setStrokeB(125);
 
-					rects[j][i].setFillR(255);
-					rects[j][i].setFillG(255);
-					rects[j][i].setFillB(255);
+					rects[j][i].setFillR(secondaryBoardColor[0]);
+					rects[j][i].setFillG(secondaryBoardColor[1]);
+					rects[j][i].setFillB(secondaryBoardColor[2]);
 
 					if (j % 2 == 0 && i % 2 != 0) {
-						rects[j][i].setFillR(79);
-						rects[j][i].setFillG(197);
-						rects[j][i].setFillB(247);
+						rects[j][i].setFillR(mainBoardColor[0]);
+						rects[j][i].setFillG(mainBoardColor[1]);
+						rects[j][i].setFillB(mainBoardColor[2]);
 					} else if (j % 2 != 0 && i % 2 == 0) {
-						rects[j][i].setFillR(79);
-						rects[j][i].setFillG(197);
-						rects[j][i].setFillB(247);
+						rects[j][i].setFillR(mainBoardColor[0]);
+						rects[j][i].setFillG(mainBoardColor[1]);
+						rects[j][i].setFillB(mainBoardColor[2]);
 					}
 
 				}
@@ -421,7 +481,9 @@ public class Chess2D extends PApplet {
 					int yDisplay = (y) * squareSize + squareSize / 2;
 					pushStyle();
 					if (pieces[i][j].getPlayer() == 1) {
-						tint(0, 0, 255);
+						tint(0, 0, 0);
+					} else {
+						tint(125, 125, 125);
 					}
 					image(images[pieces[i][j].id], xDisplay, yDisplay, squareSize, squareSize);
 					popStyle();
@@ -433,6 +495,7 @@ public class Chess2D extends PApplet {
 	/**
 	 * Updates array based on a given map
 	 * 
+	 * @author Ibrahim Chehab
 	 * @param source
 	 * @param matte
 	 * @return
@@ -445,7 +508,6 @@ public class Chess2D extends PApplet {
 				}
 			}
 		}
-
 		return source;
 	}
 
@@ -529,6 +591,14 @@ public class Chess2D extends PApplet {
 			return false;
 		}
 
+		/**
+		 * Sets the Stroke or Fill Colour of an Object or Text
+		 * 
+		 * @author Fardeen Kasmani
+		 * @param R
+		 * @param G
+		 * @param B
+		 */
 		public void setFillR(int R) {
 			fill[0] = R;
 		}
@@ -577,5 +647,63 @@ public class Chess2D extends PApplet {
 		} else {
 			PApplet.main(appletArgs);
 		}
+	}
+
+	public int[] stringToIntArray(String[] firstArray) {
+		int[] toReturn = new int[firstArray.length];
+		for (int i = 0; i < firstArray.length; i++) {
+			toReturn[i] = Integer.parseInt(firstArray[i]);
+		}
+
+		return toReturn;
+	}
+
+	void loadPreferences() {
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt");
+		prefFileData = loadStrings(saveFile);
+
+		this.mainBoardColor = stringToIntArray(prefFileData[2].split(","));
+		this.secondaryBoardColor = stringToIntArray(prefFileData[3].split(","));
+	}
+
+	void savePreferences(int[] mainBoardColor, int[] secBoardColor) {
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt");
+		String[] toSave = new String[4];
+		toSave[0] = prefFileData[0];
+		toSave[1] = prefFileData[1];
+		if (mainBoardColor != null) {
+			String save = String.valueOf(mainBoardColor[0]) + "," + String.valueOf(mainBoardColor[1]) + ","
+					+ String.valueOf(mainBoardColor[1]);
+			toSave[2] = save;
+			this.mainBoardColor = mainBoardColor;
+		} else {
+			toSave[2] = prefFileData[2];
+		}
+		if (secBoardColor != null) {
+			String save = String.valueOf(secBoardColor[0]) + "," + String.valueOf(secBoardColor[1]) + ","
+					+ String.valueOf(secBoardColor[1]);
+			toSave[3] = save;
+			this.secondaryBoardColor = secBoardColor;
+		} else {
+			toSave[3] = prefFileData[3];
+		}
+
+		saveStrings(saveFile.toString(), toSave);
+
+		prefFileData = toSave;
+	}
+
+	void savePreferences(int mode) {
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt");
+		String[] toSave = new String[4];
+		toSave[0] = prefFileData[0];
+		toSave[1] = String.valueOf(mode);
+		toSave[2] = prefFileData[2];
+		toSave[3] = prefFileData[3];
+		saveStrings(saveFile.toString(), toSave);
+		prefFileData = toSave;
 	}
 }

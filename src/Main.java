@@ -1,6 +1,9 @@
 //Main class which loads the game
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -9,50 +12,50 @@ import org.jdom2.input.SAXBuilder;
 
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
-		File saveDir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+		File saveDir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess");
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
 				+ System.getProperty("file.separator") + "save.txt");
 
-		if (saveDir.exists()) { // If the save directory exists, the user has already played the game. Skip
-								// requirements check
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Set the Java Swing UI style to
+																					// Windows
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
+		try { // If the save directory exists, the user has already played the game. Skip
+				// requirements check
 
-			BufferedReader br = new BufferedReader(new FileReader(saveDir)); // Loading from text file
+			String[] data = loadFile(saveFile);
 
-			try {
-				String a;
-				String[] file = new String[3];
-				int i = 0;
-				while ((a = br.readLine()) != null) {
-					file[i] = a;
-					i++;
-				}
-
-				if (isValidKey(file[2])) {
-					if (file[0].contains("2d")) {
-						Chess2D c = new Chess2D();
-						c.main(new String[] {}); // Loads the game
-					} else {
-						Chess3D c = new Chess3D();
-						c.main(new String[] {}); // Loads the game
-					}
-				}
-
-			} catch (Exception e) {
-				System.exit(0);
+			if (!isValidKey(data[1])) {
+				JOptionPane.showMessageDialog(null,
+						"Your licence file appears to have been tampered with. Please reneter your product key",
+						"Activation Unsuccessful", JOptionPane.ERROR_MESSAGE);
+				throw new Exception();
 			}
+
+			int mode = Integer.parseInt(data[0]);
+
+			if (mode == 0) {
+				Chess3D c = new Chess3D();
+				c.main(new String[] {});
+			} else {
+				Chess2D c = new Chess2D();
+				c.main(new String[] {});
+			}
+
 		}
 
-		else
+		catch (Exception e)
 
 		{ // Otherwise run requirements check
 			saveDir.mkdir(); // Make the save directory
-			File avatarDir = new File(saveDir + System.getProperty("file.separator") + "Avatars");
-			avatarDir.mkdir(); // Make avatar save dir
+
 			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Set the Java Swing UI style to
-																						// Windows
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-					| UnsupportedLookAndFeelException e1) {
-				e1.printStackTrace();
+				saveFile.createNewFile();
+			} catch (IOException ee) {
+				ee.printStackTrace();
 			}
 			String pKey;
 
@@ -70,24 +73,22 @@ public class Main {
 					break;
 				}
 			}
+
+			saveFile(saveFile, new String[] { "0", pKey, "79,197,247", "255,255,255" });
+
+			JOptionPane.showMessageDialog(null,
+					"In order to proceed, we must check your system to ensure it meets our system requirements. This process may take some time; Please wait",
+					"System Requirements Check", JOptionPane.INFORMATION_MESSAGE); // Inform
+																					// the
+																					// user
+																					// that
+																					// their
+																					// system
+																					// will
+																					// be
+																					// assessed
+			checkSystemRequirements(); // Check system requirements
 		}
-
-		JOptionPane.showMessageDialog(null,
-				"In order to proceed, we must check your system to ensure it meets our system requirements. This process may take some time; Please wait",
-				"System Requirements Check", JOptionPane.INFORMATION_MESSAGE); // Inform
-																				// the
-																				// user
-																				// that
-																				// their
-																				// system
-																				// will
-																				// be
-																				// assessed
-
-		checkSystemRequirements(); // Check system requirements
-
-		System.out.println("Requirements check completed");
-
 	}
 
 	/**
@@ -141,6 +142,7 @@ public class Main {
 					Chess3D c = new Chess3D();
 					c.main(new String[] {});
 				}
+				System.exit(0);
 			}
 		}
 	}
@@ -220,5 +222,60 @@ public class Main {
 			}
 		}
 		return sum;
+	}
+
+	/**
+	 * Method which loads a text files data, given a file object reference
+	 * 
+	 * @param file
+	 * @return
+	 * @author Fardeen Kasmani
+	 */
+	public static String[] loadFile(File file) {
+		ArrayList<String> strings = new ArrayList<String>();
+
+		try {
+			Scanner scanner = new Scanner(file);
+			while (scanner.hasNextLine()) {
+				strings.add(scanner.nextLine());
+
+			}
+			scanner.close();
+			return makeStringArray(strings);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void saveFile(File file, String[] data) {
+		try {
+			FileWriter writer = new FileWriter(file);
+			for (String s : data) {
+				writer.write(s);
+				writer.write("\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method which converts an arraylist to a string array
+	 * 
+	 * @param s
+	 * @return
+	 * @author Fardeen Kasmani
+	 */
+	public static String[] makeStringArray(ArrayList<String> s) {
+		String[] toReturn = new String[s.size()];
+
+		for (int i = 0; i < s.size(); i++) {
+			toReturn[i] = s.get(i);
+		}
+
+		return toReturn;
 	}
 }

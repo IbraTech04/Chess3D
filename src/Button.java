@@ -46,6 +46,7 @@ public class Button {
 	 * @author Ibrahim Chehab
 	 */
 	public void drawButton() {
+		p.noStroke();
 		p.rectMode(PConstants.CENTER);
 		p.fill(buttonFill[0], buttonFill[1], buttonFill[2]);
 		p.rect(x, y, sizeX, sizeY, 15, 15, 15, 15);
@@ -65,6 +66,10 @@ public class Button {
 				&& p.mouseY <= y + sizeY / 2);
 	}
 
+	/** Sets the Text
+	 * @author Ibrahim Chehab
+	 * @param text
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}

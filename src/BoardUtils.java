@@ -188,7 +188,7 @@ class BoardUtils {
 	/**
 	 * Function which returns where a player can go to get out of a check
 	 * 
-	 * @author Ibrahim Chehab
+	 * @author Fardeen Kasmani
 	 */
 	int[][] getCheckMoves() {
 		// TODO Implement this function

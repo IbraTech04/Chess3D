@@ -34,6 +34,8 @@ public class Chess3D extends PApplet {
 	String[] names = { "king.obj", "queen.obj", "knight.obj", "bishop.obj", "rook.obj", "pawn.obj" };
 	Board board;
 	Player player1, player2;
+	int[] mainBoardColor;
+	int[] secondaryBoardColor;
 
 	public Board getBoard() {
 		return board;
@@ -45,19 +47,19 @@ public class Chess3D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void setup() {
+		surface.setTitle("jChess3D - Beta Release v0.9");
+		surface.setResizable(true);
 		textSize(200);
-		textAlign(CENTER);
-		text("Rendering... Please Wait", width / 2, height / 2);
 		player1 = new Player(0, this);
 		player2 = new Player(1, this);
 		board = new Board(this);
-		surface.setTitle("Chess3D - Alpha Release v0.5.1");
-		surface.setResizable(true);
-		initBoard3D();
 		models = new PShape[6];
 		for (int i = 0; i < 6; i++) {
 			models[i] = loadShape("data/" + names[i]);
 		}
+		frameRate(60);
+		loadPreferences();
+		initBoard3D();
 	}
 
 	/**
@@ -87,6 +89,9 @@ public class Chess3D extends PApplet {
 			popMatrix();
 			player1.drawPile(models);
 			player2.drawPile(models);
+		} else if (screenNumber == 3) {
+			background(0);
+			settingsScreen1();
 		}
 	}
 
@@ -114,7 +119,7 @@ public class Chess3D extends PApplet {
 
 		textSize(125);
 
-		Button playButton = new Button(width / 2, height / 2, 300, 150, "Play", this, new int[] { 0, 0, 0 },
+		Button playButton = new Button(width / 2, height / 2, 300, 150, "Play", this, new int[] { 79, 197, 247 },
 				new int[] { 255, 255, 255 });
 		playButton.drawButton();
 		textSize(75);
@@ -129,8 +134,50 @@ public class Chess3D extends PApplet {
 		if (playButton.isPressed()) {
 			screenNumber = 1;
 		}
-		popStyle();
 
+		if (settingsButton.isPressed()) {
+			screenNumber = 3;
+		}
+		popStyle();
+	}
+
+	public void settingsScreen1() {
+		pushStyle();
+		pushMatrix();
+		textSize(25);
+		textAlign(CENTER);
+		fill(79, 197, 247);
+		noStroke();
+		rect(0, 0, width, (float) (height * 0.102986612), 15, 15, 15, 15);
+		String colourName;
+		colourName = "Click Here";
+		int[] chosenColour = new int[] { 255, 255, 255 };
+		int[] buttonColour = new int[] { 150, 150, 150 };
+		int[] textColour = new int[] { 255, 255, 255 };
+		// textAlign(CENTER);
+
+		ClickableText Home = new ClickableText(this, "jChess Settings", 40, width / 2, 55, true,
+				new int[] { 255, 255, 255 });
+		Home.drawText();
+
+		ClickableText Back = new ClickableText(this, "Back", 20, 45, 45, true, new int[] { 255, 255, 255 });
+		Back.drawText();
+
+		if (Home.isPressed() || Back.isPressed()) {
+			screenNumber = 0;
+		}
+
+		ClickableText Colour = new ClickableText(this, "Board Colour: " + colourName, 40, width / 2, height / 2, true,
+				textColour);
+		Colour.drawText();
+
+		String selectedGameMode;
+		selectedGameMode = "3D";
+		ClickableText Mode = new ClickableText(this, "Default Game Mode: " + selectedGameMode, 40, width / 2,
+				height / 2 - 100, true, textColour);
+		Mode.drawText();
+		popMatrix();
+		popStyle();
 	}
 
 	/**
@@ -189,13 +236,17 @@ public class Chess3D extends PApplet {
 				rects[i][j] = new Rect(i * squareSize, j * squareSize, i, j);
 
 				if (i % 2 == 0 && j % 2 != 0) {
-					rects[i][j].setFillR(54);
-					rects[i][j].setFillG(207);
-					rects[i][j].setFillB(224);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
 				} else if (i % 2 != 0 && j % 2 == 0) {
-					rects[i][j].setFillR(54);
-					rects[i][j].setFillG(207);
-					rects[i][j].setFillB(224);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
+				} else {
+					rects[i][j].setFillR(secondaryBoardColor[1]);
+					rects[i][j].setFillG(secondaryBoardColor[1]);
+					rects[i][j].setFillB(secondaryBoardColor[2]);
 				}
 			}
 		}
@@ -330,18 +381,18 @@ public class Chess3D extends PApplet {
 				rects[i][j].setStrokeR(125);
 				rects[i][j].setStrokeG(125);
 				rects[i][j].setStrokeB(125);
-				rects[i][j].setFillR(255);
-				rects[i][j].setFillG(255);
-				rects[i][j].setFillB(255);
+				rects[i][j].setFillR(secondaryBoardColor[0]);
+				rects[i][j].setFillG(secondaryBoardColor[1]);
+				rects[i][j].setFillB(secondaryBoardColor[2]);
 
 				if (i % 2 == 0 && j % 2 != 0) {
-					rects[i][j].setFillR(79);
-					rects[i][j].setFillG(197);
-					rects[i][j].setFillB(247);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
 				} else if (i % 2 != 0 && j % 2 == 0) {
-					rects[i][j].setFillR(79);
-					rects[i][j].setFillG(197);
-					rects[i][j].setFillB(247);
+					rects[i][j].setFillR(mainBoardColor[0]);
+					rects[i][j].setFillG(mainBoardColor[1]);
+					rects[i][j].setFillB(mainBoardColor[2]);
 				}
 			}
 		}
@@ -379,18 +430,18 @@ public class Chess3D extends PApplet {
 					rects[j][i].setStrokeG(125);
 					rects[j][i].setStrokeB(125);
 
-					rects[j][i].setFillR(255);
-					rects[j][i].setFillG(255);
-					rects[j][i].setFillB(255);
+					rects[j][i].setFillR(secondaryBoardColor[0]);
+					rects[j][i].setFillG(secondaryBoardColor[1]);
+					rects[j][i].setFillB(secondaryBoardColor[2]);
 
 					if (j % 2 == 0 && i % 2 != 0) {
-						rects[j][i].setFillR(79);
-						rects[j][i].setFillG(197);
-						rects[j][i].setFillB(247);
+						rects[j][i].setFillR(mainBoardColor[0]);
+						rects[j][i].setFillG(mainBoardColor[1]);
+						rects[j][i].setFillB(mainBoardColor[2]);
 					} else if (j % 2 != 0 && i % 2 == 0) {
-						rects[j][i].setFillR(79);
-						rects[j][i].setFillG(197);
-						rects[j][i].setFillB(247);
+						rects[j][i].setFillR(mainBoardColor[0]);
+						rects[j][i].setFillG(mainBoardColor[1]);
+						rects[j][i].setFillB(mainBoardColor[2]);
 					}
 
 				}
@@ -504,6 +555,7 @@ public class Chess3D extends PApplet {
 		 * @author Ibrahim Chehab
 		 */
 		public void drawRect() {
+			pushStyle();
 			this.x1 = idX * squareSize;
 			this.y1 = idY * squareSize;
 			this.x2 = x1 + squareSize;
@@ -519,10 +571,15 @@ public class Chess3D extends PApplet {
 
 			y1 = y1T;
 			y2 = y2T;
-
+			if (this.isHovered()) {
+				stroke(stroke[0], stroke[1], stroke[2]);
+			} else {
+				noStroke();
+			}
 			stroke(stroke[0], stroke[1], stroke[2]);
 			fill(fill[0], fill[1], fill[2]);
 			rect(rectx, recty, squareSize, squareSize);
+			popStyle();
 		}
 
 		/**
@@ -533,6 +590,21 @@ public class Chess3D extends PApplet {
 		 */
 		public boolean isPressed() {
 			if (mousePressed && mouseX >= x1 && mouseX < x2 && mouseY >= y1 && mouseY < y2) {
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Returns whether the rect is hovered over
+		 * 
+		 * @author Ibrahim Chehab
+		 * @return isPressed
+		 */
+		public boolean isHovered() {
+			if (mouseX >= rectx + (width - (squareSize * 8)) / 2
+					&& mouseX <= rectx + squareSize + (width - (squareSize * 8)) / 2 && mouseY >= recty
+					&& mouseY <= recty + squareSize) {
 				return true;
 			}
 			return false;
@@ -578,12 +650,28 @@ public class Chess3D extends PApplet {
 	 * @author Ibrahim Chehab
 	 * @param passedArgs
 	 */
-	public static void main(String[] passedArgs) {
+	public static void main(String[] args) {
 		String[] appletArgs = new String[] { "Chess3D" };
-		if (passedArgs != null) {
-			PApplet.main(concat(appletArgs, passedArgs));
-		} else {
-			PApplet.main(appletArgs);
+
+		PApplet.main(appletArgs);
+	}
+
+	public int[] stringToIntArray(String[] firstArray) {
+		int[] toReturn = new int[firstArray.length];
+		for (int i = 0; i < firstArray.length; i++) {
+			toReturn[i] = Integer.parseInt(firstArray[i]);
 		}
+
+		return toReturn;
+	}
+
+	void loadPreferences() {
+		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
+				+ System.getProperty("file.separator") + "save.txt");
+		String[] data = loadStrings(saveFile);
+
+		this.mainBoardColor = stringToIntArray(data[2].split(","));
+		this.secondaryBoardColor = stringToIntArray(data[3].split(","));
+
 	}
 }
