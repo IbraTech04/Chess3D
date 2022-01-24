@@ -21,6 +21,7 @@ public class Chess3D extends PApplet {
 	// Loading all the textures and files required
 	int favoriteColor;
 	static Rect[][] rects;
+	PShape[] models1;
 	PShape[] models;
 	PShape chessBoard;
 	String[] names = { "king.obj", "queen.obj", "knight.obj", "bishop.obj", "rook.obj", "pawn.obj" };
@@ -48,6 +49,10 @@ public class Chess3D extends PApplet {
 		models = new PShape[6];
 		for (int i = 0; i < 6; i++) {
 			models[i] = loadShape("data/" + names[i]);
+		}
+		models1 = new PShape[8];
+		for (int i = 0; i < 6; i++) {
+			models1[i] = loadShape("data/black/" + names[i]);
 		}
 		frameRate(60);
 		loadPreferences();
@@ -80,7 +85,7 @@ public class Chess3D extends PApplet {
 			drawPieces(board.getBoard());
 			popMatrix();
 			player1.drawPile(models);
-			player2.drawPile(models);
+			player2.drawPile(models1);
 		} else if (screenNumber == 2) {
 			background(0);
 			gameOverScreen();
@@ -542,11 +547,11 @@ public class Chess3D extends PApplet {
 
 					pushStyle();
 					if (pieces[i][j].getPlayer() == 1) {
-						tint(0, 0, 0);
+						shape(models1[pieces[i][j].id], 0, 0);
 					} else {
+						shape(models[pieces[i][j].id], 0, 0);
 
 					}
-					shape(models[pieces[i][j].id], 0, 0);
 					popStyle();
 					popMatrix();
 				}
