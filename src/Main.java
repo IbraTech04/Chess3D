@@ -9,8 +9,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;
+import uibooster.*;
+import uibooster.components.WaitingDialog;
 
 public class Main {
+	static WaitingDialog dialog;
+
 	public static void main(String[] args) throws FileNotFoundException {
 		File saveDir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess");
 		File saveFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "jChess"
@@ -87,7 +91,11 @@ public class Main {
 																					// will
 																					// be
 																					// assessed
+			dialog = new UiBooster().showWaitingDialog("Checking your PC... Please Wait", "System Requirements Check");
+			dialog.setLargeMessage("Beginning System Check");
+
 			int state = checkSystemRequirements(); // Check system requirements
+			dialog.close();
 
 			if (state == 0) { // If the users PC cannot run 3D, load 2D
 				saveFile(saveFile, new String[] { "1", pKey, "79,197,247", "255,255,255" }); // Save file
@@ -105,39 +113,60 @@ public class Main {
 	 * Method which checks system requirements. Uses DXDiag on windows
 	 * 
 	 * @author Ibrahim Chehab
+	 * @return
 	 */
 	public static int checkSystemRequirements() {
+		dialog.addToLargeMessage("Running OS check");
 		if (System.getProperty("os.name").toLowerCase().contains("windows")) { // If the OS is windows
+			dialog.addToLargeMessage("OS check complete");
+			dialog.addToLargeMessage("Checking CPU");
 			int cpuCores = Runtime.getRuntime().availableProcessors();
 			String filePath = "./dxdiag.xml";
 			String command = "dxdiag.exe /x " + filePath;
 			try {
+				dialog.addToLargeMessage("Running and Saving DXDiag XML");
 				Process p = Runtime.getRuntime().exec(command);
 				p.waitFor();
 				p.destroy();
-
+				dialog.addToLargeMessage("DXDiag Run Complete");
+				dialog.addToLargeMessage("Parsing DXDiag XML");
 				SAXBuilder sax = new SAXBuilder();
 				Document doc = sax.build(new File("dxdiag.xml"));
+				dialog.addToLargeMessage("Checking RAM");
 
 				String data = doc.getRootElement().getChild("SystemInformation").getChild("Memory").getValue();
-
 				int RAM = Integer.parseInt(data.substring(0, data.length() - 6));
+				dialog.addToLargeMessage("Checking GPU");
 
 				String GPU = doc.getRootElement().getChild("DisplayDevices").getChild("DisplayDevice")
 						.getChild("CardName").getValue();
 
 				double gpuScore = getGPUScore(GPU);
+				dialog.addToLargeMessage("Running Final Check");
 
-				if (gpuScore < 4 && cpuCores <= 2 && RAM <= 4096) {
+				if (gpuScore < 4 || cpuCores <= 2 || RAM <= 4096) {
+					dialog.addToLargeMessage("Requirements check failed");
+					dialog.close();
 					throw new Exception(); // Since our code is encapsulated in try/catch, we can break out of it by
 											// throwing an exception
 				} else {
+					dialog.addToLargeMessage("Requirements check passed");
 					return 1;
 				}
 
 			} catch (Exception e) { // If we hit an error, the users computer is likely too slow to run our game.
 									// Give them the option to either run the game in 2D mode, exit, or run in 3D
 									// mode regardless
+
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Set the Java Swing UI style
+																							// to
+																							// Windows
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+						| UnsupportedLookAndFeelException e1) {
+					e1.printStackTrace();
+				}
+
 				Object[] options = { "Continue in 2D Mode (Recommended)", "Continue in 3D (Not recommended)", "Exit" };
 				int n = JOptionPane.showOptionDialog(null,
 						"Unfortunately your system does not meet our minimum system requirements for 3D mode. Please select from the options below",
@@ -246,7 +275,6 @@ public class Main {
 			scanner.close();
 			return makeStringArray(strings);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}

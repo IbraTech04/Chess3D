@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<DxDiag><SystemInformation><Time>1/23/2022, 22:42:23</Time><MachineName>IBRATECH-P</MachineName><MachineId>{EEF227C4-086A-4C7A-83D9-C777D644DF53}</MachineId><OperatingSystem>Windows 10 Pro 64-bit (10.0, Build 19044) (19041.vb_release.191206-1406)</OperatingSystem><Language>English (Regional Setting: English)</Language><SystemManufacturer>Gigabyte Technology Co., Ltd.</SystemManufacturer><SystemModel>B550M AORUS PRO</SystemModel><BIOS>F10a</BIOS><FirmwareType>UEFI</FirmwareType><Processor>AMD Ryzen 5 3600 6-Core Processor               (12 CPUs), ~3.6GHz</Processor><Memory>16384MB RAM</Memory><AvaliableOSMem>16328MB RAM</AvaliableOSMem><PageFile>20009MB used, 12702MB available</PageFile><WindowsDir>C:\WINDOWS</WindowsDir><DirectXVersion>DirectX 12</DirectXVersion><DXSetupParameters>Not found</DXSetupParameters><UserDPISettings>96 DPI (100 percent)</UserDPISettings><SystemDPISettings>96 DPI (100 percent)</SystemDPISettings><DWMDPIScaling>Disabled</DWMDPIScaling><DxDiagVersion>10.00.19041.0928</DxDiagVersion><DxDiagUnicode>1</DxDiagUnicode><DxDiag64Bit>1</DxDiag64Bit><Miracast>Available, no HDCP</Miracast><MSHybrid>Not Supported</MSHybrid><DirectXDatabaseVersion>1.0.8</DirectXDatabaseVersion></SystemInformation><DxDiagNotes><DisplayTab>No problems found.
+<DxDiag><SystemInformation><Time>1/27/2022, 22:46:14</Time><MachineName>IBRATECH-P</MachineName><MachineId>{EEF227C4-086A-4C7A-83D9-C777D644DF53}</MachineId><OperatingSystem>Windows 10 Pro 64-bit (10.0, Build 19044) (19041.vb_release.191206-1406)</OperatingSystem><Language>English (Regional Setting: English)</Language><SystemManufacturer>Gigabyte Technology Co., Ltd.</SystemManufacturer><SystemModel>B550M AORUS PRO</SystemModel><BIOS>F10a</BIOS><FirmwareType>UEFI</FirmwareType><Processor>AMD Ryzen 5 3600 6-Core Processor               (12 CPUs), ~3.6GHz</Processor><Memory>16384MB RAM</Memory><AvaliableOSMem>16328MB RAM</AvaliableOSMem><PageFile>12057MB used, 20654MB available</PageFile><WindowsDir>C:\WINDOWS</WindowsDir><DirectXVersion>DirectX 12</DirectXVersion><DXSetupParameters>Not found</DXSetupParameters><UserDPISettings>96 DPI (100 percent)</UserDPISettings><SystemDPISettings>96 DPI (100 percent)</SystemDPISettings><DWMDPIScaling>Disabled</DWMDPIScaling><DxDiagVersion>10.00.19041.0928</DxDiagVersion><DxDiagUnicode>1</DxDiagUnicode><DxDiag64Bit>1</DxDiag64Bit><Miracast>Available, no HDCP</Miracast><MSHybrid>Not Supported</MSHybrid><DirectXDatabaseVersion>1.0.8</DirectXDatabaseVersion></SystemInformation><DxDiagNotes><DisplayTab>No problems found.
 </DisplayTab><DisplayTab>No problems found.
 </DisplayTab><SoundTab>No problems found.
 </SoundTab><SoundTab>No problems found.
@@ -321,126 +321,7 @@ MFAudioFormat_MSP1, WMSpeech Decoder DMO, CLSID_CWMSPDecMediaObject
     Allow batching
     Force half deinterlace
     Force scaling
-</Enabled><DecodePowerUsage>0</DecodePowerUsage></PowerFlags></EvrPowerInformation><Diagnostics><WindowsErrorReporting><WER0>Fault bucket 1685751207807880469, type 5
-Event Name: RADAR_PRE_LEAK_64
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: msedge.exe
-P2: 97.0.1072.69
-P3: 10.0.19044.2.0.0
-P4: 
-P5: 
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER0><WER1>Fault bucket 1282080058788914062, type 5
-Event Name: StoreAgentScanForUpdatesFailure0
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: Update;
-P2: 800704c6
-P3: 19044
-P4: 1466
-P5: Windows.Desktop
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER1><WER2>Fault bucket , type 0
-Event Name: StoreAgentScanForUpdatesFailure0
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: Update;
-P2: 800704c6
-P3: 19044
-P4: 1466
-P5: Windows.Desktop
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER2><WER3>Fault bucket , type 0
-Event Name: StoreAgentScanForUpdatesFailure0
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: Update;
-P2: 800704c6
-P3: 19044
-P4: 1466
-P5: Windows.Desktop
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER3><WER4>Fault bucket 2062211262125300914, type 5
-Event Name: RADAR_PRE_LEAK_WOW64
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: RobloxPlayerBeta.exe
-P2: 0.509.0.43947
-P3: 10.0.19044.2.0.0
-P4: 
-P5: 
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER4><WER5>Fault bucket 125730739576, type 5
-Event Name: PerfWatsonVS12Data
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: PerfWatsonTcdb
-P2: 0
-P3: 0
-P4: 0
-P5: 0
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER5><WER6>Fault bucket 1384730147809334657, type 5
-Event Name: RADAR_PRE_LEAK_WOW64
-Response: Not available
-Cab Id: 0
-
-Problem signature:
-P1: devenv.exe
-P2: 16.11.32106.194
-P3: 10.0.19044.2.0.0
-P4: 
-P5: 
-P6: 
-P7: 
-P8: 
-P9: 
-P10: 
-
-</WER6><WER7>Fault bucket 1747577442101209700, type 4
+</Enabled><DecodePowerUsage>0</DecodePowerUsage></PowerFlags></EvrPowerInformation><Diagnostics><WindowsErrorReporting><WER0>Fault bucket 1747577442101209700, type 4
 Event Name: APPCRASH
 Response: Not available
 Cab Id: 0
@@ -457,14 +338,14 @@ P8: 000000000027f3f6
 P9: 
 P10: 
 
-</WER7><WER8>Fault bucket 1431291858228330272, type 5
+</WER0><WER1>Fault bucket 1998576260553401433, type 5
 Event Name: RADAR_PRE_LEAK_64
 Response: Not available
 Cab Id: 0
 
 Problem signature:
-P1: taskhostw.exe
-P2: 10.0.19041.906
+P1: FortniteClient-Win64-Shipping.exe
+P2: 5.0.1.0
 P3: 10.0.19044.2.0.0
 P4: 
 P5: 
@@ -474,17 +355,136 @@ P8:
 P9: 
 P10: 
 
-</WER8><WER9>Fault bucket 1860841375251268008, type 5
-Event Name: AppHangB1
+</WER1><WER2>Fault bucket 1955140316592398450, type 5
+Event Name: RADAR_PRE_LEAK_64
 Response: Not available
 Cab Id: 0
 
 Problem signature:
-P1: javaw.exe
-P2: 16.0.2.0
-P3: 06885552
-P4: 8b97
-P5: 67246080
+P1: HitFilmExpress.exe
+P2: 18.0.12014.44563
+P3: 10.0.19044.2.0.0
+P4: 
+P5: 
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER2><WER3>Fault bucket 1685751207807880469, type 5
+Event Name: RADAR_PRE_LEAK_64
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: msedge.exe
+P2: 97.0.1072.69
+P3: 10.0.19044.2.0.0
+P4: 
+P5: 
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER3><WER4>Fault bucket 1282080058788914062, type 5
+Event Name: StoreAgentScanForUpdatesFailure0
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: Update;
+P2: 800704c6
+P3: 19044
+P4: 1466
+P5: Windows.Desktop
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER4><WER5>Fault bucket , type 0
+Event Name: StoreAgentScanForUpdatesFailure0
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: Update;
+P2: 800704c6
+P3: 19044
+P4: 1466
+P5: Windows.Desktop
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER5><WER6>Fault bucket , type 0
+Event Name: StoreAgentScanForUpdatesFailure0
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: Update;
+P2: 800704c6
+P3: 19044
+P4: 1466
+P5: Windows.Desktop
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER6><WER7>Fault bucket 2062211262125300914, type 5
+Event Name: RADAR_PRE_LEAK_WOW64
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: RobloxPlayerBeta.exe
+P2: 0.509.0.43947
+P3: 10.0.19044.2.0.0
+P4: 
+P5: 
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER7><WER8>Fault bucket 125730739576, type 5
+Event Name: PerfWatsonVS12Data
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: PerfWatsonTcdb
+P2: 0
+P3: 0
+P4: 0
+P5: 0
+P6: 
+P7: 
+P8: 
+P9: 
+P10: 
+
+</WER8><WER9>Fault bucket 1384730147809334657, type 5
+Event Name: RADAR_PRE_LEAK_WOW64
+Response: Not available
+Cab Id: 0
+
+Problem signature:
+P1: devenv.exe
+P2: 16.11.32106.194
+P3: 10.0.19044.2.0.0
+P4: 
+P5: 
 P6: 
 P7: 
 P8: 

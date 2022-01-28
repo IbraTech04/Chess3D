@@ -7,6 +7,8 @@ import uibooster.*;
 import uibooster.model.options.DarkUiBoosterOptions;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import java.io.File;
 import java.awt.Color;
@@ -158,6 +160,13 @@ public class Chess3D extends PApplet {
 	 * @author Fardeen Kasmani
 	 */
 	public void settingsScreen1() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Set the Java Swing UI style to
+																					// Windows
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
 		pushStyle();
 		pushMatrix();
 		textSize(25);
@@ -193,7 +202,7 @@ public class Chess3D extends PApplet {
 			mousePressed = false;
 			Color newColor;
 			do {
-				newColor = showColorPicker("Please select your preferred main board colour", "Board Colour Selection");
+				newColor = this.showColorPicker("Please select your preferred main board colour", "Board Colour Selection");
 			} while (newColor == null);
 
 			mainBoardColor[0] = newColor.getRed();
@@ -213,7 +222,7 @@ public class Chess3D extends PApplet {
 			mousePressed = false;
 			Color newColor;
 			do {
-				newColor = showColorPicker("Please select your preferred secondary board colour",
+				newColor = this.showColorPicker("Please select your preferred secondary board colour",
 						"Board Colour Selection");
 			} while (newColor == null);
 
