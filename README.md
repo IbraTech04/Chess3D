@@ -34,7 +34,7 @@ This allowed us access to Eclipse's superb debugger, and it's wide variety of pl
 We used a lot of Processing libraries like UiBooster, however had to rework them in pure Java (taken directly from the library's source code) in order for them to work properly under non-processing conditions. You'll notice the ColorPickerDialog class was modified from UiBooster's source to work in our required setting. 
 
 Our code's main entry point is in Main.java. This file contains the necissary code to set up the environment so that jChess loads correctly. It also contains the licence key check. If you're feeling lucky, you can try this key: 
-YEENKFK-BBUOK8F6IO:Y@6U8E-@;9-NF
+`YEENKFK-BBUOK8F6IO:Y@6U8E-@;9-NF`
 Or you can use the built in keygen class to make your own
 
 UltraProteccV7 works in the following way:
