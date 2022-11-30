@@ -33,7 +33,7 @@ This chess game includes Ibrahim's new UltraProteccV7 licence protection scheme.
 	
 ## How the code works
 
-Our code leverages the usage of the processing core. Normally, the processing IDE gives the user a level of abstraction, hiding the pure Java code. Whenever a processing sketch is compiled, it get's converted to pure Java code, then compiled into bytecode which is then fed into a JVM to be executed. We bypassed the abstraction to gain complete access to the Processing Core via Eclipse by importing the processing core directly into our project, creating classes that extend PApplet (the main class of the processing core), and writing the same code that would've been generated, had we created the game directly in the Processing IDE
+Our code leverages the usage of the processing core. Normally, the processing IDE gives the user a level of abstraction, hiding the pure Java code. Whenever a processing sketch is compiled, it gets converted to pure Java code, then compiled into bytecode which is then fed into a JVM to be executed. We bypassed the abstraction to gain complete access to the Processing Core via Eclipse by importing the processing core directly into our project, creating classes that extend PApplet (the main class of the processing core), and writing the same code that would've been generated, had we created the game directly in the Processing IDE
 
 This allowed us access to Eclipse's superb debugger, and it's wide variety of plugins, namely Saros. Saros is a collaborative debugging plugin which basically makes a Eclipse project like a shared Google Doc. This allowed IFlySoft to work in parallel, speeding up the development process. 
 
